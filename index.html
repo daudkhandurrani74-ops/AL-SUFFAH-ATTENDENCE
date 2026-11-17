@@ -67,12 +67,13 @@ tr:nth-child(even) td{background:#fafafa}
 .nowrap{white-space:nowrap}
 .empty{padding:20px;color:var(--muted)}
 .hint{font-size:12px;color:var(--muted)}
+.warn{color:#dc2626;font-weight:bold}
 .login{min-height:100vh;display:flex;align-items:center;justify-content:center;margin:-12px;background:linear-gradient(135deg,#6f42c1,#0d6efd,#0dcaf0)}
 .login-card{width:min(360px,92vw);display:grid;gap:12px}
 .login-card h2{color:#4f46e5}
 .msg{color:var(--red);font-size:13px;margin:0}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:10px;z-index:50}
-.modal-box{background:#fff;border-radius:14px;padding:18px;width:min(780px,100%);max-height:90vh;overflow:auto}
+.modal-box{background:#fff;border-radius:14px;padding:18px;width:min(900px,100%);max-height:90vh;overflow:auto}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
 .form{display:grid;gap:10px}
 select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
@@ -125,7 +126,7 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
   <section class="card summary" id="summary"></section>
 
   <section class="card actions">
-    <label><span data-i18n="msgLang">پیغام کی زبان:</span>
+    <label><span data-i18n="msgLang">Parent message language:</span>
       <select id="msgLangPick" class="lang">
         <option value="ur">اردو</option>
         <option value="en">English</option>
@@ -196,6 +197,7 @@ const I18N = {
     errLogin: 'Wrong mobile number or password',
     date: '📅 Date',
     classLbl: '🎓 Class',
+    allClasses: 'All classes (ال)',
     search: '🔍 Search',
     searchPh: 'Name or admission no.',
     addStudent: '➕ Add student',
@@ -215,14 +217,14 @@ const I18N = {
     close: 'Close',
     hint: 'Click the status button: P (Present) → A (Absent) → L (Leave) → T (Late). Every change is saved immediately.',
     colNo: '#', colName: 'Name', colAdm: 'Admission No', colMobile: 'Mobile',
-    colStatus: 'Status', colMsg: 'Message', colEdit: 'Edit', colDel: 'Delete',
+    colStatus: 'Status', colMsg: 'Message', colEdit: 'Edit', colDel: 'Delete', colClass: 'Class',
     wa: 'WA', sms: 'SMS', copy: 'Copy', edit: 'Edit', del: 'Delete', file: '📎 File',
+    present: '✅ Present',
     copyBtn: '📋 Copy message',
-    emptyClass: 'No students in this class. Click "Add student".',
+    emptyClass: 'No students here. Click "Add student".',
     statusP: 'Present', statusA: 'Absent', statusL: 'Leave', statusT: 'Late',
     sumTotal: 'Total', sumPresent: 'Present', sumAbsent: 'Absent', sumLeave: 'Leave', sumLate: 'Late', sumPct: 'Attendance',
     sendTitle: n => `📩 Parents of absent students (${n})`,
-    queueBtn: '📋 Send one by one',
     queueHint: 'Each click opens WhatsApp for the next student with the message ready. Just press Send in WhatsApp. A short wait between messages protects your account from restriction.',
     queueNext: n => `▶ Next: ${n}`,
     queueWait: s => `Wait ${s} sec...`,
@@ -243,7 +245,8 @@ const I18N = {
     saveFail: m => `Not saved: ${m}`,
     dupAdm: 'This admission number already exists',
     newStudent: '➕ New student', editStudent: '✏️ Edit student',
-    formClass: 'Class', formName: 'Student name (required)', formAdm: 'Admission No (required)',
+    formClass: 'Class', formSection: 'Section', secNone: '— none —', secGreen: 'Green', secYellow: 'Yellow',
+    formName: 'Student name (required)', formAdm: 'Admission No (required)',
     formFather: "Father's name (optional)", formMobile: 'WhatsApp mobile (required, e.g. 03001234567)',
     formSim: 'SIM number (optional)', formAddress: 'Address (optional)', formSave: '💾 Save',
     copied: '📋 Message copied', copyFail: 'Copy failed',
@@ -256,7 +259,10 @@ const I18N = {
     badBackup: 'Invalid backup file',
     loadFail: m => `Could not load: ${m}`,
     pickStudentsFirst: 'Add students to this class first',
-    mobileBad: n => `${n}: invalid mobile number`
+    mobileBad: n => `${n}: invalid mobile number`,
+    noNumber: 'No valid number for this student',
+    colWarn: 'Warning',
+    markedPresent: '✅ Marked present'
   },
   ur: {
     appTitle: '🏫 الصفہ ہائی اسکول – حاضری نظام',
@@ -269,6 +275,7 @@ const I18N = {
     errLogin: 'موبائل نمبر یا پاس ورڈ غلط ہے',
     date: '📅 تاریخ',
     classLbl: '🎓 کلاس',
+    allClasses: 'تمام کلاسیں (ال)',
     search: '🔍 تلاش',
     searchPh: 'نام یا ایڈمیشن نمبر',
     addStudent: '➕ طالب علم شامل کریں',
@@ -288,14 +295,14 @@ const I18N = {
     close: 'بند کریں',
     hint: 'حاضری کے بٹن پر کلک کریں: P (حاضر) → A (غیر حاضر) → L (چھٹی) → T (لیٹ)۔ ہر تبدیلی فوراً محفوظ ہوتی ہے۔',
     colNo: '#', colName: 'نام', colAdm: 'ایڈمیشن نمبر', colMobile: 'موبائل',
-    colStatus: 'حاضری', colMsg: 'پیغام', colEdit: 'ترمیم', colDel: 'حذف',
+    colStatus: 'حاضری', colMsg: 'پیغام', colEdit: 'ترمیم', colDel: 'حذف', colClass: 'کلاس',
     wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: 'ترمیم', del: 'حذف', file: '📎 فائل',
+    present: '✅ حاضر کریں',
     copyBtn: '📋 پیغام کاپی',
-    emptyClass: 'اس کلاس میں کوئی طالب علم نہیں۔ "طالب علم شامل کریں" پر کلک کریں۔',
+    emptyClass: 'یہاں کوئی طالب علم نہیں۔ "طالب علم شامل کریں" پر کلک کریں۔',
     statusP: 'حاضر', statusA: 'غیر حاضر', statusL: 'چھٹی', statusT: 'لیٹ',
     sumTotal: 'کل', sumPresent: 'حاضر', sumAbsent: 'غیر حاضر', sumLeave: 'چھٹی', sumLate: 'لیٹ', sumPct: 'حاضری',
     sendTitle: n => `📩 غیر حاضر طلباء کے والدین کو پیغام (${n})`,
-    queueBtn: '📋 ایک ایک کر کے بھیجیں',
     queueHint: 'ہر کلک پر اگلے طالب علم کا واٹس ایپ پیغام کے ساتھ کھل جائے گا، وہاں صرف Send دبائیں۔ پیغامات کے درمیان چند سیکنڈ کا وقفہ واٹس ایپ کو بلاک ہونے سے بچاتا ہے۔',
     queueNext: n => `▶ اگلا: ${n}`,
     queueWait: s => `${s} سیکنڈ انتظار...`,
@@ -316,7 +323,8 @@ const I18N = {
     saveFail: m => `محفوظ نہیں ہو سکا: ${m}`,
     dupAdm: 'یہ ایڈمیشن نمبر پہلے سے موجود ہے',
     newStudent: '➕ نیا طالب علم', editStudent: '✏️ طالب علم کی ترمیم',
-    formClass: 'کلاس', formName: 'طالب علم کا نام (ضروری)', formAdm: 'ایڈمیشن نمبر (ضروری)',
+    formClass: 'کلاس', formSection: 'سیکشن', secNone: '— منتخب نہیں —', secGreen: 'Green', secYellow: 'Yellow',
+    formName: 'طالب علم کا نام (ضروری)', formAdm: 'ایڈمیشن نمبر (ضروری)',
     formFather: 'والد کا نام (اختیاری)', formMobile: 'واٹس ایپ موبائل نمبر (ضروری، مثلاً 03001234567)',
     formSim: 'سم نمبر (اختیاری)', formAddress: 'ایڈریس (اختیاری)', formSave: '💾 محفوظ کریں',
     copied: '📋 پیغام کاپی ہو گیا', copyFail: 'کاپی نہیں ہو سکا',
@@ -329,7 +337,10 @@ const I18N = {
     badBackup: 'بیک اپ فائل درست نہیں',
     loadFail: m => `لوڈ نہیں ہو سکا: ${m}`,
     pickStudentsFirst: 'پہلے کلاس میں طلباء شامل کریں',
-    mobileBad: n => `${n}: موبائل نمبر درست نہیں`
+    mobileBad: n => `${n}: موبائل نمبر درست نہیں`,
+    noNumber: 'اس طالب علم کا درست نمبر موجود نہیں',
+    colWarn: 'تنبیہ',
+    markedPresent: '✅ حاضر کر دیا گیا'
   }
 };
 
@@ -349,6 +360,7 @@ function applyLang() {
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $('langPick').value = lang;
   $('msgLangPick').value = state.msgLang;
+  fillClassPick();
   renderSummary();
   render();
 }
@@ -363,6 +375,8 @@ const prettyDate = s => { const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`;
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const NEXT = {P:'A', A:'L', L:'T', T:'P'};
 const statusLabel = st => t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
+const classNameOf = id => (state.classes.find(c => c.id === id) || {}).name || '';
+const sectionName = sec => sec === 'Green' ? 'Green' : sec === 'Yellow' ? 'Yellow' : '';
 
 function toast(msg, err = false) {
   const el = $('toast');
@@ -382,7 +396,10 @@ function normalizePK(num) {
 }
 const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
 
-// Parent message in the language selected by the user (default Urdu)
+// SMS goes to the SIM number if it is valid, otherwise to the mobile number
+const smsNum = s => isValidMobile(s.sim_number || '') ? s.sim_number : s.mobile;
+
+// Normal attendance message for one student (absent / leave / late)
 function messageText(name, status, date) {
   if (state.msgLang === 'en') {
     const st = status === 'A' ? 'absent from school today'
@@ -394,6 +411,21 @@ function messageText(name, status, date) {
     ? 'آج اسکول میں دیر سے پہنچا'
     : `اسکول سے ${status === 'A' ? 'غیر حاضر تھا' : 'چھٹی پر تھا'}`;
   return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\n${line}\n\nالصفہ ہائی اسکول`;
+}
+
+// Periodic (weekly / monthly) report message. Warning is added when absences exceed 7.
+function reportText(x, kind, start, end) {
+  const warn = x.A > 7;
+  if (state.msgLang === 'en') {
+    const per = kind === 'weekly' ? 'this week' : 'this month';
+    let m = `Assalam o Alaikum!\nYour child ${x.name}\nPeriod: ${prettyDate(start)} to ${prettyDate(end)}\nPresent: ${x.P} | Absent: ${x.A} | Leave: ${x.L} | Late: ${x.T}`;
+    if (warn) m += `\n\nYour child has ${x.A} absences ${per}. This may affect their academic performance. Kindly take notice.`;
+    return m + `\n\nAl Suffah High School`;
+  }
+  const per = kind === 'weekly' ? 'اس ہفتے' : 'اس مہینے';
+  let m = `السلام علیکم!\nآپ کا بچہ ${x.name}\nمدت: ${prettyDate(start)} تا ${prettyDate(end)}\nحاضر: ${x.P} | غیر حاضر: ${x.A} | چھٹی: ${x.L} | لیٹ: ${x.T}`;
+  if (warn) m += `\n\nآپ کے بچے کی ${per} ${x.A} غیر حاضریاں ہیں، جس سے اس کی تعلیمی پوزیشن متاثر ہو سکتی ہے۔ براہ کرم توجہ دیں۔`;
+  return m + `\n\nالصفہ ہائی اسکول`;
 }
 
 function copyText(text) {
@@ -471,10 +503,11 @@ async function insertChunks(table, rows) {
 /* ===== 4. State ===== */
 const state = {
   user: null, classes: [], students: [], att: new Map(),
-  classId: null, date: '', seq: 0, inited: false,
+  classId: 'all', date: '', seq: 0, inited: false,
   msgLang: localStorage.getItem('msgLang') || 'ur'
 };
 let pendingFileStudent = null;
+let repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
 
 /* ===== 5. Login ===== */
 async function boot() {
@@ -534,25 +567,33 @@ async function init() {
 $('classPick').onchange = () => loadDay();
 $('datePick').onchange = () => loadDay();
 
+function fillClassPick() {
+  const cur = $('classPick').value || 'all';
+  $('classPick').innerHTML = `<option value="all">${t('allClasses')}</option>` +
+    state.classes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  $('classPick').value = cur;
+}
+
 async function loadClasses() {
   const { data, error } = await sb.from('classes').select('id,name').order('sort_order');
   if (error) return toast(t('loadFail', error.message), true);
   state.classes = data;
-  $('classPick').innerHTML = data.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  fillClassPick();
 }
 
 async function loadDay() {
   if (!state.classes.length) return;
   const seq = ++state.seq;
-  state.classId = Number($('classPick').value);
+  state.classId = $('classPick').value || 'all';
   state.date = $('datePick').value || todayStr();
   localStorage.setItem('lastClassId', state.classId);
 
-  // Only students of the selected class are loaded. select('*') works even if
-  // the new columns (father_name, sim_number, address) are not added yet.
-  const { data: students, error } = await sb.from('students')
-    .select('*')
-    .eq('class_id', state.classId).eq('is_active', true).order('name');
+  // Selected class only, or every class when "All" is chosen
+  let q = sb.from('students').select('*').eq('is_active', true).order('name');
+  q = state.classId === 'all'
+    ? q.in('class_id', state.classes.map(c => c.id))
+    : q.eq('class_id', Number(state.classId));
+  const { data: students, error } = await q;
   if (seq !== state.seq) return;
   if (error) return toast(t('loadFail', error.message), true);
 
@@ -567,7 +608,7 @@ async function loadDay() {
     if (e2) return toast(t('loadFail', e2.message), true);
     rows.forEach(r => state.att.set(r.student_id, r.status));
 
-    // Students without a record start as P, so reports stay correct
+    // A new date starts every student as P (present) unless changed for that date
     const missing = ids.filter(id => !state.att.has(id))
       .map(id => ({ student_id: id, date: state.date, status: 'P', updated_by: state.user.id }));
     if (missing.length) {
@@ -595,9 +636,10 @@ function render() {
 
   $('tbody').innerHTML = list.length ? list.map((s, i) => {
     const st = state.att.get(s.id) || 'P';
+    const sec = sectionName(s.section);
     return `<tr>
       <td>${i + 1}</td>
-      <td><b>${esc(s.name)}</b></td>
+      <td><b>${esc(s.name)}</b><div class="hint">${esc(classNameOf(s.class_id))}${sec ? ' · ' + sec : ''}</div></td>
       <td>${esc(s.admission_no)}</td>
       <td>${esc(s.mobile)}</td>
       <td><button class="status ${st}" data-act="status" data-id="${s.id}">${st} · ${statusLabel(st)}</button></td>
@@ -684,12 +726,18 @@ $('resetDayBtn').onclick = async () => {
 $('addBtn').onclick = () => openStudentForm();
 
 function openStudentForm(s = null) {
+  const defClass = s ? s.class_id : (state.classId !== 'all' ? Number(state.classId) : (state.classes[0] || {}).id);
   const classOpts = state.classes.map(c =>
-    `<option value="${c.id}" ${c.id === state.classId ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+    `<option value="${c.id}" ${c.id === defClass ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+  const secOpts = `
+    <option value="" ${!s?.section ? 'selected' : ''}>${t('secNone')}</option>
+    <option value="Green" ${s?.section === 'Green' ? 'selected' : ''}>${t('secGreen')}</option>
+    <option value="Yellow" ${s?.section === 'Yellow' ? 'selected' : ''}>${t('secYellow')}</option>`;
 
   openModal(s ? t('editStudent') : t('newStudent'), `
     <form id="sForm" class="form">
       <label>${t('formClass')}<select name="class_id" required>${classOpts}</select></label>
+      <label>${t('formSection')}<select name="section">${secOpts}</select></label>
       <label>${t('formName')}<input name="name" required value="${esc(s?.name || '')}"></label>
       <label>${t('formAdm')}<input name="admission_no" required value="${esc(s?.admission_no || '')}"></label>
       <label>${t('formFather')}<input name="father_name" value="${esc(s?.father_name || '')}"></label>
@@ -712,6 +760,7 @@ function openStudentForm(s = null) {
     const class_id = Number(fd.get('class_id'));
     const row = {
       name, admission_no, mobile,
+      section: fd.get('section') || null,
       sim_number: sim_number || null,
       father_name: fd.get('father_name').trim() || null,
       address: fd.get('address').trim() || null,
@@ -726,8 +775,8 @@ function openStudentForm(s = null) {
     }
     closeModal();
     toast(t('saved'));
-    // Show the class the student was saved in
-    if (class_id !== state.classId) $('classPick').value = class_id;
+    // Show the class the student was saved in (unless "All" is selected)
+    if ($('classPick').value !== 'all') $('classPick').value = String(class_id);
     loadDay();
   };
 }
@@ -748,23 +797,22 @@ async function logMessage(s, channel) {
   if (error) toast(t('logFail'), true);
 }
 
-async function sendMessage(s, channel) {
-  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
-  const status = state.att.get(s.id) || 'P';
-
-  const text = messageText(s.name, status, state.date);
-  const num = normalizePK(s.mobile);
-  const url = channel === 'wa'
-    ? `https://wa.me/${num}?text=${encodeURIComponent(text)}`
-    : `sms:+${num}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(text)}`;
-
+// Sends any text: WhatsApp to mobile, SMS to SIM number (or mobile if no valid SIM)
+async function sendRaw(s, channel, text) {
   if (channel === 'wa') {
-    window.open(url, '_blank');
-    logMessage(s, channel);
+    if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
+    window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
+    logMessage(s, 'wa');
   } else {
-    await logMessage(s, channel);
-    location.href = url;
+    const num = smsNum(s);
+    if (!isValidMobile(num)) return toast(t('noNumber'), true);
+    await logMessage(s, 'sms');
+    location.href = `sms:+${normalizePK(num)}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(text)}`;
   }
+}
+
+function sendMessage(s, channel) {
+  return sendRaw(s, channel, messageText(s.name, state.att.get(s.id) || 'P', state.date));
 }
 
 // One-by-one queue: one click opens the next chat, with a cooldown between messages
@@ -825,44 +873,28 @@ function queueSendNext(s) {
   renderQueue();
 }
 
-// File picker for one student, then sent via WhatsApp
-$('fileInput').onchange = async e => {
-  const file = e.target.files[0];
-  e.target.value = '';
-  const s = pendingFileStudent;
-  pendingFileStudent = null;
-  if (!file || !s) return;
-  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
-
-  const text = messageText(s.name, state.att.get(s.id) || 'A', state.date);
-
-  // Phones: native share sheet, which can send the file straight to WhatsApp
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], text });
-      logMessage(s, 'wa');
-      return;
-    } catch (err) {
-      if (err.name === 'AbortError') return;
-    }
-  }
-
-  // Laptops: download the file and open the WhatsApp chat; attach the file there
-  downloadBlob(file.name, file);
-  window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
-  logMessage(s, 'wa');
-  toast(t('fileFallback'));
-};
-
-$('showAbsentBtn').onclick = () => {
+// Absent / leave / late list with WhatsApp, SMS and "present" (removes from list)
+function renderAbsentModal() {
   const list = absentList();
   openModal(t('absentTitle', list.length), list.length ? `
     <table>
-      <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colStatus')}</th></tr>
-      ${list.map((s, i) => `<tr><td>${i+1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td>
-        <td>${statusLabel(state.att.get(s.id))}</td></tr>`).join('')}
+      <tr><th>#</th><th>${t('colName')}</th><th>${t('colClass')}</th><th>${t('colStatus')}</th><th>${t('colMobile')}</th><th>${t('colMsg')}</th><th>✔</th></tr>
+      ${list.map((s, i) => `<tr>
+        <td>${i + 1}</td>
+        <td>${esc(s.name)}</td>
+        <td>${esc(classNameOf(s.class_id))}${sectionName(s.section) ? ' · ' + sectionName(s.section) : ''}</td>
+        <td>${statusLabel(state.att.get(s.id))}</td>
+        <td>${esc(s.mobile)}${s.sim_number ? '<br><small>SIM: ' + esc(s.sim_number) + '</small>' : ''}</td>
+        <td class="nowrap">
+          <button class="btn sm wa" data-mwa="${s.id}">WA</button>
+          <button class="btn sm sms" data-msms="${s.id}">SMS</button>
+        </td>
+        <td><button class="btn sm success" data-present="${s.id}">${t('present')}</button></td>
+      </tr>`).join('')}
     </table>` : `<p>${t('noAbsent')}</p>`);
-};
+}
+
+$('showAbsentBtn').onclick = renderAbsentModal;
 
 /* ===== 11. Reports ===== */
 async function fetchRange(start, end) {
@@ -891,13 +923,15 @@ async function openReport(kind) {
 
   try {
     const rows = await fetchRange(start, end);
-    const stats = new Map(state.students.map(s => [s.id, { name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0, T: 0 }]));
+    const stats = new Map(state.students.map(s =>
+      [s.id, { s, name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0, T: 0 }]));
     rows.forEach(r => { const st = stats.get(r.student_id); if (st) st[r.status]++; });
 
-    const data = [...stats.values()].map(x => {
+    repRows = [...stats.values()].map(x => {
       const total = x.P + x.A + x.L + x.T;
       return { ...x, total, pct: total ? Math.round(x.P / total * 100) : 0 };
     });
+    repKind = kind; repStart = start; repEnd = end;
     const heading = `${title} (${prettyDate(start)} – ${prettyDate(end)})`;
 
     openModal(heading, `
@@ -906,16 +940,26 @@ async function openReport(kind) {
         <button class="btn yellow" id="repCsv">${t('reportCsv')}</button>
       </div>
       <table>
-        <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colPresent')}</th><th>${t('colAbsent')}</th><th>${t('colLeave')}</th><th>${t('colLate')}</th><th>${t('colRecords')}</th><th>${t('colPct')}</th></tr>
-        ${data.map((x, i) => `<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.adm)}</td>
-          <td>${x.P}</td><td>${x.A}</td><td>${x.L}</td><td>${x.T}</td><td>${x.total}</td><td>${x.pct}%</td></tr>`).join('')}
+        <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colPresent')}</th><th>${t('colAbsent')}</th><th>${t('colLeave')}</th><th>${t('colLate')}</th><th>${t('colRecords')}</th><th>${t('colPct')}</th><th>${t('colMsg')}</th></tr>
+        ${repRows.map((x, i) => `<tr>
+          <td>${i+1}</td>
+          <td>${esc(x.name)}${x.A > 7 ? ' <span class="warn">⚠️</span>' : ''}</td>
+          <td>${esc(x.adm)}</td>
+          <td>${x.P}</td>
+          <td class="${x.A > 7 ? 'warn' : ''}">${x.A}</td>
+          <td>${x.L}</td><td>${x.T}</td><td>${x.total}</td><td>${x.pct}%</td>
+          <td class="nowrap">
+            <button class="btn sm wa" data-rwa="${i}">WA</button>
+            <button class="btn sm sms" data-rsms="${i}">SMS</button>
+          </td>
+        </tr>`).join('')}
       </table>`);
 
     $('repPrint').onclick = printModal;
     $('repCsv').onclick = () => downloadCSV(
       `report_${start}_${end}.csv`,
       [t('colName'), t('colAdm'), t('colPresent'), t('colAbsent'), t('colLeave'), t('colLate'), t('colRecords'), t('colPct')],
-      data.map(x => [x.name, x.adm, x.P, x.A, x.L, x.T, x.total, x.pct + '%'])
+      repRows.map(x => [x.name, x.adm, x.P, x.A, x.L, x.T, x.total, x.pct + '%'])
     );
   } catch (err) {
     toast(t('reportFail', err.message), true);
@@ -931,6 +975,28 @@ window.addEventListener('afterprint', () => document.body.classList.remove('prin
 $('dailyBtn').onclick = () => openReport('daily');
 $('weeklyBtn').onclick = () => openReport('weekly');
 $('monthlyBtn').onclick = () => openReport('monthly');
+
+/* ===== Modal buttons (absent list, report messages) ===== */
+$('modalBody').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const d = b.dataset;
+
+  if (d.mwa || d.msms) {
+    const s = state.students.find(x => x.id === Number(d.mwa || d.msms));
+    if (s) sendMessage(s, d.mwa ? 'wa' : 'sms');
+    return;
+  }
+  if (d.present) {
+    setStatus(Number(d.present), 'P').then(renderAbsentModal);
+    return;
+  }
+  if (d.rwa !== undefined || d.rsms !== undefined) {
+    const x = repRows[Number(d.rwa !== undefined ? d.rwa : d.rsms)];
+    if (!x) return;
+    sendRaw(x.s, d.rwa !== undefined ? 'wa' : 'sms', reportText(x, repKind, repStart, repEnd));
+  }
+});
 
 /* ===== 12. CSV and print ===== */
 $('csvBtn').onclick = () => {
@@ -951,14 +1017,43 @@ $('refreshBtn').onclick = async () => {
   toast(t('refreshed'));
 };
 
-/* ===== 14. Backup and restore ===== */
+/* ===== 14. File sending (one student at a time) ===== */
+$('fileInput').onchange = async e => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  const s = pendingFileStudent;
+  pendingFileStudent = null;
+  if (!file || !s) return;
+  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
+
+  const text = messageText(s.name, state.att.get(s.id) || 'A', state.date);
+
+  // Phones: native share sheet, which can send the file straight to WhatsApp
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], text });
+      logMessage(s, 'wa');
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+    }
+  }
+
+  // Laptops: download the file and open the WhatsApp chat; attach the file there
+  downloadBlob(file.name, file);
+  window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
+  logMessage(s, 'wa');
+  toast(t('fileFallback'));
+};
+
+/* ===== 15. Backup and restore ===== */
 // Backup: downloads every table as a JSON file
 $('backupBtn').onclick = async () => {
   try {
     toast(t('working'));
     const [classes, students, attendance, message_logs] = await Promise.all([
       fetchAll('classes', 'id,name,sort_order'),
-      fetchAll('students', 'id,name,admission_no,mobile,father_name,sim_number,address,class_id,is_active'),
+      fetchAll('students', '*'),
       fetchAll('attendance', 'id,student_id,date,status'),
       fetchAll('message_logs', 'id,student_id,date,channel')
     ]);
@@ -1012,6 +1107,7 @@ async function restoreData(p) {
       name: s.name,
       admission_no: String(s.admission_no),
       mobile: String(s.mobile),
+      section: s.section ?? null,
       sim_number: s.sim_number ?? null,
       father_name: s.father_name ?? null,
       address: s.address ?? null,
@@ -1045,7 +1141,7 @@ async function restoreData(p) {
   if (logRows.length) await insertChunks('message_logs', logRows);
 }
 
-/* ===== 15. Start ===== */
+/* ===== 16. Start ===== */
 applyLang();
 boot();
 </script>

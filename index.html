@@ -13,13 +13,13 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);margin:0;padding:12px;color:var(--text)}
+body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);margin:0;padding:12px;color:var(--text);-webkit-text-size-adjust:100%}
 h2{margin:0;font-size:20px}
 .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 header{background:linear-gradient(90deg,#6f42c1,#0d6efd,#0dcaf0);color:#fff;border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 header .user{font-size:13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:bold;color:#374151}
-input,select{padding:9px;border:2px solid #d1d5db;border-radius:8px;font-size:14px;background:#fff}
+input,select{padding:9px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;background:#fff;max-width:100%}
 input:focus,select:focus{outline:none;border-color:var(--blue)}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
 <!-- GitHub Auto Update Test -->  
@@ -53,7 +53,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue)}
 .chip.pct{background:#ede9fe;color:#5b21b6}
 .bar{flex:1;min-width:160px;height:14px;background:#e5e7eb;border-radius:10px;overflow:hidden}
 .bar span{display:block;height:100%;background:linear-gradient(90deg,#10b981,#34d399);transition:width .4s}
-.table-wrap{overflow-x:auto;padding:0}
+.table-wrap{overflow-x:auto;padding:0;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
 th,td{border:1px solid #e5e7eb;padding:7px;text-align:center}
 th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;position:sticky;top:0}
@@ -73,11 +73,11 @@ tr:nth-child(even) td{background:#fafafa}
 .login-card h2{color:#4f46e5}
 .msg{color:var(--red);font-size:13px;margin:0}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:10px;z-index:50}
-.modal-box{background:#fff;border-radius:14px;padding:18px;width:min(900px,100%);max-height:90vh;overflow:auto}
+.modal-box{background:#fff;border-radius:14px;padding:18px;width:min(900px,100%);max-height:90vh;overflow:auto;-webkit-overflow-scrolling:touch}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
 .form{display:grid;gap:10px}
-select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:11px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:.3s;z-index:60;font-weight:bold}
+select.lang{background:#fff;color:#1f2937;padding:6px;font-size:14px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:11px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:.3s;z-index:60;font-weight:bold;max-width:90vw;text-align:center}
 #toast.show{opacity:1}
 #toast.err{background:var(--red)}
 @media print{
@@ -183,6 +183,12 @@ const SUPABASE_URL = 'https://mjwnyvaofwyhrhkrmifz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_sXLOkuE5Bzpdx2HNQnzQ-Q_PFeiaVW4';
 const SCHOOL_DOMAIN = '@suffah.com';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Safe storage: some phone browsers block localStorage; this never stops the script
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+};
 
 /* ===== 2. Translations (English default, Urdu) ===== */
 const I18N = {
@@ -344,7 +350,7 @@ const I18N = {
   }
 };
 
-let lang = localStorage.getItem('lang') || 'en';
+let lang = store.get('lang') || 'en';
 const t = (k, ...a) => {
   const v = (I18N[lang] && I18N[lang][k]) ?? I18N.en[k] ?? k;
   return typeof v === 'function' ? v(...a) : v;
@@ -504,7 +510,7 @@ async function insertChunks(table, rows) {
 const state = {
   user: null, classes: [], students: [], att: new Map(),
   classId: 'all', date: '', seq: 0, inited: false,
-  msgLang: localStorage.getItem('msgLang') || 'ur'
+  msgLang: store.get('msgLang') || 'ur'
 };
 let pendingFileStudent = null;
 let repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
@@ -544,13 +550,13 @@ $('logoutBtn').onclick = () => sb.auth.signOut();
 
 $('langPick').onchange = e => {
   lang = e.target.value;
-  localStorage.setItem('lang', lang);
+  store.set('lang', lang);
   applyLang();
 };
 
 $('msgLangPick').onchange = e => {
   state.msgLang = e.target.value;
-  localStorage.setItem('msgLang', state.msgLang);
+  store.set('msgLang', state.msgLang);
 };
 
 /* ===== 6. Load data ===== */
@@ -558,7 +564,7 @@ async function init() {
   state.date = todayStr();
   $('datePick').value = state.date;
   await loadClasses();
-  const saved = localStorage.getItem('lastClassId');
+  const saved = store.get('lastClassId');
   if (saved && [...$('classPick').options].some(o => o.value === saved)) $('classPick').value = saved;
   await loadDay();
 }
@@ -586,7 +592,7 @@ async function loadDay() {
   const seq = ++state.seq;
   state.classId = $('classPick').value || 'all';
   state.date = $('datePick').value || todayStr();
-  localStorage.setItem('lastClassId', state.classId);
+  store.set('lastClassId', state.classId);
 
   // Selected class only, or every class when "All" is chosen
   let q = sb.from('students').select('*').eq('is_active', true).order('name');

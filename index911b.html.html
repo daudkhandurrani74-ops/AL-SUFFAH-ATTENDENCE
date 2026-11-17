@@ -27,12 +27,14 @@ input:focus,select:focus{outline:none;border-color:var(--blue)}
 .btn{border:none;color:#fff;background:#6c757d;padding:9px 13px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;transition:transform .1s,opacity .2s}
 .btn:hover{opacity:.9;transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn.sm{padding:5px 9px;font-size:12px}
 .btn.primary{background:var(--blue)}
 .btn.success{background:var(--green)}
 .btn.wa{background:#25D366}
 .btn.sms{background:var(--teal);color:#000}
 .btn.copy{background:var(--orange)}
+.btn.file{background:#475569}
 .btn.purple{background:var(--purple)}
 .btn.pink{background:var(--pink)}
 .btn.yellow{background:var(--yellow);color:#000}
@@ -47,6 +49,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue)}
 .chip.P{background:#d1fae5;color:#065f46}
 .chip.A{background:#fee2e2;color:#991b1b}
 .chip.L{background:#fef3c7;color:#92400e}
+.chip.T{background:#ffedd5;color:#9a3412}
 .chip.pct{background:#ede9fe;color:#5b21b6}
 .bar{flex:1;min-width:160px;height:14px;background:#e5e7eb;border-radius:10px;overflow:hidden}
 .bar span{display:block;height:100%;background:linear-gradient(90deg,#10b981,#34d399);transition:width .4s}
@@ -60,6 +63,7 @@ tr:nth-child(even) td{background:#fafafa}
 .status.P{background:#d1fae5;color:#065f46}
 .status.A{background:#fee2e2;color:#991b1b}
 .status.L{background:#fef3c7;color:#92400e}
+.status.T{background:#ffedd5;color:#9a3412}
 .nowrap{white-space:nowrap}
 .empty{padding:20px;color:var(--muted)}
 .hint{font-size:12px;color:var(--muted)}
@@ -121,6 +125,12 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
   <section class="card summary" id="summary"></section>
 
   <section class="card actions">
+    <label><span data-i18n="msgLang">پیغام کی زبان:</span>
+      <select id="msgLangPick" class="lang">
+        <option value="ur">اردو</option>
+        <option value="en">English</option>
+      </select>
+    </label>
     <button class="btn wa" id="sendAbsentBtn" data-i18n="sendAbsent">📩 Message parents of absent students</button>
     <button class="btn pink" id="showAbsentBtn" data-i18n="showAbsent">🚫 Absent students</button>
     <button class="btn purple" id="dailyBtn" data-i18n="daily">📊 Daily report</button>
@@ -132,6 +142,7 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
     <button class="btn teal" id="backupBtn" data-i18n="backup">💾 Backup</button>
     <button class="btn teal" id="restoreBtn" data-i18n="restore">📤 Restore backup</button>
     <input type="file" id="restoreFile" accept="application/json,.json" hidden>
+    <input type="file" id="fileInput" hidden>
     <button class="btn del" id="resetDayBtn" data-i18n="reset">♻️ Reset this day</button>
   </section>
 
@@ -152,7 +163,7 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:13px}
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="hint" data-i18n="hint">Click the status button: P (Present) → A (Absent) → L (Leave). Every change is saved immediately.</p>
+  <p class="hint" data-i18n="hint">Click the status button: P (Present) → A (Absent) → L (Leave) → T (Late). Every change is saved immediately.</p>
 </div>
 
 <div id="modal" class="modal" hidden>
@@ -189,6 +200,7 @@ const I18N = {
     searchPh: 'Name or admission no.',
     addStudent: '➕ Add student',
     markAll: '✅ Mark all present',
+    msgLang: 'Parent message language:',
     sendAbsent: '📩 Message parents of absent students',
     showAbsent: '🚫 Absent students',
     daily: '📊 Daily report',
@@ -201,22 +213,27 @@ const I18N = {
     restore: '📤 Restore backup',
     reset: '♻️ Reset this day',
     close: 'Close',
-    hint: 'Click the status button: P (Present) → A (Absent) → L (Leave). Every change is saved immediately.',
+    hint: 'Click the status button: P (Present) → A (Absent) → L (Leave) → T (Late). Every change is saved immediately.',
     colNo: '#', colName: 'Name', colAdm: 'Admission No', colMobile: 'Mobile',
     colStatus: 'Status', colMsg: 'Message', colEdit: 'Edit', colDel: 'Delete',
-    wa: 'WA', sms: 'SMS', copy: 'Copy', edit: 'Edit', del: 'Delete',
+    wa: 'WA', sms: 'SMS', copy: 'Copy', edit: 'Edit', del: 'Delete', file: '📎 File',
     copyBtn: '📋 Copy message',
     emptyClass: 'No students in this class. Click "Add student".',
-    statusP: 'Present', statusA: 'Absent', statusL: 'Leave',
-    sumTotal: 'Total', sumPresent: 'Present', sumAbsent: 'Absent', sumLeave: 'Leave', sumPct: 'Attendance',
+    statusP: 'Present', statusA: 'Absent', statusL: 'Leave', statusT: 'Late',
+    sumTotal: 'Total', sumPresent: 'Present', sumAbsent: 'Absent', sumLeave: 'Leave', sumLate: 'Late', sumPct: 'Attendance',
     sendTitle: n => `📩 Parents of absent students (${n})`,
-    sendHint: 'Browsers cannot open many messages at once, so press the button next to each student. This list shows today\'s absent and leave students.',
-    absentTitle: n => `🚫 Absent / Leave (${n})`,
+    queueBtn: '📋 Send one by one',
+    queueHint: 'Each click opens WhatsApp for the next student with the message ready. Just press Send in WhatsApp. A short wait between messages protects your account from restriction.',
+    queueNext: n => `▶ Next: ${n}`,
+    queueWait: s => `Wait ${s} sec...`,
+    queueDone: '✅ All messages sent',
+    fileFallback: 'File downloaded. Attach it in the WhatsApp chat that opened.',
+    absentTitle: n => `🚫 Absent / Leave / Late (${n})`,
     noAbsent: 'No absent students today.',
     pickClassFirst: 'Add students to this class first.',
     reportDaily: '📊 Daily report', reportWeekly: '📈 Weekly report', reportMonthly: '📉 Monthly report',
     reportPrint: '🖨️ Print / PDF', reportCsv: '📥 Download CSV',
-    colPresent: 'Present', colAbsent: 'Absent', colLeave: 'Leave', colRecords: 'Records', colPct: 'Attendance %',
+    colPresent: 'Present', colAbsent: 'Absent', colLeave: 'Leave', colLate: 'Late', colRecords: 'Records', colPct: 'Attendance %',
     reportFail: m => `Report failed: ${m}`,
     csvEmpty: 'No data to export.',
     saved: '💾 Saved', deleted: '🗑️ Student removed from the list',
@@ -226,7 +243,9 @@ const I18N = {
     saveFail: m => `Not saved: ${m}`,
     dupAdm: 'This admission number already exists',
     newStudent: '➕ New student', editStudent: '✏️ Edit student',
-    formName: 'Name', formAdm: 'Admission No', formMobile: "Father's mobile (e.g. 03001234567)", formSave: '💾 Save',
+    formClass: 'Class', formName: 'Student name (required)', formAdm: 'Admission No (required)',
+    formFather: "Father's name (optional)", formMobile: 'WhatsApp mobile (required, e.g. 03001234567)',
+    formSim: 'SIM number (optional)', formAddress: 'Address (optional)', formSave: '💾 Save',
     copied: '📋 Message copied', copyFail: 'Copy failed',
     logFail: 'Message log could not be saved',
     refreshed: '🔄 Refreshed', working: '⏳ Please wait...',
@@ -254,6 +273,7 @@ const I18N = {
     searchPh: 'نام یا ایڈمیشن نمبر',
     addStudent: '➕ طالب علم شامل کریں',
     markAll: '✅ سب حاضر کریں',
+    msgLang: 'پیغام کی زبان:',
     sendAbsent: '📩 غیر حاضر طلباء کے والدین کو پیغام',
     showAbsent: '🚫 غیر حاضر طلباء',
     daily: '📊 یومیہ رپورٹ',
@@ -266,22 +286,27 @@ const I18N = {
     restore: '📤 بیک اپ سے بحال کریں',
     reset: '♻️ اس دن کی حاضری ری سیٹ',
     close: 'بند کریں',
-    hint: 'حاضری کے بٹن پر کلک کریں: P (حاضر) → A (غیر حاضر) → L (چھٹی)۔ ہر تبدیلی فوراً محفوظ ہوتی ہے۔',
+    hint: 'حاضری کے بٹن پر کلک کریں: P (حاضر) → A (غیر حاضر) → L (چھٹی) → T (لیٹ)۔ ہر تبدیلی فوراً محفوظ ہوتی ہے۔',
     colNo: '#', colName: 'نام', colAdm: 'ایڈمیشن نمبر', colMobile: 'موبائل',
     colStatus: 'حاضری', colMsg: 'پیغام', colEdit: 'ترمیم', colDel: 'حذف',
-    wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: 'ترمیم', del: 'حذف',
+    wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: 'ترمیم', del: 'حذف', file: '📎 فائل',
     copyBtn: '📋 پیغام کاپی',
     emptyClass: 'اس کلاس میں کوئی طالب علم نہیں۔ "طالب علم شامل کریں" پر کلک کریں۔',
-    statusP: 'حاضر', statusA: 'غیر حاضر', statusL: 'چھٹی',
-    sumTotal: 'کل', sumPresent: 'حاضر', sumAbsent: 'غیر حاضر', sumLeave: 'چھٹی', sumPct: 'حاضری',
+    statusP: 'حاضر', statusA: 'غیر حاضر', statusL: 'چھٹی', statusT: 'لیٹ',
+    sumTotal: 'کل', sumPresent: 'حاضر', sumAbsent: 'غیر حاضر', sumLeave: 'چھٹی', sumLate: 'لیٹ', sumPct: 'حاضری',
     sendTitle: n => `📩 غیر حاضر طلباء کے والدین کو پیغام (${n})`,
-    sendHint: 'براؤزر ایک ساتھ کئی پیغام خودکار نہیں کھولتا، اس لیے ہر طالب علم کے آگے بٹن دبائیں۔ یہ فہرست آج کے غیر حاضر اور چھٹی والے طلباء کی ہے۔',
-    absentTitle: n => `🚫 غیر حاضر / چھٹی (${n})`,
+    queueBtn: '📋 ایک ایک کر کے بھیجیں',
+    queueHint: 'ہر کلک پر اگلے طالب علم کا واٹس ایپ پیغام کے ساتھ کھل جائے گا، وہاں صرف Send دبائیں۔ پیغامات کے درمیان چند سیکنڈ کا وقفہ واٹس ایپ کو بلاک ہونے سے بچاتا ہے۔',
+    queueNext: n => `▶ اگلا: ${n}`,
+    queueWait: s => `${s} سیکنڈ انتظار...`,
+    queueDone: '✅ تمام پیغامات بھیجے جا چکے',
+    fileFallback: 'فائل ڈاؤن لوڈ ہو گئی۔ کھلنے والے واٹس ایپ چیٹ میں اسے منسلک کریں۔',
+    absentTitle: n => `🚫 غیر حاضر / چھٹی / لیٹ (${n})`,
     noAbsent: 'آج کوئی غیر حاضر طالب علم نہیں۔',
     pickClassFirst: 'پہلے کلاس میں طلباء شامل کریں۔',
     reportDaily: '📊 یومیہ رپورٹ', reportWeekly: '📈 ہفتہ وار رپورٹ', reportMonthly: '📉 ماہانہ رپورٹ',
     reportPrint: '🖨️ پرنٹ / PDF', reportCsv: '📥 CSV ڈاؤن لوڈ',
-    colPresent: 'حاضر', colAbsent: 'غیر حاضر', colLeave: 'چھٹی', colRecords: 'ریکارڈ', colPct: 'حاضری %',
+    colPresent: 'حاضر', colAbsent: 'غیر حاضر', colLeave: 'چھٹی', colLate: 'لیٹ', colRecords: 'ریکارڈ', colPct: 'حاضری %',
     reportFail: m => `رپورٹ نہیں بن سکی: ${m}`,
     csvEmpty: 'ڈاؤن لوڈ کرنے کے لیے کوئی ڈیٹا نہیں',
     saved: '💾 محفوظ ہو گیا', deleted: '🗑️ طالب علم فہرست سے نکال دیا گیا',
@@ -291,7 +316,9 @@ const I18N = {
     saveFail: m => `محفوظ نہیں ہو سکا: ${m}`,
     dupAdm: 'یہ ایڈمیشن نمبر پہلے سے موجود ہے',
     newStudent: '➕ نیا طالب علم', editStudent: '✏️ طالب علم کی ترمیم',
-    formName: 'نام', formAdm: 'ایڈمیشن نمبر', formMobile: 'والد کا موبائل نمبر (مثلاً 03001234567)', formSave: '💾 محفوظ کریں',
+    formClass: 'کلاس', formName: 'طالب علم کا نام (ضروری)', formAdm: 'ایڈمیشن نمبر (ضروری)',
+    formFather: 'والد کا نام (اختیاری)', formMobile: 'واٹس ایپ موبائل نمبر (ضروری، مثلاً 03001234567)',
+    formSim: 'سم نمبر (اختیاری)', formAddress: 'ایڈریس (اختیاری)', formSave: '💾 محفوظ کریں',
     copied: '📋 پیغام کاپی ہو گیا', copyFail: 'کاپی نہیں ہو سکا',
     logFail: 'پیغام کا ریکارڈ محفوظ نہ ہو سکا',
     refreshed: '🔄 ریفریش ہو گیا', working: '⏳ براہ کرم انتظار کریں...',
@@ -321,6 +348,7 @@ function applyLang() {
   });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $('langPick').value = lang;
+  $('msgLangPick').value = state.msgLang;
   renderSummary();
   render();
 }
@@ -333,8 +361,8 @@ const todayStr = () => fmt(new Date());
 const addDays = (s, n) => { const [y,m,d] = s.split('-').map(Number); return fmt(new Date(y, m-1, d+n)); };
 const prettyDate = s => { const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`; };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const NEXT = {P:'A', A:'L', L:'P'};
-const statusLabel = st => t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : 'statusL');
+const NEXT = {P:'A', A:'L', L:'T', T:'P'};
+const statusLabel = st => t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
 
 function toast(msg, err = false) {
   const el = $('toast');
@@ -354,10 +382,18 @@ function normalizePK(num) {
 }
 const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
 
-// Parent message is always in Urdu, because parents read Urdu
+// Parent message in the language selected by the user (default Urdu)
 function messageText(name, status, date) {
-  const st = status === 'A' ? 'غیر حاضر تھا' : 'چھٹی پر تھا';
-  return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\nاسکول سے ${st}\n\nالصفہ ہائی اسکول`;
+  if (state.msgLang === 'en') {
+    const st = status === 'A' ? 'absent from school today'
+             : status === 'T' ? 'late to school today'
+             : 'on leave today';
+    return `Assalam o Alaikum!\nYour child ${name} was ${st}.\nDate: ${prettyDate(date)}\n\nAl Suffah High School`;
+  }
+  const line = status === 'T'
+    ? 'آج اسکول میں دیر سے پہنچا'
+    : `اسکول سے ${status === 'A' ? 'غیر حاضر تھا' : 'چھٹی پر تھا'}`;
+  return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\n${line}\n\nالصفہ ہائی اسکول`;
 }
 
 function copyText(text) {
@@ -383,6 +419,7 @@ function openModal(title, html) {
 function closeModal() {
   $('modal').hidden = true;
   $('modalBody').innerHTML = '';
+  clearTimeout(cooldownTimer);
 }
 $('modalClose').onclick = closeModal;
 $('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
@@ -434,8 +471,10 @@ async function insertChunks(table, rows) {
 /* ===== 4. State ===== */
 const state = {
   user: null, classes: [], students: [], att: new Map(),
-  classId: null, date: '', seq: 0, inited: false
+  classId: null, date: '', seq: 0, inited: false,
+  msgLang: localStorage.getItem('msgLang') || 'ur'
 };
+let pendingFileStudent = null;
 
 /* ===== 5. Login ===== */
 async function boot() {
@@ -476,6 +515,11 @@ $('langPick').onchange = e => {
   applyLang();
 };
 
+$('msgLangPick').onchange = e => {
+  state.msgLang = e.target.value;
+  localStorage.setItem('msgLang', state.msgLang);
+};
+
 /* ===== 6. Load data ===== */
 async function init() {
   state.date = todayStr();
@@ -485,6 +529,10 @@ async function init() {
   if (saved && [...$('classPick').options].some(o => o.value === saved)) $('classPick').value = saved;
   await loadDay();
 }
+
+// Class and date changes reload the student list automatically
+$('classPick').onchange = () => loadDay();
+$('datePick').onchange = () => loadDay();
 
 async function loadClasses() {
   const { data, error } = await sb.from('classes').select('id,name').order('sort_order');
@@ -500,8 +548,10 @@ async function loadDay() {
   state.date = $('datePick').value || todayStr();
   localStorage.setItem('lastClassId', state.classId);
 
+  // Only students of the selected class are loaded. select('*') works even if
+  // the new columns (father_name, sim_number, address) are not added yet.
   const { data: students, error } = await sb.from('students')
-    .select('id,name,admission_no,mobile')
+    .select('*')
     .eq('class_id', state.classId).eq('is_active', true).order('name');
   if (seq !== state.seq) return;
   if (error) return toast(t('loadFail', error.message), true);
@@ -555,6 +605,7 @@ function render() {
         <button class="btn sm wa" data-act="wa" data-id="${s.id}">${t('wa')}</button>
         <button class="btn sm sms" data-act="sms" data-id="${s.id}">${t('sms')}</button>
         <button class="btn sm copy" data-act="copy" data-id="${s.id}">${t('copy')}</button>
+        <button class="btn sm file" data-act="file" data-id="${s.id}">${t('file')}</button>
       </td>
       <td><button class="btn sm edit" data-act="edit" data-id="${s.id}">${t('edit')}</button></td>
       <td><button class="btn sm del" data-act="del" data-id="${s.id}">${t('del')}</button></td>
@@ -565,7 +616,7 @@ function render() {
 }
 
 function renderSummary() {
-  const c = { P: 0, A: 0, L: 0 };
+  const c = { P: 0, A: 0, L: 0, T: 0 };
   state.students.forEach(s => c[state.att.get(s.id) || 'P']++);
   const total = state.students.length;
   const pct = total ? Math.round(c.P / total * 100) : 0;
@@ -574,12 +625,15 @@ function renderSummary() {
     <span class="chip P">✅ ${t('sumPresent')}: ${c.P}</span>
     <span class="chip A">❌ ${t('sumAbsent')}: ${c.A}</span>
     <span class="chip L">🌴 ${t('sumLeave')}: ${c.L}</span>
+    <span class="chip T">⏰ ${t('sumLate')}: ${c.T}</span>
     <span class="chip pct">📊 ${t('sumPct')}: ${pct}%</span>
     <div class="bar"><span style="width:${pct}%"></span></div>
     <span class="hint">📅 ${prettyDate(state.date)}</span>`;
 }
 
 /* ===== 8. Attendance and row buttons ===== */
+$('search').addEventListener('input', render);
+
 $('tbody').addEventListener('click', e => {
   const b = e.target.closest('button[data-act]');
   if (!b) return;
@@ -591,6 +645,7 @@ $('tbody').addEventListener('click', e => {
   if (act === 'wa') sendMessage(s, 'wa');
   if (act === 'sms') sendMessage(s, 'sms');
   if (act === 'copy') copyText(messageText(s.name, state.att.get(s.id) || 'A', state.date));
+  if (act === 'file') { pendingFileStudent = s; $('fileInput').click(); }
   if (act === 'edit') openStudentForm(s);
   if (act === 'del') deleteStudent(s);
 });
@@ -629,11 +684,18 @@ $('resetDayBtn').onclick = async () => {
 $('addBtn').onclick = () => openStudentForm();
 
 function openStudentForm(s = null) {
+  const classOpts = state.classes.map(c =>
+    `<option value="${c.id}" ${c.id === state.classId ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+
   openModal(s ? t('editStudent') : t('newStudent'), `
     <form id="sForm" class="form">
+      <label>${t('formClass')}<select name="class_id" required>${classOpts}</select></label>
       <label>${t('formName')}<input name="name" required value="${esc(s?.name || '')}"></label>
       <label>${t('formAdm')}<input name="admission_no" required value="${esc(s?.admission_no || '')}"></label>
-      <label>${t('formMobile')}<input name="mobile" required value="${esc(s?.mobile || '')}"></label>
+      <label>${t('formFather')}<input name="father_name" value="${esc(s?.father_name || '')}"></label>
+      <label>${t('formMobile')}<input name="mobile" type="tel" required value="${esc(s?.mobile || '')}"></label>
+      <label>${t('formSim')}<input name="sim_number" type="tel" value="${esc(s?.sim_number || '')}"></label>
+      <label>${t('formAddress')}<input name="address" value="${esc(s?.address || '')}"></label>
       <div class="modal-actions"><button class="btn success" type="submit">${t('formSave')}</button></div>
     </form>`);
 
@@ -643,9 +705,18 @@ function openStudentForm(s = null) {
     const name = fd.get('name').trim();
     const admission_no = fd.get('admission_no').trim();
     const mobile = fd.get('mobile').trim();
+    const sim_number = fd.get('sim_number').trim();
     if (!isValidMobile(mobile)) return toast(t('errPhone'), true);
+    if (sim_number && !isValidMobile(sim_number)) return toast(t('errPhone'), true);
 
-    const row = { name, admission_no, mobile, class_id: state.classId };
+    const class_id = Number(fd.get('class_id'));
+    const row = {
+      name, admission_no, mobile,
+      sim_number: sim_number || null,
+      father_name: fd.get('father_name').trim() || null,
+      address: fd.get('address').trim() || null,
+      class_id
+    };
     const res = s
       ? await sb.from('students').update(row).eq('id', s.id)
       : await sb.from('students').insert(row);
@@ -655,6 +726,8 @@ function openStudentForm(s = null) {
     }
     closeModal();
     toast(t('saved'));
+    // Show the class the student was saved in
+    if (class_id !== state.classId) $('classPick').value = class_id;
     loadDay();
   };
 }
@@ -694,41 +767,95 @@ async function sendMessage(s, channel) {
   }
 }
 
+// One-by-one queue: one click opens the next chat, with a cooldown between messages
+let queueIds = [], queueDone = new Set(), lastWaOpen = 0, cooldownTimer = null;
+const COOLDOWN_MS = 10000;
+
+function absentList() {
+  return state.students.filter(s => ['A', 'L', 'T'].includes(state.att.get(s.id)));
+}
+
 $('sendAbsentBtn').onclick = () => {
-  const list = state.students.filter(s => ['A', 'L'].includes(state.att.get(s.id)));
+  const list = absentList();
   if (!list.length) return toast(t('noAbsent'));
-  openModal(t('sendTitle', list.length), `
-    <p class="hint">${t('sendHint')}</p>
-    <table>
-      <tr><th>${t('colName')}</th><th>${t('colMobile')}</th><th>WhatsApp / SMS</th><th>${t('copy')}</th></tr>
-      ${list.map(s => `<tr>
-        <td>${esc(s.name)}</td>
-        <td>${esc(s.mobile)}</td>
-        <td class="nowrap">
-          <button class="btn sm wa" data-send="wa" data-id="${s.id}">WhatsApp</button>
-          <button class="btn sm sms" data-send="sms" data-id="${s.id}">SMS</button>
-        </td>
-        <td><button class="btn sm copy" data-copy="${s.id}">${t('copyBtn')}</button></td>
-      </tr>`).join('')}
-    </table>`);
+  queueIds = list.map(s => s.id);
+  queueDone = new Set();
+  lastWaOpen = 0;
+  openModal(t('sendTitle', list.length), '');
+  renderQueue();
 };
 
-$('modalBody').addEventListener('click', e => {
-  const send = e.target.closest('[data-send]');
-  if (send) {
-    const s = state.students.find(x => x.id === Number(send.dataset.id));
-    if (s) sendMessage(s, send.dataset.send);
-    return;
+function renderQueue() {
+  const list = queueIds.map(id => state.students.find(x => x.id === id)).filter(Boolean);
+  const next = list.find(s => !queueDone.has(s.id));
+  const remaining = lastWaOpen + COOLDOWN_MS - Date.now();
+
+  clearTimeout(cooldownTimer);
+  if (next && remaining > 0) cooldownTimer = setTimeout(renderQueue, remaining + 50);
+
+  const label = !next ? t('queueDone')
+    : remaining > 0 ? t('queueWait', Math.ceil(remaining / 1000))
+    : t('queueNext', next.name);
+
+  $('modalBody').innerHTML = `
+    <p class="hint">${t('queueHint')}</p>
+    <div class="actions" style="margin:10px 0">
+      <button class="btn wa" id="queueNext" ${(!next || remaining > 0) ? 'disabled' : ''}>${label}</button>
+    </div>
+    <table>
+      <tr><th>#</th><th>${t('colName')}</th><th>${t('colMobile')}</th><th>${t('colStatus')}</th><th>✔</th></tr>
+      ${list.map((s, i) => `<tr>
+        <td>${i + 1}</td>
+        <td>${esc(s.name)}</td>
+        <td>${esc(s.mobile)}</td>
+        <td>${statusLabel(state.att.get(s.id))}</td>
+        <td>${queueDone.has(s.id) ? '✅' : ''}</td>
+      </tr>`).join('')}
+    </table>`;
+
+  const btn = $('queueNext');
+  if (btn && next) btn.onclick = () => queueSendNext(next);
+}
+
+function queueSendNext(s) {
+  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
+  lastWaOpen = Date.now();
+  queueDone.add(s.id);
+  sendMessage(s, 'wa');
+  renderQueue();
+}
+
+// File picker for one student, then sent via WhatsApp
+$('fileInput').onchange = async e => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  const s = pendingFileStudent;
+  pendingFileStudent = null;
+  if (!file || !s) return;
+  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
+
+  const text = messageText(s.name, state.att.get(s.id) || 'A', state.date);
+
+  // Phones: native share sheet, which can send the file straight to WhatsApp
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], text });
+      logMessage(s, 'wa');
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+    }
   }
-  const copy = e.target.closest('[data-copy]');
-  if (copy) {
-    const s = state.students.find(x => x.id === Number(copy.dataset.copy));
-    if (s) copyText(messageText(s.name, state.att.get(s.id) || 'A', state.date));
-  }
-});
+
+  // Laptops: download the file and open the WhatsApp chat; attach the file there
+  downloadBlob(file.name, file);
+  window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
+  logMessage(s, 'wa');
+  toast(t('fileFallback'));
+};
 
 $('showAbsentBtn').onclick = () => {
-  const list = state.students.filter(s => ['A', 'L'].includes(state.att.get(s.id)));
+  const list = absentList();
   openModal(t('absentTitle', list.length), list.length ? `
     <table>
       <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colStatus')}</th></tr>
@@ -764,11 +891,11 @@ async function openReport(kind) {
 
   try {
     const rows = await fetchRange(start, end);
-    const stats = new Map(state.students.map(s => [s.id, { name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0 }]));
+    const stats = new Map(state.students.map(s => [s.id, { name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0, T: 0 }]));
     rows.forEach(r => { const st = stats.get(r.student_id); if (st) st[r.status]++; });
 
     const data = [...stats.values()].map(x => {
-      const total = x.P + x.A + x.L;
+      const total = x.P + x.A + x.L + x.T;
       return { ...x, total, pct: total ? Math.round(x.P / total * 100) : 0 };
     });
     const heading = `${title} (${prettyDate(start)} – ${prettyDate(end)})`;
@@ -779,16 +906,16 @@ async function openReport(kind) {
         <button class="btn yellow" id="repCsv">${t('reportCsv')}</button>
       </div>
       <table>
-        <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colPresent')}</th><th>${t('colAbsent')}</th><th>${t('colLeave')}</th><th>${t('colRecords')}</th><th>${t('colPct')}</th></tr>
+        <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colPresent')}</th><th>${t('colAbsent')}</th><th>${t('colLeave')}</th><th>${t('colLate')}</th><th>${t('colRecords')}</th><th>${t('colPct')}</th></tr>
         ${data.map((x, i) => `<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.adm)}</td>
-          <td>${x.P}</td><td>${x.A}</td><td>${x.L}</td><td>${x.total}</td><td>${x.pct}%</td></tr>`).join('')}
+          <td>${x.P}</td><td>${x.A}</td><td>${x.L}</td><td>${x.T}</td><td>${x.total}</td><td>${x.pct}%</td></tr>`).join('')}
       </table>`);
 
     $('repPrint').onclick = printModal;
     $('repCsv').onclick = () => downloadCSV(
       `report_${start}_${end}.csv`,
-      [t('colName'), t('colAdm'), t('colPresent'), t('colAbsent'), t('colLeave'), t('colRecords'), t('colPct')],
-      data.map(x => [x.name, x.adm, x.P, x.A, x.L, x.total, x.pct + '%'])
+      [t('colName'), t('colAdm'), t('colPresent'), t('colAbsent'), t('colLeave'), t('colLate'), t('colRecords'), t('colPct')],
+      data.map(x => [x.name, x.adm, x.P, x.A, x.L, x.T, x.total, x.pct + '%'])
     );
   } catch (err) {
     toast(t('reportFail', err.message), true);
@@ -831,7 +958,7 @@ $('backupBtn').onclick = async () => {
     toast(t('working'));
     const [classes, students, attendance, message_logs] = await Promise.all([
       fetchAll('classes', 'id,name,sort_order'),
-      fetchAll('students', 'id,name,admission_no,mobile,class_id,is_active'),
+      fetchAll('students', 'id,name,admission_no,mobile,father_name,sim_number,address,class_id,is_active'),
       fetchAll('attendance', 'id,student_id,date,status'),
       fetchAll('message_logs', 'id,student_id,date,channel')
     ]);
@@ -885,6 +1012,9 @@ async function restoreData(p) {
       name: s.name,
       admission_no: String(s.admission_no),
       mobile: String(s.mobile),
+      sim_number: s.sim_number ?? null,
+      father_name: s.father_name ?? null,
+      address: s.address ?? null,
       class_id: oldClassToNew.get(s.class_id) ?? null,
       is_active: s.is_active !== false
     })),

@@ -101,6 +101,32 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:14px}
   body.print-modal #modal{position:static;background:none}
   body.print-modal .modal-box{box-shadow:none;max-height:none;overflow:visible}
 }
+/* رنگین بٹن / colourful buttons */
+#tbody .btn.call{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+#tbody .btn.wa{background:linear-gradient(135deg,#25d366,#128c7e)}
+#tbody .btn.sms{background:linear-gradient(135deg,#06b6d4,#0e7490);color:#fff}
+#tbody .btn.copy{background:linear-gradient(135deg,#f97316,#c2410c)}
+#tbody .btn.file{background:linear-gradient(135deg,#64748b,#334155)}
+#tbody .btn.face{background:linear-gradient(135deg,#a855f7,#6d28d9)}
+#tbody .btn.purple{background:linear-gradient(135deg,#ec4899,#be185d)}
+#tbody .btn.edit{background:linear-gradient(135deg,#facc15,#ca8a04);color:#000}
+#tbody .btn.del{background:linear-gradient(135deg,#ef4444,#991b1b)}
+#tbody .btn.fee{background:linear-gradient(135deg,#10b981,#065f46)}
+#addBtn{background:linear-gradient(135deg,#3b82f6,#1d4ed8)!important}
+#markAllBtn{background:linear-gradient(135deg,#22c55e,#15803d)!important}
+#faceCheckBtn{background:linear-gradient(135deg,#a855f7,#6d28d9)!important}
+#sendAbsentBtn{background:linear-gradient(135deg,#25d366,#128c7e)!important}
+#showAbsentBtn{background:linear-gradient(135deg,#ec4899,#be185d)!important}
+#dailyBtn{background:linear-gradient(135deg,#8b5cf6,#5b21b6)!important}
+#weeklyBtn{background:linear-gradient(135deg,#06b6d4,#0e7490)!important}
+#monthlyBtn{background:linear-gradient(135deg,#14b8a6,#0f766e)!important}
+#csvBtn{background:linear-gradient(135deg,#facc15,#ca8a04)!important;color:#000}
+#printBtn{background:linear-gradient(135deg,#475569,#1e293b)!important}
+#refreshBtn{background:linear-gradient(135deg,#60a5fa,#2563eb)!important}
+#backupBtn{background:linear-gradient(135deg,#2dd4bf,#0f766e)!important}
+#restoreBtn{background:linear-gradient(135deg,#f97316,#c2410c)!important}
+#resetDayBtn{background:linear-gradient(135deg,#ef4444,#991b1b)!important}
+a.btn[href="fees.html"]{background:linear-gradient(135deg,#f59e0b,#b45309)!important}
 </style>
 </head>
 <body>
@@ -157,7 +183,7 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:14px}
     <button class="btn purple" id="monthlyBtn" data-i18n="monthly">📉 Monthly report</button>
     <button class="btn yellow" id="csvBtn" data-i18n="csv">📥 Export CSV</button>
     <button class="btn dark" id="printBtn" data-i18n="print">🖨️ Print / PDF</button>
-    <a class="btn purple" href="fees.html">💰 فیس سسٹم</a>
+    <a class="btn purple" href="fees.html">💰 فیس سسٹم / Fees</a>
     <button class="btn" id="refreshBtn" data-i18n="refresh">🔄 Refresh</button>
     <button class="btn teal" id="backupBtn" data-i18n="backup">💾 Backup</button>
     <button class="btn teal" id="restoreBtn" data-i18n="restore">📤 Restore backup</button>
@@ -251,7 +277,7 @@ const I18N = {
     hint: 'Click the status button: P (Present) → A (Absent) → L (Leave) → T (Late). Every change is saved immediately.',
     colNo: '#', colName: 'Name', colAdm: 'Admission No', colMobile: 'Mobile',
     colStatus: 'Status', colMsg: 'Message', colEdit: 'Edit', colDel: 'Delete', colClass: 'Class',
-    wa: 'WA', sms: 'SMS', copy: 'Copy', edit: 'Edit', del: 'Delete', file: '📎 File',
+    wa: 'WA', sms: 'SMS', copy: 'Copy', edit: '✏️ Edit', del: '🗑️ Delete', file: '📎 File',
     call: '📞 Call', profile: '📋 Profile',
     callTitle: n => `📞 Call: ${n}`,
     callWa: '📱 WhatsApp call',
@@ -360,7 +386,7 @@ const I18N = {
     hint: 'حاضری کے بٹن پر کلک کریں: P (حاضر) → A (غیر حاضر) → L (چھٹی) → T (لیٹ)۔ ہر تبدیلی فوراً محفوظ ہوتی ہے۔',
     colNo: '#', colName: 'نام', colAdm: 'ایڈمیشن نمبر', colMobile: 'موبائل',
     colStatus: 'حاضری', colMsg: 'پیغام', colEdit: 'ترمیم', colDel: 'حذف', colClass: 'کلاس',
-    wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: 'ترمیم', del: 'حذف', file: '📎 فائل',
+    wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: '✏️ ترمیم', del: '🗑️ حذف', file: '📎 فائل',
     call: '📞 کال', profile: '📋 پروفائل',
     callTitle: n => `📞 کال: ${n}`,
     callWa: '📱 واٹس ایپ کال',
@@ -645,7 +671,7 @@ const state = {
   user: null, classes: [], students: [], att: new Map(),
   classId: 'all', date: '', seq: 0, inited: false,
   msgLang: store.get('msgLang') || 'ur',
-  alerts: []
+  alerts: [], feeMap: {}
 };
 let pendingFileStudent = null;
 let repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
@@ -719,6 +745,14 @@ async function loadClasses() {
   fillClassPick();
 }
 
+async function loadFeeMap() {
+  const { data } = await sb.from('fee_voucher_status').select('student_id,outstanding');
+  state.feeMap = {};
+  (data || []).forEach(r => {
+    state.feeMap[r.student_id] = (state.feeMap[r.student_id] || 0) + Number(r.outstanding || 0);
+  });
+}
+
 async function loadDay() {
   if (!state.classes.length) return;
   const seq = ++state.seq;
@@ -754,6 +788,7 @@ async function loadDay() {
       missing.forEach(m => state.att.set(m.student_id, 'P'));
     }
   }
+  await loadFeeMap();
   await loadAlerts();
   render();
 }
@@ -831,6 +866,7 @@ function render() {
   $('tbody').innerHTML = list.length ? list.map((s, i) => {
     const st = state.att.get(s.id) || 'P';
     const sec = sectionName(s.section);
+    const owed = state.feeMap[s.id] || 0;
     return `<tr>
       <td>${i + 1}</td>
       <td><b>${esc(s.name)}</b><div class="hint">${esc(classNameOf(s.class_id))}${sec ? ' · ' + sec : ''}</div></td>
@@ -848,8 +884,10 @@ function render() {
       </td>
       <td><button class="btn sm edit" data-act="edit" data-id="${s.id}">${t('edit')}</button></td>
       <td><button class="btn sm del" data-act="del" data-id="${s.id}">${t('del')}</button></td>
+      <td><b style="color:${owed > 0 ? '#dc2626' : '#16a34a'}">${owed.toLocaleString()}</b>
+        <br><a class="btn sm fee" href="fees.html?adm=${encodeURIComponent(s.admission_no)}">💵 فیس / Fee</a></td>
     </tr>`;
-  }).join('') : `<tr><td colspan="8" class="empty">${t('emptyClass')}</td></tr>`;
+  }).join('') : `<tr><td colspan="9" class="empty">${t('emptyClass')}</td></tr>`;
 
   renderSummary();
   renderKpis();

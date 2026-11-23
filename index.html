@@ -24,7 +24,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
 <!-- GitHub Auto Update Test -->  
 .actions{display:flex;flex-wrap:wrap;gap:8px}
-.btn{border:none;color:#fff;background-color:#6c757d;background-image:linear-gradient(to bottom,rgba(255,255,255,.28),rgba(0,0,0,.08));padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:bold;text-shadow:0 1px 1px rgba(0,0,0,.25);box-shadow:0 4px 0 rgba(0,0,0,.28),0 6px 12px rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s,filter .2s}
+.btn{border:none;color:#fff;background-color:#6c757d;background-image:linear-gradient(to bottom,rgba(255,255,255,.28),rgba(0,0,0,.08));padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:bold;text-shadow:0 1px 1px rgba(0,0,0,.25);box-shadow:0 4px 0 rgba(0,0,0,.28),0 6px 12px rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s,filter .2s;text-decoration:none;display:inline-block}
 .btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
@@ -157,6 +157,7 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:14px}
     <button class="btn purple" id="monthlyBtn" data-i18n="monthly">📉 Monthly report</button>
     <button class="btn yellow" id="csvBtn" data-i18n="csv">📥 Export CSV</button>
     <button class="btn dark" id="printBtn" data-i18n="print">🖨️ Print / PDF</button>
+    <a class="btn purple" href="fees.html">💰 فیس سسٹم</a>
     <button class="btn" id="refreshBtn" data-i18n="refresh">🔄 Refresh</button>
     <button class="btn teal" id="backupBtn" data-i18n="backup">💾 Backup</button>
     <button class="btn teal" id="restoreBtn" data-i18n="restore">📤 Restore backup</button>
@@ -196,32 +197,26 @@ select.lang{background:#fff;color:#1f2937;padding:6px;font-size:14px}
 <div id="toast"></div>
 
 <script>
-/* ===== 1. Configuration ===== */
 const SUPABASE_URL = 'https://mjwnyvaofwyhrhkrmifz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_sXLOkuE5Bzpdx2HNQnzQ-Q_PFeiaVW4';
 const SCHOOL_DOMAIN = '@suffah.com';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Geofence: school coordinates and allowed distance
 const SCHOOL_LAT = 31.7361310;
 const SCHOOL_LNG = 70.3336737;
 const SCHOOL_RADIUS_M = 150;
 
-// Face recognition libraries (loaded only when needed)
 const FACE_LIB = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js';
 const FACE_MODELS = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model';
 const FACE_THRESHOLD = 0.5;
 
-// Alert thresholds for consecutive absences
 const ALERT_DAYS = [3, 5, 7];
 
-// Safe storage: some phone browsers block localStorage; this never stops the script
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
 };
 
-/* ===== 2. Translations (English default, Urdu) ===== */
 const I18N = {
   en: {
     appTitle: '🏫 Al Suffah – Attendance',
@@ -465,7 +460,6 @@ function applyLang() {
   render();
 }
 
-/* ===== 3. Helpers ===== */
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, '0');
 const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
@@ -486,7 +480,6 @@ function toast(msg, err = false) {
   toast.timer = setTimeout(() => el.className = '', 3000);
 }
 
-// 03001234567 -> 923001234567
 function normalizePK(num) {
   let d = String(num).replace(/\D/g, '');
   if (d.startsWith('00')) d = d.slice(2);
@@ -495,11 +488,8 @@ function normalizePK(num) {
   return d;
 }
 const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
-
-// SMS goes to the SIM number if it is valid, otherwise to the mobile number
 const smsNum = s => isValidMobile(s.sim_number || '') ? s.sim_number : s.mobile;
 
-// Normal attendance message for one student (absent / leave / late)
 function messageText(name, status, date) {
   if (state.msgLang === 'en') {
     const st = status === 'A' ? 'absent from school today'
@@ -513,7 +503,6 @@ function messageText(name, status, date) {
   return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\n${line}\n\nالصفہ ہائی اسکول`;
 }
 
-// Periodic (weekly / monthly) report message. Warning is added when absences exceed 7.
 function reportText(x, kind, start, end) {
   const warn = x.A > 7;
   if (state.msgLang === 'en') {
@@ -525,7 +514,7 @@ function reportText(x, kind, start, end) {
   const per = kind === 'weekly' ? 'اس ہفتے' : 'اس مہینے';
   let m = `السلام علیکم!\nآپ کا بچہ ${x.name}\nمدت: ${prettyDate(start)} تا ${prettyDate(end)}\nحاضر: ${x.P} | غیر حاضر: ${x.A} | چھٹی: ${x.L} | لیٹ: ${x.T}`;
   if (warn) m += `\n\nآپ کے بچے کی ${per} ${x.A} غیر حاضریاں ہیں، جس سے اس کی تعلیمی پوزیشن متاثر ہو سکتی ہے۔ براہ کرم توجہ دیں۔`;
-  return m + `\n\nالصفہ ہائی اسکول`;
+  return m + `\n\nالصفہ پبلک ہائی اسکول`;
 }
 
 function copyText(text) {
@@ -543,7 +532,6 @@ function copyText(text) {
   }
 }
 
-// Stops any open camera when the modal closes
 let faceStop = null;
 
 function openModal(title, html) {
@@ -574,7 +562,6 @@ function downloadCSV(filename, header, rows) {
   downloadBlob(filename, new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
 }
 
-// Reads every row of a table (Supabase returns max 1000 per request)
 async function fetchAll(table, cols) {
   let out = [], from = 0;
   while (true) {
@@ -603,8 +590,6 @@ async function insertChunks(table, rows) {
     if (error) throw error;
   }
 }
-
-/* ===== 3b. Geofence and face recognition helpers ===== */
 
 function distanceM(lat1, lon1, lat2, lon2) {
   const R = 6371000, toR = d => d * Math.PI / 180;
@@ -656,7 +641,6 @@ async function startCam(video) {
 
 const detectOpts = () => new faceapi.TinyFaceDetectorOptions();
 
-/* ===== 4. State ===== */
 const state = {
   user: null, classes: [], students: [], att: new Map(),
   classId: 'all', date: '', seq: 0, inited: false,
@@ -666,7 +650,6 @@ const state = {
 let pendingFileStudent = null;
 let repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
 
-/* ===== 5. Login ===== */
 async function boot() {
   const { data } = await sb.auth.getSession();
   handleSession(data.session);
@@ -710,7 +693,6 @@ $('msgLangPick').onchange = e => {
   store.set('msgLang', state.msgLang);
 };
 
-/* ===== 6. Load data ===== */
 async function init() {
   state.date = todayStr();
   $('datePick').value = state.date;
@@ -763,7 +745,6 @@ async function loadDay() {
     if (e2) return toast(t('loadFail', e2.message), true);
     rows.forEach(r => state.att.set(r.student_id, r.status));
 
-    // A new date starts every student as P unless changed for that date
     const missing = ids.filter(id => !state.att.has(id))
       .map(id => ({ student_id: id, date: state.date, status: 'P', updated_by: state.user.id }));
     if (missing.length) {
@@ -777,7 +758,6 @@ async function loadDay() {
   render();
 }
 
-// Consecutive absence alerts: looks back 14 days from the selected date
 async function loadAlerts() {
   state.alerts = [];
   const ids = state.students.map(s => s.id);
@@ -829,14 +809,11 @@ function renderKpis() {
     kpi('kFees', fees.toLocaleString(), 'fees');
 }
 
-// Dashboard cards open the matching list
 $('kpis').addEventListener('click', e => {
   const k = e.target.closest('.kpi');
   if (!k) return;
   const go = k.dataset.go;
-  if (go === 'absent' || go === 'late' || go === 'leave' || go === 'present') {
-    if (go === 'absent' || go === 'late' || go === 'leave') renderAbsentModal();
-  }
+  if (go === 'absent' || go === 'late' || go === 'leave') renderAbsentModal();
 });
 
 async function saveAtt(items) {
@@ -846,7 +823,6 @@ async function saveAtt(items) {
   );
 }
 
-/* ===== 7. Render ===== */
 function render() {
   const q = $('search').value.trim().toLowerCase();
   const list = state.students.filter(s =>
@@ -896,7 +872,6 @@ function renderSummary() {
     <span class="hint">📅 ${prettyDate(state.date)}</span>`;
 }
 
-/* ===== 8. Attendance and row buttons ===== */
 $('search').addEventListener('input', render);
 
 $('tbody').addEventListener('click', e => {
@@ -918,7 +893,6 @@ $('tbody').addEventListener('click', e => {
   if (act === 'del') deleteStudent(s);
 });
 
-// Changes status, saves it, and writes an audit log entry with the old and new value
 async function setStatus(id, status, silent = false) {
   const prev = state.att.get(id) || 'P';
   state.att.set(id, status);
@@ -961,7 +935,6 @@ $('resetDayBtn').onclick = async () => {
   loadDay();
 };
 
-/* ===== 8a. Student profile (full history) ===== */
 async function openProfile(s) {
   const from = addDays(state.date, -59);
   const [{ data: att }, { data: audit }] = await Promise.all([
@@ -999,7 +972,6 @@ async function openProfile(s) {
   `);
 }
 
-/* ===== 8b. Calls (WhatsApp call or SIM call) ===== */
 function openCallChoice(s) {
   openModal(t('callTitle', s.name), `
     <div class="actions" style="justify-content:center;margin:10px 0">
@@ -1021,7 +993,6 @@ function callStudent(s, mode) {
   }
 }
 
-/* ===== 8c. Face recognition ===== */
 async function openFaceRegister(s) {
   openModal(t('faceRegTitle', s.name), `
     <p class="hint" id="faceMsg">${t('working')}</p>
@@ -1123,7 +1094,6 @@ async function openFaceCheckin() {
 
 $('faceCheckBtn').onclick = openFaceCheckin;
 
-/* ===== 9. Students: add, edit, delete ===== */
 $('addBtn').onclick = () => openStudentForm();
 
 function openStudentForm(s = null) {
@@ -1219,7 +1189,6 @@ async function deleteStudent(s) {
   loadDay();
 }
 
-/* ===== 10. Messages ===== */
 async function logMessage(s, channel) {
   const { error } = await sb.from('message_logs').insert({
     student_id: s.id, date: state.date, channel, sent_by: state.user.id
@@ -1323,7 +1292,6 @@ function renderAbsentModal() {
 
 $('showAbsentBtn').onclick = renderAbsentModal;
 
-/* ===== 11. Reports ===== */
 async function fetchRange(start, end) {
   const ids = state.students.map(s => s.id);
   let out = [], from = 0;
@@ -1403,7 +1371,6 @@ $('dailyBtn').onclick = () => openReport('daily');
 $('weeklyBtn').onclick = () => openReport('weekly');
 $('monthlyBtn').onclick = () => openReport('monthly');
 
-/* ===== Modal buttons ===== */
 $('modalBody').addEventListener('click', e => {
   const b = e.target.closest('button');
   if (!b) return;
@@ -1430,7 +1397,6 @@ $('modalBody').addEventListener('click', e => {
   }
 });
 
-/* ===== 12. CSV and print ===== */
 $('csvBtn').onclick = () => {
   if (!state.students.length) return toast(t('csvEmpty'), true);
   downloadCSV(
@@ -1441,7 +1407,6 @@ $('csvBtn').onclick = () => {
 };
 $('printBtn').onclick = () => window.print();
 
-/* ===== 13. Refresh ===== */
 $('refreshBtn').onclick = async () => {
   toast(t('working'));
   await loadClasses();
@@ -1449,7 +1414,6 @@ $('refreshBtn').onclick = async () => {
   toast(t('refreshed'));
 };
 
-/* ===== 14. File sending (one student at a time) ===== */
 $('fileInput').onchange = async e => {
   const file = e.target.files[0];
   e.target.value = '';
@@ -1476,7 +1440,6 @@ $('fileInput').onchange = async e => {
   toast(t('fileFallback'));
 };
 
-/* ===== 15. Backup and restore ===== */
 $('backupBtn').onclick = async () => {
   try {
     toast(t('working'));
@@ -1572,7 +1535,6 @@ async function restoreData(p) {
   if (logRows.length) await insertChunks('message_logs', logRows);
 }
 
-/* ===== 16. Start ===== */
 applyLang();
 boot();
 </script>

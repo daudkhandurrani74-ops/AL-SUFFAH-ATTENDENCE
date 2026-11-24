@@ -16,10 +16,20 @@ body{font-family:Tahoma,Arial,sans-serif;background:#f0f4ff;margin:0;padding:10p
 .top{background:linear-gradient(90deg,#4c1d95,#1d4ed8,#0891b2);color:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
 .school{font-size:20px;font-weight:900;letter-spacing:1px;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,.35);margin-bottom:8px}
 .card{background:#fff;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+h3{margin:0 0 8px;font-size:16px}h4{margin:10px 0 6px}
 label{display:flex;flex-direction:column;gap:3px;font-weight:bold;font-size:12px;color:#111}
 input,select,textarea{padding:8px;border:2px solid #9ca3af;border-radius:8px;font-size:15px;background:#fff;color:#111;max-width:100%;font-family:inherit}
 textarea{width:100%}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.bar label{padding:6px 8px;border-radius:10px;min-width:120px}
+.bar label:nth-child(1){background:#dbeafe}
+.bar label:nth-child(2){background:#ede9fe}
+.bar label:nth-child(3){background:#fce7f3}
+.bar label:nth-child(4){background:#dcfce7}
+.bar label:nth-child(5){background:#fef3c7}
+.bar label:nth-child(6){background:#e0f2fe}
+.bar label:nth-child(7){background:#fae8ff}
+.bar label:nth-child(8){background:#ccfbf1}
 .row2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
 .btn{border:none;color:#fff;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:13px;box-shadow:0 4px 0 rgba(0,0,0,.25);text-decoration:none;display:inline-block;background:#6c757d}
 .btn:active{transform:translateY(2px);box-shadow:none}
@@ -31,17 +41,19 @@ textarea{width:100%}
 .b-sms{background:linear-gradient(135deg,#06b6d4,#0e7490)}
 .b-call{background:linear-gradient(135deg,#6366f1,#4338ca)}
 .b-purple{background:linear-gradient(135deg,#a855f7,#6d28d9)}
-.b-pink{background:linear-gradient(135deg,#ec4899,#be185d)}
 .b-orange{background:linear-gradient(135deg,#f97316,#c2410c)}
 .b-red{background:linear-gradient(135deg,#ef4444,#991b1b)}
 .b-dark{background:linear-gradient(135deg,#475569,#1e293b)}
 .b-teal{background:linear-gradient(135deg,#14b8a6,#0f766e)}
 .b-indigo{background:linear-gradient(135deg,#818cf8,#4338ca)}
 .b-gold{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.b-lime{background:linear-gradient(135deg,#84cc16,#4d7c0f)}
+.b-sky{background:linear-gradient(135deg,#38bdf8,#0369a1)}
+.b-rose{background:linear-gradient(135deg,#fb7185,#be123c)}
 .sel{outline:4px solid #111;outline-offset:2px;transform:scale(1.04)}
 .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.tabs button{background:#bbf7d0;color:#000;border:2px solid #4ade80;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:bold}
-.tabs button.on{outline:3px solid #14532d;outline-offset:2px}
+.tabs button{background:#bbf7d0;color:#111;border:2px solid #4ade80;padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:bold}
+.tabs button.on{outline:3px solid #14532d;outline-offset:2px;background:#86efac}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
 .kpi{background:linear-gradient(135deg,#fff,#eef2ff);border-radius:14px;padding:12px;text-align:center;box-shadow:0 6px 14px rgba(79,70,229,.15)}
 .kpi b{display:block;font-size:20px;color:#3730a3}.kpi span{font-size:12px;color:#374151}
@@ -51,28 +63,32 @@ th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
 tr.tot td{background:#e5e7eb;font-weight:bold}
 .tw{overflow-x:auto}.nw{white-space:nowrap}.hint{font-size:12px;color:#374151}.msg{color:#dc2626}
 .quick{border:2px solid #818cf8}
+.payBig{border:4px double #0f766e;border-radius:14px;padding:12px;text-align:center;background:linear-gradient(135deg,#ecfdf5,#fff);margin:8px 0}
+.payBig .big{font-size:30px;font-weight:900;color:#065f46}
+.pulse{animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.epBox{border:4px double #0f766e;border-radius:14px;padding:12px;text-align:center;background:#fff;margin:8px auto;max-width:520px}
+.epBox .h{font-size:20px;font-weight:900;color:#065f46}
+.epBox .stamp{font-size:26px;font-weight:900;color:#15803d;border:4px solid #15803d;display:inline-block;padding:2px 12px;border-radius:10px;transform:rotate(-4deg);margin:6px 0}
+.epBox .amt{font-size:30px;font-weight:900;color:#111}
 .copy{border:1px dashed #666;padding:3mm;background:#fff;color:#111;font-size:10px;overflow:hidden}
 .copy .hd{text-align:center;font-weight:bold;font-size:12px;border-bottom:2px solid #000;padding-bottom:1px}
 .copy table{width:100%;border-collapse:collapse;margin-top:2px}
-.copy td{border:1px solid #999;padding:1px 3px;font-size:10px}
+.copy td{border:1px solid #999;padding:1px 3px;font-size:10px;color:#111}
 .copy td.r{text-align:left;font-weight:bold}
 .copy tr.tot td{background:#eee}
 .copy .st{text-align:center;font-weight:bold;border:1px solid #000;margin:3px 0;padding:1px;font-size:10px}
 .copy .sig{display:flex;justify-content:space-between;margin-top:6mm;font-size:9px;gap:6px}
 .copy .note{font-size:9px;border-top:1px dashed #666;margin-top:3px;padding-top:2px}
 .adv{text-align:center;color:#065f46;font-weight:bold;font-size:10px}
-.epBox{border:4px double #0f766e;border-radius:14px;padding:12px;text-align:center;background:linear-gradient(135deg,#ecfdf5,#fff);margin:8px auto;max-width:520px}
-.epBox .h{font-size:22px;font-weight:900;color:#065f46}
-.epBox .stamp{font-size:28px;font-weight:900;color:#15803d;border:4px solid #15803d;display:inline-block;padding:3px 14px;border-radius:10px;transform:rotate(-4deg);margin:6px 0}
-.epBox .amt{font-size:32px;font-weight:900}
-.login{min-height:100vh;display:flex;align-items:center;justify-content:center;margin:-10px;background:linear-gradient(135deg,#6f42c1,#0d6efd,#0dcaf0)}
-.lc{width:min(380px,92vw);display:grid;gap:10px;background:#fff;border-radius:14px;padding:18px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:10px;z-index:50}
-.mbox{background:#fff;border-radius:14px;padding:16px;width:min(680px,100%);max-height:90vh;overflow:auto}
+.mbox{background:#fff;border-radius:14px;padding:16px;width:min(720px,100%);max-height:90vh;overflow:auto}
 .ma{display:flex;justify-content:flex-end;margin-top:10px;gap:8px;flex-wrap:wrap}
 #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#198754;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:.3s;z-index:60;font-weight:bold;max-width:90vw;text-align:center}
 #toast.show{opacity:1}#toast.err{background:#dc2626}
-#closed{position:fixed;inset:0;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:99;text-align:center;padding:20px}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;margin:-10px;background:linear-gradient(135deg,#6f42c1,#0d6efd,#0dcaf0)}
+.lc{width:min(380px,92vw);display:grid;gap:10px;background:#fff;border-radius:14px;padding:18px}
+#billRender{position:fixed;left:-10000px;top:0;width:794px;background:#fff}
 </style>
 </head>
 <body>
@@ -81,10 +97,10 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
   <div class="lc">
     <div class="school" style="color:#4c1d95;text-shadow:none">AL SUFFAH PUBLIC HIGH SCHOOL</div>
     <input id="lPhone" type="tel" placeholder="موبائل نمبر (03001234567)">
-    <input id="lPass" type="password" placeholder="پاس ورڈ / Password">
-    <button class="btn b-blue" id="lBtn">🔐 لاگ اِن / Login</button>
+    <input id="lPass" type="password" placeholder="Password / پاس ورڈ">
+    <button class="btn b-blue" id="lBtn">🔐 Login / لاگ اِن</button>
     <p id="lMsg" class="msg"></p>
-    <a href="index.html">← حاضری کے صفحے پر جائیں</a>
+    <a href="index.html">← Attendance / حاضری</a>
   </div>
 </div>
 
@@ -96,7 +112,7 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
       <a class="btn b-blue" id="attBtn" href="index.html"></a>
       <span id="who" style="font-size:13px"></span>
       <button class="btn b-red" id="logout"></button>
-      <button class="btn b-red" id="closeBtn"></button>
+      <button class="btn b-rose" id="closeBtn"></button>
     </div>
   </div>
 
@@ -171,7 +187,7 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
       </div>
       <div class="row2">
         <label><span id="l-due"></span>
-          <select id="dueMode"><option value="full">mh</option><option value="total">tt</option></select>
+          <select id="dueMode"><option value="full">M</option><option value="total">T</option></select>
         </label>
       </div>
     </div>
@@ -205,11 +221,16 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
   </section>
 
   <section id="tab-exp" class="tab" hidden>
+    <div class="kpis" id="expK"></div>
     <div class="card">
+      <h3 id="expFormH"></h3>
       <div class="row2">
-        <input id="eCat" placeholder="قسم / Category" style="flex:1">
-        <input id="eAmt" type="number" min="1" placeholder="رقم / Amount">
-        <input id="eNote" placeholder="نوٹ / Note" style="flex:1">
+        <select id="eKind"><option value="expense" id="optExp"></option><option value="income" id="optInc"></option></select>
+        <input id="eCat" list="catList" style="flex:1" autocomplete="off">
+        <datalist id="catList"></datalist>
+        <input id="eAmt" type="number" min="1">
+        <input id="eDate" type="date">
+        <input id="eNote" style="flex:1">
         <button class="btn b-green" data-act="eSave" id="eSaveBtn"></button>
       </div>
     </div>
@@ -220,7 +241,28 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
   </section>
 
   <section id="tab-set" class="tab" hidden>
-    <div class="card"><h3 id="clsH"></h3><div class="tw" id="clsFees"></div></div>
+    <div class="card">
+      <h3 id="clsH"></h3>
+      <div class="tw" id="clsFees"></div>
+    </div>
+    <div class="card">
+      <h3 id="pctH"></h3>
+      <p class="hint" id="pctHint"></p>
+      <div class="row2">
+        <label><span id="l-bcls"></span><select id="bCls"></select></label>
+        <button class="btn b-dark" data-act="bSelAll" id="bSelAllBtn"></button>
+        <button class="btn b-dark" data-act="bSelNone" id="bSelNoneBtn"></button>
+      </div>
+      <div class="row2">
+        <button class="btn b-green pulse" data-act="pct" data-pct="100">100%</button>
+        <button class="btn b-lime" data-act="pct" data-pct="80">80%</button>
+        <button class="btn b-sky" data-act="pct" data-pct="50">50%</button>
+        <button class="btn b-gold" data-act="pct" data-pct="30">30%</button>
+        <input id="bCustom" type="number" min="1" max="100" placeholder="%" style="width:90px">
+        <button class="btn b-purple" data-act="pctCustom" id="bCustomBtn"></button>
+      </div>
+      <div class="tw" id="bList"></div>
+    </div>
     <div class="card">
       <h3 id="stuH"></h3>
       <div class="row2"><input id="sQ" style="flex:1"></div>
@@ -239,8 +281,7 @@ tr.tot td{background:#e5e7eb;font-weight:bold}
 </div>
 
 <div id="toast"></div>
-<div id="closed" hidden></div>
-<div id="billRender" style="position:fixed;left:-10000px;top:0;width:794px;background:#fff"></div>
+<div id="billRender"></div>
 
 <script>
 const SUPABASE_URL = 'https://mjwnyvaofwyhrhkrmifz.supabase.co';
@@ -253,6 +294,8 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
 const $ = id => document.getElementById(id);
+const setT = (id, h) => { const el = $(id); if (el) el.innerHTML = h; };
+const setP = (id, p) => { const el = $(id); if (el) el.placeholder = p; };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = n => Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
 const pad = n => String(n).padStart(2, '0');
@@ -262,6 +305,7 @@ const pKey = (y, m) => y * 100 + m;
 const isDigits = s => /^\d+$/.test(s);
 const hasUr = s => /[\u0600-\u06FF]/.test(String(s));
 const U = s => hasUr(s) ? `<span class="ur">${s}</span>` : s;
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 
 const D = {
   schoolName: ['AL SUFFAH PUBLIC HIGH SCHOOL', 'الصفہ پبلک ہائی اسکول'],
@@ -271,7 +315,7 @@ const D = {
   closedMsg: ['Software closed. You can close this tab.', 'سافٹ ویئر بند ہو گیا۔ آپ یہ ٹیب بند کر سکتے ہیں۔'],
   tabGen: ['Summary & New Month Bill', 'سمری اینڈ نیو منتھ بل'],
   tabPay: ['Payment', 'فیس وصولی'], tabBills: ['Bills', 'بل'], tabDef: ['Defaulters', 'ڈیفالٹرز'],
-  tabExp: ['Expenses', 'اخراجات'], tabSet: ['Settings', 'ترتیب'],
+  tabExp: ['Income & Expenses', 'آمدن اور اخراجات'], tabSet: ['Settings', 'ترتیب'],
   year: ['Year', 'سال'], month: ['Month', 'مہینہ'], cls: ['Class', 'کلاس'], paper: ['Paper', 'کاغذ'],
   orient: ['Orientation', 'رخ'], msgLang: ['Message language', 'پیغام کی زبان'], billLang: ['Bill language', 'بل کی زبان'],
   uiLang: ['Screen language', 'اسکرین کی زبان'], portrait: ['Portrait', 'عمودی'], landscape: ['Landscape', 'افقی'],
@@ -279,19 +323,20 @@ const D = {
   genHint: ['Each active student gets one voucher per month. Old dues stay separate.', 'ہر فعال طالب علم کا ہر مہینے ایک وائوچر بنتا ہے۔ پرانا بقایا علیحدہ رہتا ہے۔'],
   report: ['Reports', 'رپورٹس'], type: ['Report type', 'رپورٹ کی قسم'],
   weekly: ['Weekly', 'ہفتہ وار'], monthly: ['Monthly', 'ماہانہ'], annual: ['Annual', 'سالانہ'],
-  admEnter: ['Type admission no and press Enter', 'ایڈمیشن نمبر لکھیں اور Enter دبائیں'],
-  find: ['Find', 'تلاش'], amount: ['Amount', 'رقم'], method: ['Method', 'طریقہ'], note: ['Note', 'نوٹ'],
-  receive: ['Receive payment', 'فیس وصول کریں'],
-  cash: ['Cash', 'نقد'], bank: ['Bank', 'بینک'], easy: ['EasyPaisa', 'ایزی پیسہ'], jazz: ['JazzCash', 'جاز کیش'],
+  admH: ['Enter admission number, then press Enter', 'ایڈمیشن نمبر لکھیں، پھر Enter دبائیں'],
+  admEnter: ['Admission no', 'ایڈمیشن نمبر'], find: ['Find', 'تلاش'],
+  amount: ['Amount', 'رقم'], method: ['Method', 'طریقہ'], note: ['Note', 'نوٹ'],
+  receive: ['Receive', 'وصول کریں'], cash: ['Cash', 'نقد'], bank: ['Bank', 'بینک'], easy: ['EasyPaisa', 'ایزی پیسہ'], jazz: ['JazzCash', 'جاز کیش'],
   today: ['Today', 'آج'], yesterday: ['Yesterday', 'کل'], week: ['Whole week', 'پورا ہفتہ'],
-  range: ['Date range', 'تاریخ کی رینج'], apply: ['Apply', 'لگائیں'], from: ['From', 'سے'], to: ['To', 'تک'],
-  payList: ['Payments list', 'فیس کی ادائیگیوں کی فہرست'],
-  printList: ['Print list', 'فہرست پرنٹ'], sendAll: ['Send to all (one by one)', 'سب کو واٹس ایپ (ایک ایک کلک)'],
+  range: ['Date range', 'تاریخ کی رینج'], apply: ['Apply', 'لگائیں'], lFrom: ['From', 'سے'], lTo: ['To', 'تک'],
+  payList: ['Payments list', 'ادائیگیوں کی فہرست'], printList: ['Print list', 'فہرست پرنٹ'],
+  sendAll: ['Send to all (one by one)', 'سب کو واٹس ایپ (ایک ایک کلک)'],
   print: ['Print', 'پرنٹ'], wa: ['WhatsApp', 'واٹس ایپ'], sms: ['SMS', 'SMS'], call: ['Call', 'کال'],
-  edit: ['Edit', 'ترمیم'], del: ['Delete', 'حذف'], save: ['Save', 'محفوظ کریں'], close: ['Close', 'بند کریں'],
+  edit: ['Edit', 'ترمیم'], del: ['Delete', 'حذف'], save: ['Save', 'محفوظ'], close: ['Close', 'بند کریں'],
   notPaid: ['Not paid', 'ادا نہیں'], partial: ['Partial', 'جزوی'], paidF: ['Paid', 'مکمل'],
   minDue: ['Min due', 'کم از کم بقایا'], maxDue: ['Max due', 'زیادہ سے زیادہ بقایا'],
-  dueDetail: ['Dues detail', 'بقایا کی تفصیل'], monthWise: ['Month-wise', 'مہینہ وار'], totalOnly: ['Total only', 'صرف کل'],
+  monthWise: ['Month-wise', 'مہینہ وار'], totalOnly: ['Total only', 'صرف کل'],
+  dueMode: ['Dues detail', 'بقایا کی تفصیل'],
   allBills: ['All bills of class', 'کلاس کے سب بل'], selBills: ['Selected bills', 'منتخب بل'],
   billNote: ['Bill note', 'بل کا نوٹ'], reminder: ['Reminder text', 'یاددہانی کا متن'],
   name: ['Name', 'نام'], adm: ['Adm. No', 'ایڈمیشن'], father: ['Father', 'والد'], mobile: ['Mobile', 'موبائل'],
@@ -315,16 +360,27 @@ const D = {
   advNote: ['Advance adjusted this month', 'ایڈوانس رقم اس ماہ ایڈجسٹ کی گئی'],
   stPaid: ['PAID', 'ادا شدہ'], stPart: ['PARTIAL', 'جزوی'], stUn: ['UNPAID', 'غیر ادا شدہ'],
   receiptT: ['Fee receipt', 'فیس رسید'], defT: ['Defaulter list', 'ڈیفالٹر لسٹ'],
-  recv: ['Received', 'وصول شدہ'], rem: ['Balance', 'باقی'], stamp: ['PAID', 'ادا ہو گیا'],
-  subtl: ['Subtotal', 'ذیلی میزان'], paidNow: ['Paid', 'ادا'], mob: ['Mobile', 'موبائل'],
-  expCat: ['Category', 'قسم'], expAmt: ['Amount', 'رقم'], expNote: ['Note', 'نوٹ'],
-  clsFee: ['Class monthly fee', 'کلاس کی ماہانہ فیس'], stuFee: ['Student fee & concession', 'طالب علم کی فیس اور رعایت'],
+  recv: ['Received', 'وصول شدہ'], rem: ['Balance', 'باقی'], stamp: ['PAID — ادا ہو گیا', 'ادا ہو گیا — PAID'],
+  clsH: ['Class monthly fee', 'کلاس کی ماہانہ فیس'], stuH: ['Student fee & concession', 'طالب علم کی فیس اور رعایت'],
   customFee: ['Custom fee', 'مخصوص فیس'], concPct: ['Concession %', 'خصوصی رعایت %'],
-  dueMode: ['Dues detail', 'بقایا کی تفصیل'], lFrom: ['From', 'سے'], lTo: ['To', 'تک'],
-  admH: ['Enter admission number', 'ایڈمیشن نمبر درج کریں'],
-  wantAll: ['Show all', 'سب دکھائیں'], back2: ['Back', 'واپس'],
-  reportAll: ['All classes', 'تمام کلاسیں'],
-  pmOk: ['Payment saved', 'ادائیگی محفوظ ہو گئی']
+  pctH: ['One-click fee percentage', 'ایک کلک سے فیصد فیس'],
+  pctHint: ['Tick students below, then press 100%, 80%, 50%, 30% or your own %. Fee = class fee × %. Applies to this month voucher and future months.', 'نیچے طلباء کو ٹِک کریں، پھر 100%، 80%، 50%، 30% یا اپنی فیصد دبائیں۔ فیس = کلاس کی فیس × فیصد۔ یہ اس مہینے کے وائوچر اور آئندہ مہینوں پر لاگو ہوگی۔'],
+  bCls: ['Class', 'کلاس'], selAll: ['Select all', 'سب منتخب'], selNone: ['Clear', 'ہٹائیں'],
+  customPct: ['Apply own %', 'اپنی فیصد لاگو کریں'],
+  expCat: ['Category', 'قسم'], expAmt: ['Amount', 'رقم'], expNote: ['Note', 'نوٹ'],
+  expFormH: ['New entry (expense or income)', 'نیا اندراج (خرچ یا آمدن)'],
+  expense: ['Expense', 'خرچ'], income: ['Income', 'آمدن'], entryKind: ['Type', 'قسم'],
+  autoFee: ['Fee income (automatic)', 'فیس کی آمدن (خودکار)'], incomeT: ['Manual income', 'دستی آمدن'],
+  totalIncome: ['Total income', 'کل آمدن'], expenseT: ['Total expense', 'کل خرچ'], balance: ['Balance', 'بیلنس'],
+  needCatAmt: ['Enter category and amount', 'قسم اور رقم لکھیں'],
+  pickFirst: ['Tick students first', 'پہلے طلباء منتخب کریں'],
+  payFull: ['Enter = full dues', 'Enter = مکمل بقایا جمع'],
+  payPart: ['Type amount + Enter = partial / advance', 'رقم لکھ کر Enter = جزوی / ایڈوانس'],
+  imgSend: ['📷 Send receipt picture', '📷 رسید کی تصویر بھیجیں'],
+  imgHint: ['Opens WhatsApp share with the receipt picture (phone). On laptop the picture downloads and WhatsApp opens; attach it there.', 'موبائل پر واٹس ایپ میں رسید کی تصویر جائے گی۔ لیپ ٹاپ پر تصویر ڈاؤن لوڈ ہوگی اور واٹس ایپ کھلے گا، وہاں منسلک کریں۔'],
+  payOk: ['Payment saved', 'ادائیگی محفوظ ہو گئی'],
+  noOwed: ['No dues to pay', 'کوئی بقایا نہیں'],
+  ddPage: ['Print A4 — two students per page', 'A4 پرنٹ — ایک صفحے پر دو طلباء']
 };
 function tx(k, mode) {
   const v = D[k]; if (!v) return k;
@@ -346,15 +402,18 @@ function monTxt(m, mode) {
   return `${U(MU[m - 1])} / ${ME[m - 1]}`;
 }
 const METHODS = [['cash', 'cash'], ['bank', 'bank'], ['easypaisa', 'easy'], ['jazzcash', 'jazz']];
-function methodOpts() { return METHODS.map(([v, k]) => `<option value="${v}">${plain(k)}</option>`).join(''); }
-function methodText(m) { const f = METHODS.find(x => x[0] === m); return f ? D[f[1]][0] : m; }
+const METHOD_KEY = { cash: 'cash', bank: 'bank', easypaisa: 'easy', jazzcash: 'jazz' };
+const methodOpts = () => METHODS.map(([v, k]) => `<option value="${v}">${plain(k)}</option>`).join('');
+const methodText = m => plain(METHOD_KEY[m] || 'cash');
+const EXP_CATS = ['بجلی کا بل','پانی کا بل','امتحان کا خرچہ','چیک خرچہ','لیپ ٹاپ خرچہ','لیپ ٹاپ ریپیئرنگ','بجلی ریپیئرنگ','کنسٹرکشن','چیئر ریپیئرنگ','چیئر کنسٹرکشن','ٹیچر میل','پروگرام خرچہ','ٹیچر سے سپورٹ','سیکنڈ ٹرم پرائز','تھرڈ ٹرم پرائز','سپورٹس کا سامان','بال','ٹیپ','بلا','نیٹ','راکٹ','سٹوڈنٹ کنسیشن','ٹیچر ایڈوانس','جنریٹر ریپیئرنگ','جنریٹر پٹرول','سولر پلانٹ خرچہ','بجلی کا بلب','پانی کا پائپ','چٹائی','فلش کے لیے برش','جھاڑو','فلش کے لیے تیزاب','پارٹی کے لیے خرچہ','سٹوڈنٹ ٹور کا خرچہ','سافٹ ویئر ریوینیول','سکول ریوینیول','بورڈ ریوینیول','ٹیچر ٹور کرایہ'];
 
 const state = {
   user: null, inited: false, classes: [], students: [], vouchers: [], settings: {},
-  sel: null, setSel: null, qSel: null, rcpt: null, checked: new Set(),
+  sel: null, qSel: null, rcpt: null, checked: new Set(), bChk: new Set(),
   ml: store.get('mlang') || 'ur', bl: store.get('blang') || 'ur', uiLang: store.get('uilang') || 'en',
   defFilter: store.get('deffilter') || 'unpaid', defMin: '', defMax: '', payMode: 'today',
-  pendingAdm: new URLSearchParams(location.search).get('adm'), payList: [], curTab: 'gen', nav: [], lastReport: ''
+  payList: [], curTab: 'gen', nav: [], lastReport: '', expRows: [], feeIncome: 0,
+  pendingAdm: new URLSearchParams(location.search).get('adm')
 };
 let qList = [], qIdx = 0, qLast = 0, qTimer = null;
 const COOL = 10000;
@@ -610,6 +669,58 @@ async function shareImage(b) {
   box.innerHTML = '';
 }
 
+function receiptHTML(r, s, mode) {
+  const owed = owedOf(s.id), cr = Number(s.credit || 0), dt = new Date().toLocaleDateString('en-GB');
+  if (r.method && r.method !== 'cash') {
+    return `<div class="epBox">
+      <div class="h">${tx(METHOD_KEY[r.method] || 'bank', mode)}</div>
+      <div class="stamp">${tx('stamp', mode)}</div>
+      <div class="amt">Rs. ${money(r.amount)}</div>
+      <div>${esc(s.name)} · ${tx('adm', mode)}: ${esc(s.admission_no)}</div>
+      <div>${tx('date', mode)}: ${dt} · ${tx('receipt', mode)}: ${esc(r.receipt)}</div>
+      <div>${tx('rem', mode)}: ${money(owed)}${cr > 0 ? ` · ${tx('advance', mode)}: ${money(cr)}` : ''}</div>
+    </div>`;
+  }
+  return `<div class="copy" style="max-width:150mm;margin:8mm auto;font-size:13px;padding:6mm">
+    <div class="hd">${tx('schoolName', mode)}</div>
+    <p style="text-align:center">${tx('receiptT', mode)} — ${esc(r.receipt)}</p>
+    <table>
+      <tr><td>${tx('name', mode)}</td><td class="r">${esc(s.name)}</td></tr>
+      <tr><td>${tx('adm', mode)}</td><td class="r">${esc(s.admission_no)}</td></tr>
+      <tr><td>${tx('cls', mode)}</td><td class="r">${esc(cls(s.class_id))}</td></tr>
+      <tr><td>${tx('recv', mode)}</td><td class="r">${money(r.amount)}</td></tr>
+      <tr><td>${tx('method', mode)}</td><td class="r">${esc(methodText(r.method))}</td></tr>
+      <tr><td>${tx('rem', mode)}</td><td class="r">${money(owed)}</td></tr>
+      <tr><td>${tx('advance', mode)}</td><td class="r">${money(cr)}</td></tr>
+      <tr><td>${tx('date', mode)}</td><td class="r">${dt}</td></tr>
+    </table>
+    <div class="sig"><span>${tx('sigA', mode)}</span></div>
+  </div>`;
+}
+async function shareReceiptImage(r, s) {
+  if (!r || !s) return toast(plain('noMatch'), true);
+  if (typeof html2canvas === 'undefined') return toast('تصویر کی لائبریری لوڈ نہیں ہوئی', true);
+  const box = $('billRender');
+  box.innerHTML = `<div style="width:620px;background:#fff;padding:10px">${receiptHTML(r, s, state.bl)}</div>`;
+  try {
+    const cv = await html2canvas(box.firstElementChild, { scale: 2, backgroundColor: '#ffffff' });
+    const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+    const file = new File([blob], `receipt_${r.receipt}.png`, { type: 'image/png' });
+    const text = rcptText(s, r.amount, r.receipt, owedOf(s.id), Number(s.credit || 0), state.ml);
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text });
+      logMsg(s, 'wa');
+    } else {
+      downloadBlob(file.name, blob);
+      window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
+      toast(plain('imgHint'));
+    }
+  } catch (e) {
+    if (e.name !== 'AbortError') toast('تصویر نہیں بن سکی: ' + e.message, true);
+  }
+  box.innerHTML = '';
+}
+
 async function loadAll() {
   const [c1, c2, c3] = await Promise.all([
     sb.from('classes').select('id,name,base_fee,sort_order').order('sort_order'),
@@ -630,7 +741,7 @@ async function loadAll() {
   if (state.pendingAdm) {
     const s = findByAdm(state.pendingAdm);
     state.pendingAdm = null;
-    if (s) { showTab('pay', false); state.qSel = s; renderPayPanel(); $('qAdm').value = s.admission_no; }
+    if (s) { showTab('pay', false); state.qSel = s; }
   }
   renderAll();
 }
@@ -650,64 +761,62 @@ function initPeriod() {
   $('pM').innerHTML = MU.map((n, i) => `<option value="${i + 1}" ${i + 1 === now.getMonth() + 1 ? 'selected' : ''}>${n} / ${ME[i]}</option>`).join('');
   $('pFrom').value = todayStr();
   $('pTo').value = todayStr();
+  const ce = $('catList');
+  if (ce) ce.innerHTML = EXP_CATS.map(c => `<option value="${esc(c)}"></option>`).join('');
+  $('eDate').value = todayStr();
 }
-const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 
 function applyUi() {
   $('mlang').value = state.ml;
   $('blang').value = state.bl;
   $('uilang').value = state.uiLang;
-  const L = { 'l-y': 'year', 'l-m': 'month', 'l-c': 'cls', 'l-p': 'paper', 'l-o': 'orient', 'l-ml': 'msgLang', 'l-bl': 'billLang', 'l-ui': 'uiLang', 'l-from': 'lFrom', 'l-to': 'lTo', 'l-due': 'dueMode', 'l-min': 'minDue', 'l-max': 'maxDue' };
-  Object.entries(L).forEach(([id, k]) => { const el = $(id); if (el) el.innerHTML = ui(k); });
-  $('porient').options[0].text = plain('portrait');
-  $('porient').options[1].text = plain('landscape');
-  $('dueMode').options[0].text = plain('monthWise');
-  $('dueMode').options[1].text = plain('totalOnly');
-  $('backBtn').innerHTML = '⬅ ' + ui('back');
-  $('attBtn').innerHTML = '🏫 ' + ui('att');
-  $('logout').innerHTML = ui('logout');
-  $('closeBtn').innerHTML = '⏻ ' + ui('closeApp');
-  $('t-gen').innerHTML = '📊 ' + ui('tabGen');
-  $('t-pay').innerHTML = '💵 ' + ui('tabPay');
-  $('t-bills').innerHTML = '📄 ' + ui('tabBills');
-  $('t-def').innerHTML = '⚠️ ' + ui('tabDef');
-  $('t-exp').innerHTML = '🧾 ' + ui('tabExp');
-  $('t-set').innerHTML = '⚙️ ' + ui('tabSet');
-  $('genBtn').innerHTML = '📅 ' + ui('genBtn');
-  $('genHint').innerHTML = ui('genHint');
-  $('reportBtn').innerHTML = '📈 ' + ui('report');
-  $('admH').innerHTML = '⚡ ' + ui('admH');
-  $('qAdm').placeholder = plain('admEnter');
-  $('findBtn').innerHTML = '🔎 ' + ui('find');
-  $('plT').innerHTML = ui('today');
-  $('plY').innerHTML = ui('yesterday');
-  $('plW').innerHTML = ui('week');
-  $('plR').innerHTML = ui('range');
-  $('plP').innerHTML = '🖨 ' + ui('printList');
-  $('plS').innerHTML = '📨 ' + ui('sendAll');
-  $('bQ').placeholder = plain('name');
-  $('bAllBtn').innerHTML = '🖨 ' + ui('allBills');
-  $('bSelBtn').innerHTML = '🖨 ' + ui('selBills');
-  $('noteBtn').innerHTML = '📝 ' + ui('billNote');
-  $('dU').innerHTML = '❌ ' + ui('notPaid');
-  $('dP').innerHTML = '🟠 ' + ui('partial');
-  $('dD').innerHTML = '✅ ' + ui('paidF');
-  $('rApply').innerHTML = '🔍 ' + ui('apply');
-  $('dPrintBtn').innerHTML = '🖨 ' + ui('printList');
-  $('remBtn').innerHTML = '✉️ ' + ui('reminder');
-  $('eSaveBtn').innerHTML = '💾 ' + ui('save');
-  $('mC').innerHTML = ui('close');
-  $('clsH').innerHTML = '🎓 ' + ui('clsFee');
-  $('stuH').innerHTML = '👤 ' + ui('stuFee');
-  $('sQ').placeholder = plain('mobile');
-  $('billHead').innerHTML = `<th>✔</th><th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('cls')}</th><th>${ui('total')}</th><th>${ui('paidAmt')}</th><th>${ui('dueT')}</th><th>${ui('status')}</th><th>${ui('action')}</th>`;
-  $('defHead').innerHTML = `<th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('cls')}</th><th>${ui('mobile')}</th><th>${ui('dueT')}</th><th>${ui('status')}</th><th>${ui('action')}</th>`;
-  $('expHead').innerHTML = `<th>${ui('date')}</th><th>${ui('expCat')}</th><th>${ui('expAmt')}</th><th>${ui('expNote')}</th><th>${ui('action')}</th>`;
+  setT('l-y', ui('year')); setT('l-m', ui('month')); setT('l-c', ui('cls')); setT('l-p', ui('paper'));
+  setT('l-o', ui('orient')); setT('l-ml', ui('msgLang')); setT('l-bl', ui('billLang')); setT('l-ui', ui('uiLang'));
+  setT('l-from', ui('lFrom')); setT('l-to', ui('lTo')); setT('l-due', ui('dueMode'));
+  setT('l-min', ui('minDue')); setT('l-max', ui('maxDue')); setT('l-bcls', ui('bCls'));
+  if ($('porient')) { $('porient').options[0].text = plain('portrait'); $('porient').options[1].text = plain('landscape'); }
+  if ($('dueMode')) { $('dueMode').options[0].text = plain('monthWise'); $('dueMode').options[1].text = plain('totalOnly'); }
+  setT('backBtn', '⬅ ' + ui('back'));
+  setT('attBtn', '🏫 ' + ui('att'));
+  setT('logout', ui('logout'));
+  setT('closeBtn', '⏻ ' + ui('closeApp'));
+  setT('t-gen', '📊 ' + ui('tabGen'));
+  setT('t-pay', '💵 ' + ui('tabPay'));
+  setT('t-bills', '📄 ' + ui('tabBills'));
+  setT('t-def', '⚠️ ' + ui('tabDef'));
+  setT('t-exp', '🧾 ' + ui('tabExp'));
+  setT('t-set', '⚙️ ' + ui('tabSet'));
+  setT('genBtn', '📅 ' + ui('genBtn'));
+  setT('genHint', ui('genHint'));
+  setT('reportBtn', '📈 ' + ui('report'));
+  setT('admH', '⚡ ' + ui('admH'));
+  setP('qAdm', plain('admEnter'));
+  setT('findBtn', '🔎 ' + ui('find'));
+  setT('plT', ui('today')); setT('plY', ui('yesterday')); setT('plW', ui('week')); setT('plR', ui('range'));
+  setT('plP', '🖨 ' + ui('printList')); setT('plS', '📨 ' + ui('sendAll'));
+  setP('bQ', plain('name'));
+  setT('bAllBtn', '🖨 ' + ui('allBills')); setT('bSelBtn', '🖨 ' + ui('selBills'));
+  setT('noteBtn', '📝 ' + ui('billNote'));
+  setT('dU', '❌ ' + ui('notPaid')); setT('dP', '🟠 ' + ui('partial')); setT('dD', '✅ ' + ui('paidF'));
+  setT('rApply', '🔍 ' + ui('apply')); setT('dPrintBtn', '🖨 ' + ui('printList')); setT('remBtn', '✉️ ' + ui('reminder'));
+  setT('expFormH', ui('expFormH')); setT('optExp', ui('expense')); setT('optInc', ui('income'));
+  setT('eSaveBtn', '💾 ' + ui('save'));
+  setT('clsH', '🎓 ' + ui('clsH')); setT('stuH', '👤 ' + ui('stuH')); setT('pctH', '🧮 ' + ui('pctH'));
+  setT('pctHint', ui('pctHint'));
+  setT('bSelAllBtn', ui('selAll')); setT('bSelNoneBtn', ui('selNone'));
+  setT('bCustomBtn', '✅ ' + ui('customPct'));
+  setP('bCustom', '%');
+  setP('sQ', plain('mobile'));
+  setT('mC', ui('close'));
+  setT('billHead', `<th>✔</th><th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('cls')}</th><th>${ui('total')}</th><th>${ui('paidAmt')}</th><th>${ui('dueT')}</th><th>${ui('status')}</th><th>${ui('action')}</th>`);
+  setT('defHead', `<th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('cls')}</th><th>${ui('mobile')}</th><th>${ui('dueT')}</th><th>${ui('status')}</th><th>${ui('action')}</th>`);
+  setT('expHead', `<th>${ui('date')}</th><th>${ui('entryKind')}</th><th>${ui('expCat')}</th><th>${ui('expAmt')}</th><th>${ui('expNote')}</th><th>${ui('action')}</th>`);
   document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === state.curTab));
   document.querySelectorAll('[data-dst]').forEach(b => b.classList.toggle('sel', b.dataset.dst === state.defFilter));
   document.querySelectorAll('[data-k]').forEach(b => b.classList.toggle('sel', b.dataset.k === state.payMode));
-  $('pFrom').parentElement.style.display = state.payMode === 'range' ? '' : 'none';
-  $('pTo').parentElement.style.display = state.payMode === 'range' ? '' : 'none';
+  const rng = state.payMode === 'range';
+  if ($('pFrom')) $('pFrom').parentElement.style.display = rng ? '' : 'none';
+  if ($('pTo')) $('pTo').parentElement.style.display = rng ? '' : 'none';
 }
 
 function showTab(n, push = true) {
@@ -715,14 +824,9 @@ function showTab(n, push = true) {
   state.curTab = n;
   document.querySelectorAll('.tab').forEach(x => x.hidden = true);
   $('tab-' + n).hidden = false;
-  if (n === 'pay') {
-    $('qAdm').value = '';
-    state.qSel = null;
-    renderPayPanel();
-    renderRcptArea();
-    refreshPayList();
-  }
-  if (n === 'exp') renderExp();
+  if (n === 'pay') { $('qAdm').value = ''; renderPayPanel(); refreshPayList(); }
+  if (n === 'exp') loadExp();
+  if (n === 'set') renderSet();
   applyUi();
   window.scrollTo(0, 0);
 }
@@ -742,13 +846,13 @@ function renderGen() {
   const owedAll = state.vouchers.reduce((a, v) => a + Number(v.outstanding || 0), 0);
   const defs = new Set(state.vouchers.filter(v => Number(v.outstanding) > 0).map(v => v.student_id)).size;
   const kp = (l, v) => `<div class="kpi"><b>${v}</b><span>${l}</span></div>`;
-  $('kpis').innerHTML =
+  setT('kpis',
     kp(`${ui('tabBills')} — ${monTxt(p.m, state.uiLang)} ${p.y}`, vs.length) +
     kp(ui('billed'), money(billed)) +
     kp(ui('collected'), money(coll)) +
     kp(ui('pending'), money(billed - coll)) +
     kp(ui('totalDue'), money(owedAll)) +
-    kp(ui('defaulters'), defs);
+    kp(ui('defaulters'), defs));
   const rows = filt().map((s, i) => {
     const b = billFor(s);
     return `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td>
@@ -757,9 +861,9 @@ function renderGen() {
       <td><b>${money(owedOf(s.id))}</b></td>
       <td><button class="btn sm b-blue" data-act="pd" data-id="${s.id}">📑</button></td></tr>`;
   }).join('');
-  $('sumT').innerHTML = `<div class="tw"><table>
+  setT('sumT', `<div class="tw"><table>
     <tr><th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('cls')}</th><th>${ui('billed')}</th><th>${ui('paidAmt')}</th><th>${ui('totalDue')}</th><th>${ui('action')}</th></tr>
-    ${rows}</table></div>`;
+    ${rows}</table></div>`);
 }
 
 $('genBtn').onclick = async () => {
@@ -775,13 +879,20 @@ $('genBtn').onclick = async () => {
 
 function renderPayPanel() {
   const s = state.qSel;
-  if (!s) { $('payPanel').innerHTML = ''; return; }
-  $('payPanel').innerHTML = `<div class="card">
+  if (!s) {
+    setT('payPanel', `<p class="hint">${ui('admH')}</p>`);
+    return;
+  }
+  const owed = owedOf(s.id);
+  const b = billFor(s);
+  setT('payPanel', `<div class="card">
     <h3>${esc(s.name)} <small>(${esc(s.admission_no)})</small> — ${esc(cls(s.class_id))}</h3>
     <p>${ui('father')}: ${esc(s.father_name || '—')} | ${ui('mobile')}: ${esc(s.mobile)}</p>
-    <div class="kpis">
-      <div class="kpi"><b>${money(owedOf(s.id))}</b><span>${ui('totalDue')}</span></div>
-      <div class="kpi"><b>${money(s.credit)}</b><span>${ui('advance')}</span></div>
+    <div class="payBig">
+      <div>${ui('totalDue')}</div>
+      <div class="big">${money(owed)}</div>
+      <div class="hint">${b ? `${ui('newBill')}: ${money(b.v.amount_due)}` : ''}${Number(s.credit) > 0 ? ` · ${ui('advance')}: ${money(s.credit)}` : ''}</div>
+      <div class="hint"><b>${plain('payFull')}</b> — ${plain('payPart')}</div>
     </div>
     <div class="row2">
       <input id="pAmt" type="number" min="1" placeholder="${plain('amount')}" style="flex:1">
@@ -789,65 +900,50 @@ function renderPayPanel() {
       <input id="pNote" placeholder="${plain('note')}" style="flex:1">
       <button class="btn b-green" data-act="pay">💰 ${ui('receive')}</button>
       <button class="btn b-indigo" data-act="pd" data-id="${s.id}">📑 ${ui('payDetail')}</button>
-    </div></div>`;
+    </div></div>`);
+  setTimeout(() => { const el = $('pAmt'); if (el) el.focus(); }, 50);
 }
 
-async function payNow() {
-  const s = state.qSel;
-  if (!s) return toast(plain('noMatch'), true);
-  const amt = Number($('pAmt').value || 0);
-  if (!(amt > 0)) return toast('رقم لکھیں', true);
-  const method = $('pMeth').value, note = $('pNote').value.trim() || null;
+async function payOwed(s, amt, method, note) {
   const { data: rc, error } = await sb.rpc('fee_record_payment', { p_student: s.id, p_amount: amt, p_method: method, p_note: note });
   if (error) return toast('محفوظ نہیں ہوا: ' + error.message, true);
   state.rcpt = { receipt: rc, amount: amt, sid: s.id, method };
   state.qSel = null;
-  $('qAdm').value = '';
-  toast('✅ ' + plain('pmOk'));
+  toast('✅ ' + plain('payOk'));
   await loadAll();
   renderRcptArea();
   await refreshPayList();
+  $('qAdm').value = '';
   $('qAdm').focus();
 }
-
-function receiptHTML(r, s, mode) {
-  const owed = owedOf(s.id), cr = Number(s.credit || 0), dt = new Date().toLocaleDateString('en-GB');
-  if (r.method === 'easypaisa' || r.method === 'jazzcash') {
-    return `<div class="epBox">
-      <div class="h">${tx(r.method === 'easypaisa' ? 'easy' : 'jazz', mode)}</div>
-      <div class="stamp">PAID — ${U(D.stamp[1])}</div>
-      <div class="amt">Rs. ${money(r.amount)}</div>
-      <div>${esc(s.name)} · ${tx('adm', mode)}: ${esc(s.admission_no)}</div>
-      <div>${tx('date', mode)}: ${dt} · ${tx('receipt', mode)}: ${esc(r.receipt)}</div>
-      <div>${tx('rem', mode)}: ${money(owed)}</div>
-    </div>`;
-  }
-  return `<div class="copy" style="max-width:150mm;margin:8mm auto;font-size:13px;padding:6mm">
-    <div class="hd">${tx('schoolName', mode)}</div>
-    <p style="text-align:center">${tx('receiptT', mode)} — ${esc(r.receipt)}</p>
-    <table>
-      <tr><td>${tx('name', mode)}</td><td class="r">${esc(s.name)}</td></tr>
-      <tr><td>${tx('adm', mode)}</td><td class="r">${esc(s.admission_no)}</td></tr>
-      <tr><td>${tx('cls', mode)}</td><td class="r">${esc(cls(s.class_id))}</td></tr>
-      <tr><td>${tx('recv', mode)}</td><td class="r">${money(r.amount)}</td></tr>
-      <tr><td>${tx('method', mode)}</td><td class="r">${esc(methodText(r.method))}</td></tr>
-      <tr><td>${tx('rem', mode)}</td><td class="r">${money(owed)}</td></tr>
-      <tr><td>${tx('advance', mode)}</td><td class="r">${money(cr)}</td></tr>
-      <tr><td>${tx('date', mode)}</td><td class="r">${dt}</td></tr>
-    </table>
-    <div class="sig"><span>${tx('sigA', mode)}</span></div>
-  </div>`;
+async function payFromEnter() {
+  const s = state.qSel;
+  if (!s) return toast(plain('noMatch'), true);
+  const raw = ($('pAmt')?.value || '').trim();
+  const owed = owedOf(s.id);
+  const amt = raw === '' ? owed : Number(raw);
+  if (!(amt > 0)) return toast(raw === '' ? plain('noOwed') : 'درست رقم لکھیں', true);
+  await payOwed(s, amt, $('pMeth')?.value || 'cash', ($('pNote')?.value || '').trim() || null);
 }
+function lookupAdm() {
+  const f = findByAdm($('qAdm').value);
+  if (!f) return toast(plain('noMatch'), true);
+  state.qSel = f;
+  renderPayPanel();
+}
+
 function renderRcptArea() {
   const r = state.rcpt;
   const s = r && state.students.find(x => x.id === r.sid);
-  if (!s) { $('rcptArea').innerHTML = ''; return; }
-  $('rcptArea').innerHTML = `<div class="card">${receiptHTML(r, s, state.uiLang)}
+  if (!s) { setT('rcptArea', ''); return; }
+  const cashNote = r.method !== 'cash' ? `<p class="hint">${plain('imgHint')}</p>` : '';
+  setT('rcptArea', `<div class="card">${receiptHTML(r, s, state.uiLang)}${cashNote}
     <div class="row2">
+      <button class="btn b-teal pulse" data-act="rImg">${plain('imgSend')}</button>
       <button class="btn b-dark" data-act="rPrint">🖨 ${ui('print')}</button>
       <button class="btn b-wa" data-act="rWa">✉ ${ui('wa')}</button>
       <button class="btn b-sms" data-act="rSms">✉ ${ui('sms')}</button>
-    </div></div>`;
+    </div></div>`);
 }
 
 async function refreshPayList() {
@@ -873,15 +969,15 @@ async function refreshPayList() {
   applyUi();
   renderPayList();
 }
-
 function payTable(withAct) {
   const sBy = new Map(state.students.map(s => [s.id, s]));
   const rows = state.payList.map((p, i) => {
     const s = sBy.get(p.student_id) || { name: '—', admission_no: '—', class_id: null };
     return `<tr><td>${i + 1}</td><td>${new Date(p.paid_at).toLocaleString('en-GB')}</td><td>${esc(s.name)}</td>
-      <td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td><td>${money(p.amount)}</td>
+      <td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td><td><b>${money(p.amount)}</b></td>
       <td>${esc(methodText(p.method))}</td><td>${esc(p.receipt_no)}</td><td>${money(owedOf(s.id))}</td>
       ${withAct ? `<td class="nw">
+        <button class="btn sm b-teal" data-act="pImg" data-id="${p.id}">📷</button>
         <button class="btn sm b-dark" data-act="rePrint" data-id="${p.id}">🖨</button>
         <button class="btn sm b-wa" data-act="pWa" data-id="${p.id}">WA</button>
         <button class="btn sm b-sms" data-act="pSms" data-id="${p.id}">SMS</button></td>` : ''}</tr>`;
@@ -894,13 +990,11 @@ function payTable(withAct) {
     <tr class="tot"><td colspan="5">${ui('total')}</td><td>${money(total)}</td><td colspan="${withAct ? 4 : 3}"></td></tr>
   </table>`;
 }
-function renderPayList() { $('payListT').innerHTML = `<div class="tw">${payTable(true)}</div>`; }
-
+function renderPayList() { setT('payListT', `<div class="tw">${payTable(true)}</div>`); }
 function printPayList() {
   const p = paper();
-  printDoc(`<h3 style="text-align:center">${lab('payList')}</h3>${payTable(false)}`, p.size, p.orient);
+  printDoc(`<h3 style="text-align:center">${tx('payments', state.bl)}</h3>${payTable(false)}`, p.size, p.orient);
 }
-
 function sendAllPayList() {
   const sum = new Map(), rc = new Map();
   state.payList.forEach(p => {
@@ -935,12 +1029,16 @@ function qNext() {
   drawQueue();
 }
 
-async function rePrintPayment(id) {
+async function paymentById(id) {
   const p = state.payList.find(x => x.id === id) || (await sb.from('fee_payments').select('*').eq('id', id).maybeSingle()).data;
-  if (!p) return toast('نہیں ملا', true);
+  if (!p) return null;
   const s = state.students.find(x => x.id === p.student_id);
-  if (!s) return toast('طالب علم نہیں ملا', true);
-  printDoc(receiptHTML({ receipt: p.receipt_no, amount: p.amount, method: p.method, sid: s.id }, s, state.bl), 'A4', 'portrait');
+  return p && s ? { p, s, r: { receipt: p.receipt_no, amount: p.amount, method: p.method, sid: s.id } } : null;
+}
+async function rePrintPayment(id) {
+  const x = await paymentById(id);
+  if (!x) return toast('نہیں ملا', true);
+  printDoc(receiptHTML(x.r, x.s, state.bl), 'A4', 'portrait');
 }
 
 async function paymentDetail(s) {
@@ -985,7 +1083,7 @@ function printPaymentDetail(s) {
     <tr><th colspan="3">${ui('totalDue')}</th><th>${money(owedOf(s.id))}</th></tr></table>`, p.size, p.orient);
 }
 
-async function openPayEdit(id, amt) {
+function openPayEdit(id, amt) {
   openM('✏️ ' + plain('edit'), `<label>${plain('amount')}<input id="pNew" type="number" min="1" value="${amt}"></label>
     <div class="ma"><button class="btn b-green" data-act="savePay" data-id="${id}">💾 ${ui('save')}</button></div>`);
 }
@@ -999,7 +1097,7 @@ async function savePay(id) {
   refreshPayList();
 }
 
-async function openBillEdit(s) {
+function openBillEdit(s) {
   const b = billFor(s);
   if (!b) return toast(plain('noVoucher'), true);
   openM(`✏️ ${s.name}`, `<div style="display:grid;gap:8px">
@@ -1008,7 +1106,7 @@ async function openBillEdit(s) {
     <label>${plain('conc')}<input id="eCon" type="number" min="0" value="${b.v.concession}"></label>
     <label>${plain('fine')}<input id="eFine" type="number" min="0" value="${b.v.fine}"></label>
     </div>
-    <div class="ma"><button class="btn b-green" data-act="saveBill" data-id="${s.id}" data-vid="${b.v.id}">💾 ${ui('save')}</button></div>`);
+    <div class="ma"><button class="btn b-green" data-act="saveBill" data-vid="${b.v.id}">💾 ${ui('save')}</button></div>`);
 }
 async function saveBill(vid) {
   const row = {
@@ -1027,7 +1125,7 @@ function renderBills() {
   const list = filt().filter(s => !q ||
     s.name.toLowerCase().includes(q) || String(s.admission_no).toLowerCase().includes(q) ||
     (s.father_name || '').toLowerCase().includes(q) || String(s.mobile || '').includes(q));
-  $('bTb').innerHTML = list.map((s, i) => {
+  setT('bTb', list.map((s, i) => {
     const b = billFor(s);
     if (!b) return `<tr><td></td><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td><td colspan="4" class="hint">${ui('noVoucher')}</td><td></td></tr>`;
     return `<tr>
@@ -1044,11 +1142,11 @@ function renderBills() {
         <button class="btn sm b-indigo" data-act="pd" data-id="${s.id}">📑</button>
         <button class="btn sm b-orange" data-act="editBill" data-id="${s.id}">✏️</button>
       </td></tr>`;
-  }).join('') || `<tr><td colspan="10">${ui('noMatch')}</td></tr>`;
+  }).join('') || `<tr><td colspan="10">${ui('noMatch')}</td></tr>`);
 }
 
 function renderDef() {
-  $('dTb').innerHTML = defList().map((s, i) => `<tr>
+  setT('dTb', defList().map((s, i) => `<tr>
     <td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td>
     <td>${esc(s.mobile)}</td><td><b>${money(owedOf(s.id))}</b></td>
     <td>${statusOf(s.id) === 'partial' ? ui('partial') : ui('notPaid')}</td>
@@ -1056,7 +1154,7 @@ function renderDef() {
       <button class="btn sm b-wa" data-act="dWa" data-id="${s.id}">WA</button>
       <button class="btn sm b-sms" data-act="dSms" data-id="${s.id}">SMS</button>
       <button class="btn sm b-call" data-act="dCall" data-id="${s.id}">📞</button>
-    </td></tr>`).join('') || `<tr><td colspan="8">${ui('noMatch')}</td></tr>`;
+    </td></tr>`).join('') || `<tr><td colspan="8">${ui('noMatch')}</td></tr>`);
   document.querySelectorAll('[data-dst]').forEach(b => b.classList.toggle('sel', b.dataset.dst === state.defFilter));
 }
 function printDefaulters() {
@@ -1065,8 +1163,8 @@ function printDefaulters() {
   const p = period(), pp = paper();
   const rows = list.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td><td>${esc(s.mobile)}</td><td>${money(owedOf(s.id))}</td></tr>`).join('');
   const tot = list.reduce((a, s) => a + owedOf(s.id), 0);
-  printDoc(`<h3 style="text-align:center">${lab('defT')} — ${monTxt(p.m, state.bl)} ${p.y}</h3>
-    <table class="list"><tr><th>#</th><th>${lab('name')}</th><th>${lab('adm')}</th><th>${lab('cls')}</th><th>${lab('mob')}</th><th>${lab('dueT')}</th></tr>
+  printDoc(`<h3 style="text-align:center">${tx('defT', state.bl)} — ${monTxt(p.m, state.bl)} ${p.y}</h3>
+    <table class="list"><tr><th>#</th><th>${lab('name')}</th><th>${lab('adm')}</th><th>${lab('cls')}</th><th>${lab('mobile')}</th><th>${lab('dueT')}</th></tr>
     ${rows}<tr><th colspan="5">${lab('totalDue')}</th><th>${money(tot)}</th></tr></table>`, pp.size, pp.orient);
 }
 
@@ -1079,7 +1177,7 @@ async function runReport() {
     title = plain('weekly');
   } else if (type === 'monthly') {
     from = new Date(p.y, p.m - 1, 1); to = new Date(p.y, p.m, 1);
-    title = `${plain('monthly')} — ${monTxt(p.m, 'en')} ${p.y}`;
+    title = `${plain('monthly')} — ${ME[p.m - 1]} ${p.y}`;
   } else {
     from = new Date(p.y, 0, 1); to = new Date(p.y + 1, 0, 1);
     title = `${plain('annual')} — ${p.y}`;
@@ -1106,9 +1204,8 @@ async function runReport() {
   flush();
   html += `<tr class="tot"><td colspan="4">${plain('grand')}</td><td>${money(gp)}</td><td>${money(gd)}</td></tr></table>`;
   state.lastReport = html;
-  $('rOut').innerHTML = html.replace('class="list"', 'class="list tw"');
+  setT('rOut', html);
 }
-
 function openReport() {
   openM(plain('report'), `<div class="row2">
     <label>${plain('type')}<select id="rType">
@@ -1147,45 +1244,138 @@ function openReminder() {
     <div class="ma"><button class="btn b-green" data-act="saveRem">💾 ${ui('save')}</button></div>`);
 }
 
-async function renderExp() {
-  const { data } = await sb.from('expenses').select('*').order('expense_date', { ascending: false }).limit(300);
-  $('eTb').innerHTML = (data || []).map(x => `<tr><td>${x.expense_date}</td><td>${esc(x.category)}</td><td>${money(x.amount)}</td><td>${esc(x.note || '')}</td>
-    <td><button class="btn sm b-red" data-act="eDel" data-id="${x.id}">🗑️ ${ui('del')}</button></td></tr>`).join('') || '<tr><td colspan="5">—</td></tr>';
-}
-
 function renderSet() {
-  $('clsFees').innerHTML = `<table><tr><th>${ui('cls')}</th><th>${ui('fee')}</th><th></th></tr>
+  const cur = $('bCls') ? $('bCls').value : '';
+  setT('clsFees', `<table><tr><th>${ui('cls')}</th><th>${ui('fee')}</th><th></th></tr>
     ${state.classes.map(c => `<tr><td>${esc(c.name)}</td>
       <td><input type="number" min="0" id="cf${c.id}" value="${Number(c.base_fee || 0)}" style="width:120px"></td>
       <td><button class="btn sm b-green" data-act="saveCls" data-id="${c.id}">💾 ${ui('save')}</button></td></tr>`).join('')}
-    </table>`;
+    </table>`);
+  const bc = $('bCls');
+  if (bc) {
+    bc.innerHTML = state.classes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+    if (cur && [...bc.options].some(o => o.value === cur)) bc.value = cur;
+  }
+  renderBulk();
+  renderSetSearch();
   renderSetEd();
 }
+function renderBulk() {
+  const cid = $('bCls')?.value;
+  const cl = state.classes.find(c => String(c.id) === cid);
+  const base = Number(cl?.base_fee || 0);
+  const list = state.students.filter(s => String(s.class_id) === cid).sort((a, b) => a.name.localeCompare(b.name));
+  setT('bList', `<table>
+    <tr><th>✔</th><th>#</th><th>${ui('name')}</th><th>${ui('adm')}</th><th>${ui('fee')}</th><th>%</th></tr>
+    ${list.map((s, i) => {
+      const fee = Number(s.monthly_fee || 0) > 0 ? Number(s.monthly_fee) : base;
+      const pc = base ? Math.round(fee / base * 100) : 0;
+      return `<tr><td><input type="checkbox" data-bchk="${s.id}" ${state.bChk.has(s.id) ? 'checked' : ''}></td>
+        <td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td>
+        <td>${money(fee)}</td><td><b>${pc}%</b></td></tr>`;
+    }).join('') || `<tr><td colspan="6">${ui('noMatch')}</td></tr>`}
+  </table>`);
+}
+async function applyPct(pct) {
+  const ids = [...state.bChk];
+  if (!ids.length) return toast(plain('pickFirst'), true);
+  if (!(pct > 0 && pct <= 100)) return toast('1 سے 100 کے درمیان فیصد لکھیں', true);
+  const cid = $('bCls').value;
+  const cl = state.classes.find(c => String(c.id) === cid);
+  const base = Number(cl?.base_fee || 0);
+  if (!base) return toast('پہلے کلاس کی فیس محفوظ کریں', true);
+  const newFee = Math.round(base * pct / 100);
+  const p = period();
+  let n = 0;
+  for (const id of ids) {
+    const { error } = await sb.from('students').update({ monthly_fee: newFee, fee_concession_pct: 0 }).eq('id', id);
+    if (error) return toast(error.message, true);
+    const v = state.vouchers.find(x => x.student_id === id && x.fee_year === p.y && x.fee_month === p.m);
+    if (v) {
+      const { error: e2 } = await sb.from('fee_vouchers').update({ base_fee: newFee, sibling_discount: 0, concession: 0 }).eq('id', v.id);
+      if (e2) return toast(e2.message, true);
+    }
+    n++;
+  }
+  state.bChk.clear();
+  toast(`✅ ${n} طلباء: ${pct}% (${money(newFee)})`);
+  loadAll();
+}
+
 function renderSetSearch() {
-  $('sRes').innerHTML = findStudents($('sQ').value).map(s =>
-    `<button class="btn sm b-blue" data-act="sPick" data-id="${s.id}" style="margin:2px">${esc(s.name)} · ${esc(s.admission_no)}</button>`).join('');
+  setT('sRes', findStudents($('sQ').value).map(s =>
+    `<button class="btn sm b-blue" data-act="sPick" data-id="${s.id}" style="margin:2px">${esc(s.name)} · ${esc(s.admission_no)}</button>`).join(''));
 }
 function renderSetEd() {
   const s = state.setSel;
-  if (!s) { $('sEd').innerHTML = ''; return; }
-  $('sEd').innerHTML = `<h4>${esc(s.name)}</h4>
+  if (!s) { setT('sEd', ''); return; }
+  setT('sEd', `<h4>${esc(s.name)}</h4>
     <div class="row2">
       <label>${ui('customFee')}<input id="sOv" type="number" min="0" value="${Number(s.monthly_fee) > 0 ? Number(s.monthly_fee) : ''}"></label>
-      <label>${ui('concPct')}<input id="sCo" type="number" min="0" max="100" value="${Number(s.fee_concession_pct || 0)}"></label>
       <button class="btn b-green" data-act="sSave" data-id="${s.id}">💾 ${ui('save')}</button>
-    </div>`;
+    </div>`);
+}
+
+async function loadExp() {
+  const p = period();
+  const start = `${p.y}-${pad(p.m)}-01`;
+  const end = p.m === 12 ? `${p.y + 1}-01-01` : `${p.y}-${pad(p.m + 1)}-01`;
+  const fromTs = new Date(p.y, p.m - 1, 1).toISOString();
+  const toTs = new Date(p.y, p.m, 1).toISOString();
+  const [{ data: ex, error: e1 }, { data: fp, error: e2 }] = await Promise.all([
+    sb.from('expenses').select('*').gte('expense_date', start).lt('expense_date', end).order('expense_date', { ascending: false }),
+    sb.from('fee_payments').select('amount').gte('paid_at', fromTs).lt('paid_at', toTs)
+  ]);
+  if (e1 || e2) return toast((e1 || e2).message, true);
+  state.expRows = ex || [];
+  state.feeIncome = (fp || []).reduce((a, x) => a + Number(x.amount), 0);
+  renderExp();
+}
+function renderExp() {
+  const rows = state.expRows;
+  const manualIn = rows.filter(x => x.kind === 'income').reduce((a, x) => a + Number(x.amount), 0);
+  const outs = rows.filter(x => x.kind !== 'income').reduce((a, x) => a + Number(x.amount), 0);
+  const totalIn = state.feeIncome + manualIn;
+  const bal = totalIn - outs;
+  const kp = (v, l, c = '#3730a3') => `<div class="kpi"><b style="color:${c}">${v}</b><span>${l}</span></div>`;
+  setT('expK',
+    kp(money(state.feeIncome), ui('autoFee'), '#15803d') +
+    kp(money(manualIn), ui('incomeT'), '#15803d') +
+    kp(money(totalIn), ui('totalIncome'), '#15803d') +
+    kp(money(outs), ui('expenseT'), '#dc2626') +
+    kp(money(bal), ui('balance'), bal >= 0 ? '#15803d' : '#dc2626'));
+  setT('eTb', `<tr><td>—</td><td>${ui('income')}</td><td>${ui('autoFee')}</td><td>${money(state.feeIncome)}</td><td>—</td><td>—</td></tr>` +
+    rows.map(x => `<tr><td>${x.expense_date}</td><td>${x.kind === 'income' ? ui('income') : ui('expense')}</td>
+      <td>${esc(x.category)}</td><td>${money(x.amount)}</td><td>${esc(x.note || '')}</td>
+      <td><button class="btn sm b-red" data-act="eDel" data-id="${x.id}">🗑️ ${ui('del')}</button></td></tr>`).join(''));
+}
+async function saveExp() {
+  const kind = $('eKind').value, cat = $('eCat').value.trim(), amt = Number($('eAmt').value || 0);
+  const date = $('eDate').value || todayStr(), note = $('eNote').value.trim();
+  if (!cat || !(amt > 0)) return toast(plain('needCatAmt'), true);
+  const { error } = await sb.from('expenses').insert({ kind, category: cat, amount: amt, note: note || null, expense_date: date });
+  if (error) return toast(error.message, true);
+  $('eCat').value = ''; $('eAmt').value = ''; $('eNote').value = '';
+  toast('✅ ' + plain('save'));
+  loadExp();
+}
+async function deleteExp(id) {
+  if (!confirm(plain('del') + '?')) return;
+  const { error } = await sb.from('expenses').delete().eq('id', id);
+  if (error) return toast(error.message, true);
+  loadExp();
 }
 
 function closeApp() {
   if (!confirm('سافٹ ویئر بند کریں؟ / Close software?')) return;
   sb.auth.signOut();
-  $('closed').innerHTML = `<div>${ui('closedMsg')}</div>`;
-  $('closed').hidden = false;
+  setT('closed', '');
+  toast(plain('closedMsg'));
   try { window.close(); } catch (e) {}
 }
 
 document.addEventListener('click', async e => {
-  const t = e.target.closest('[data-tab],[data-act],[data-dst]');
+  const t = e.target.closest('[data-tab],[data-act],[data-dst],[data-k]');
   if (!t) return;
   if (t.dataset.tab) return showTab(t.dataset.tab);
   if (t.dataset.dst) {
@@ -1201,12 +1391,9 @@ document.addEventListener('click', async e => {
   const id = Number(t.dataset.id);
   const s = state.students.find(x => x.id === id);
   switch (a) {
-    case 'qFind': {
-      const f = findByAdm($('qAdm').value);
-      if (!f) return toast(plain('noMatch'), true);
-      state.qSel = f; renderPayPanel(); break;
-    }
-    case 'pay': await payNow(); break;
+    case 'back': goBack(); break;
+    case 'qFind': lookupAdm(); break;
+    case 'pay': await payFromEnter(); break;
     case 'pd': if (s) await paymentDetail(s); break;
     case 'pdPrint': if (s) printPaymentDetail(s); break;
     case 'editPay': openPayEdit(id, t.dataset.amt); break;
@@ -1218,6 +1405,11 @@ document.addEventListener('click', async e => {
       if (rs) printDoc(receiptHTML(r, rs, state.bl), 'A4', 'portrait');
       break;
     }
+    case 'rImg': {
+      const r = state.rcpt, rs = r && state.students.find(x => x.id === r.sid);
+      if (rs) shareReceiptImage(r, rs);
+      break;
+    }
     case 'rWa': case 'rSms': {
       const r = state.rcpt, rs = r && state.students.find(x => x.id === r.sid);
       if (!rs) break;
@@ -1226,14 +1418,15 @@ document.addEventListener('click', async e => {
       break;
     }
     case 'rePrint': rePrintPayment(id); break;
+    case 'pImg': { const x = await paymentById(id); if (x) shareReceiptImage(x.r, x.s); break; }
     case 'pWa': case 'pSms': {
-      const p = state.payList.find(x => x.id === id);
-      const ps = p && state.students.find(x => x.id === p.student_id);
-      if (!ps) break;
-      const txt = rcptText(ps, p.amount, p.receipt_no, owedOf(ps.id), Number(ps.credit || 0), state.ml);
-      a === 'pWa' ? sendWa(ps, txt) : sendSms(ps, txt);
+      const x = await paymentById(id);
+      if (!x) break;
+      const txt = rcptText(x.s, x.p.amount, x.p.receipt_no, owedOf(x.s.id), Number(x.s.credit || 0), state.ml);
+      a === 'pWa' ? sendWa(x.s, txt) : sendSms(x.s, txt);
       break;
     }
+    case 'pl': break;
     case 'plPrint': printPayList(); break;
     case 'plSendAll': sendAllPayList(); break;
     case 'qNext': qNext(); break;
@@ -1265,22 +1458,8 @@ document.addEventListener('click', async e => {
     case 'reportOpen': openReport(); break;
     case 'runReport': runReport(); break;
     case 'printReport': if (state.lastReport) printDoc(state.lastReport, paper().size, paper().orient); break;
-    case 'eSave': {
-      const cat = $('eCat').value.trim(), amt = Number($('eAmt').value || 0), note = $('eNote').value.trim();
-      if (!cat || !(amt > 0)) return toast('قسم اور رقم لکھیں', true);
-      const { error } = await sb.from('expenses').insert({ category: cat, amount: amt, note: note || null });
-      if (error) return toast('ناکام: ' + error.message, true);
-      $('eCat').value = ''; $('eAmt').value = ''; $('eNote').value = '';
-      toast('✅ ' + plain('save')); renderExp();
-      break;
-    }
-    case 'eDel': {
-      if (!confirm(plain('del') + '?')) return;
-      const { error } = await sb.from('expenses').delete().eq('id', id);
-      if (error) return toast('ناکام: ' + error.message, true);
-      renderExp();
-      break;
-    }
+    case 'eSave': saveExp(); break;
+    case 'eDel': deleteExp(id); break;
     case 'saveCls': {
       const v = Number($('cf' + id).value || 0);
       const { error } = await sb.from('classes').update({ base_fee: v }).eq('id', id);
@@ -1288,16 +1467,28 @@ document.addEventListener('click', async e => {
       toast('✅ ' + plain('save')); loadAll();
       break;
     }
+    case 'pct': applyPct(Number(t.dataset.pct)); break;
+    case 'pctCustom': applyPct(Number($('bCustom').value)); break;
+    case 'bSelAll': state.bChk = new Set(state.students.filter(x => String(x.class_id) === $('bCls').value).map(x => x.id)); renderBulk(); break;
+    case 'bSelNone': state.bChk.clear(); renderBulk(); break;
     case 'sPick': state.setSel = s; renderSetEd(); break;
     case 'sSave': {
-      const ov = Number($('sOv').value || 0), co = Number($('sCo').value || 0);
-      const { error } = await sb.from('students').update({ monthly_fee: ov > 0 ? ov : 0, fee_concession_pct: co }).eq('id', id);
+      const ov = Number($('sOv').value || 0);
+      const { error } = await sb.from('students').update({ monthly_fee: ov > 0 ? ov : 0, fee_concession_pct: 0 }).eq('id', id);
       if (error) return toast('ناکام: ' + error.message, true);
       toast('✅ ' + plain('save')); loadAll();
       break;
     }
   }
 });
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (e.target.id === 'qAdm') { e.preventDefault(); lookupAdm(); }
+  else if (e.target.id === 'pAmt') { e.preventDefault(); payFromEnter(); }
+  else if (e.target.id === 'pNote') { e.preventDefault(); payFromEnter(); }
+});
+
 document.addEventListener('change', e => {
   const c = e.target;
   if (c.dataset.chk) {
@@ -1305,29 +1496,25 @@ document.addEventListener('change', e => {
     c.checked ? state.checked.add(id) : state.checked.delete(id);
     return;
   }
-  if (c.id === 'pY' || c.id === 'pM' || c.id === 'pC') return renderAll();
+  if (c.dataset.bchk) {
+    const id = Number(c.dataset.bchk);
+    c.checked ? state.bChk.add(id) : state.bChk.delete(id);
+    return;
+  }
+  if (c.id === 'bCls') { state.bChk.clear(); renderBulk(); return; }
+  if (c.id === 'pY' || c.id === 'pM' || c.id === 'pC') { renderAll(); if (state.curTab === 'exp') loadExp(); return; }
   if (c.id === 'mlang') { state.ml = c.value; store.set('mlang', c.value); }
   if (c.id === 'blang') { state.bl = c.value; store.set('blang', c.value); renderAll(); }
   if (c.id === 'uilang') { state.uiLang = c.value; store.set('uilang', c.value); renderAll(); }
   if (c.id === 'dueMode') renderBills();
+  if (c.id === 'pFrom' || c.id === 'pTo') { if (state.payMode === 'range') refreshPayList(); }
 });
-$('qAdm').addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  e.preventDefault();
-  const f = findByAdm($('qAdm').value);
-  if (!f) return toast(plain('noMatch'), true);
-  state.qSel = f;
-  renderPayPanel();
-  const amt = document.getElementById('pAmt');
-  if (amt) amt.focus();
-});
-$('pFrom').addEventListener('change', () => { if (state.payMode === 'range') refreshPayList(); });
-$('pTo').addEventListener('change', () => { if (state.payMode === 'range') refreshPayList(); });
+
 $('sQ').addEventListener('input', renderSetSearch);
 $('bQ').addEventListener('input', renderBills);
 $('rMin').addEventListener('input', e => state.defMin = e.target.value);
 $('rMax').addEventListener('input', e => state.defMax = e.target.value);
-$('backBtn').onclick = goBack;
+$('backBtn').onclick = () => goBack();
 $('closeBtn').onclick = closeApp;
 $('lBtn').onclick = async () => {
   $('lMsg').textContent = '';

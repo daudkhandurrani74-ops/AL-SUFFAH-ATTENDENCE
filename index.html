@@ -8,47 +8,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
-  --blue:#0d6efd; --green:#198754; --teal:#0dcaf0; --orange:#fd7e14;
-  --purple:#6f42c1; --red:#dc3545; --yellow:#ffc107; --pink:#d63384;
-  --bg:#f0f4ff; --card:#ffffff; --text:#111827; --muted:#374151;
-}
+:root{--blue:#0d6efd;--green:#198754;--teal:#0dcaf0;--purple:#6f42c1;--red:#dc3545;--pink:#d63384;--bg:#f0f4ff;--text:#111827;--muted:#374151}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);margin:0;padding:12px;color:var(--text);-webkit-text-size-adjust:100%}
+body{font-family:Tahoma,Arial,sans-serif;background:var(--bg);margin:0;padding:12px;color:var(--text)}
 .ur{font-family:'Noto Nastaliq Urdu',serif;line-height:1.9}
-h2{margin:0;font-size:20px}
-.school{font-size:20px;font-weight:900;letter-spacing:1px;text-align:center;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.35);margin-bottom:8px}
-.card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-header{background:linear-gradient(90deg,#4c1d95,#1d4ed8,#0891b2);color:#fff;border-radius:12px;padding:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-header .user{font-size:13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.school{font-size:20px;font-weight:900;letter-spacing:1px;text-align:center;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.35);margin-bottom:6px}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+header{background:linear-gradient(90deg,#4c1d95,#1d4ed8,#0891b2);border-radius:12px;padding:14px;margin-bottom:12px}
+.user{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;font-size:13px;color:#fff}
 label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:bold;color:#111}
-input,select,textarea{padding:9px;border:2px solid #9ca3af;border-radius:8px;font-size:16px;background:#fff;color:#111;max-width:100%;font-family:inherit}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
+input,select,textarea{padding:9px;border:2px solid #9ca3af;border-radius:8px;font-size:15px;background:#fff;color:#111;max-width:100%}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
-<!-- GitHub Auto Update Test -->
 .actions{display:flex;flex-wrap:wrap;gap:8px}
-.btn{border:none;color:#fff;background-color:#6c757d;background-image:linear-gradient(to bottom,rgba(255,255,255,.28),rgba(0,0,0,.08));padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:bold;text-shadow:0 1px 1px rgba(0,0,0,.25);box-shadow:0 4px 0 rgba(0,0,0,.28),0 6px 12px rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s,filter .2s;text-decoration:none;display:inline-block}
-.btn:hover{filter:brightness(1.08);transform:translateY(-2px)}
-.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+.btn{border:none;color:#fff;background:#6c757d;padding:9px 13px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:bold;box-shadow:0 4px 0 rgba(0,0,0,.25);text-decoration:none;display:inline-block}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.sm{padding:5px 9px;font-size:12px;border-radius:8px}
-.btn.primary{background-color:var(--blue)}
-.btn.success{background-color:var(--green)}
-.btn.wa{background-color:#25D366}
-.btn.sms{background-color:var(--teal);color:#000;text-shadow:none}
-.btn.copy{background-color:var(--orange)}
-.btn.file{background-color:#475569}
-.btn.purple{background-color:var(--purple)}
-.btn.pink{background-color:var(--pink)}
-.btn.yellow{background-color:var(--yellow);color:#000;text-shadow:none}
-.btn.dark{background-color:#374151}
-.btn.del{background-color:var(--red)}
-.btn.ghost{background-color:rgba(255,255,255,.2);border:1px solid #fff;color:#fff}
-.btn.edit{background-color:#f59e0b;color:#000;text-shadow:none}
-.btn.teal{background-color:#0f766e}
-.btn.face{background-color:#7c3aed}
-.btn.call{background-color:#2563eb}
+.b-blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.b-green{background:linear-gradient(135deg,#22c55e,#15803d)}
+.b-wa{background:linear-gradient(135deg,#25d366,#128c7e)}
+.b-sms{background:linear-gradient(135deg,#06b6d4,#0e7490)}
+.b-call{background:linear-gradient(135deg,#6366f1,#4338ca)}
+.b-purple{background:linear-gradient(135deg,#a855f7,#6d28d9)}
+.b-pink{background:linear-gradient(135deg,#ec4899,#be185d)}
+.b-orange{background:linear-gradient(135deg,#f97316,#c2410c)}
+.b-red{background:linear-gradient(135deg,#ef4444,#991b1b)}
+.b-dark{background:linear-gradient(135deg,#475569,#1e293b)}
+.b-teal{background:linear-gradient(135deg,#14b8a6,#0f766e)}
+.b-indigo{background:linear-gradient(135deg,#818cf8,#4338ca)}
+.b-gold{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.b-yellow{background:linear-gradient(135deg,#facc15,#ca8a04);color:#000}
+.b-fee{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.b-form{background:linear-gradient(135deg,#14b8a6,#0f766e)}
 .summary{display:flex;flex-wrap:wrap;gap:10px;font-size:14px;align-items:center}
 .chip{padding:6px 12px;border-radius:20px;font-weight:bold;background:#e5e7eb;color:#111}
 .chip.total{background:#e0e7ff;color:#3730a3}
@@ -58,14 +50,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
 .chip.T{background:#ffedd5;color:#9a3412}
 .chip.pct{background:#ede9fe;color:#5b21b6}
 .bar{flex:1;min-width:160px;height:14px;background:#e5e7eb;border-radius:10px;overflow:hidden}
-.bar span{display:block;height:100%;background:linear-gradient(90deg,#10b981,#34d399);transition:width .4s}
-.table-wrap{overflow-x:auto;padding:0;-webkit-overflow-scrolling:touch}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,#10b981,#34d399)}
+.tw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;background:#fff;font-size:13px;color:#111}
 th,td{border:1px solid #d1d5db;padding:7px;text-align:center;color:#111}
-th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;position:sticky;top:0}
-tr:nth-child(even) td{background:#fafafa}
-.status{border:none;padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:bold;min-width:120px;transition:transform .1s}
-.status:active{transform:scale(.95)}
+th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
+.status{border:none;padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:bold;min-width:120px}
 .status.P{background:#d1fae5;color:#065f46}
 .status.A{background:#fee2e2;color:#991b1b}
 .status.L{background:#fef3c7;color:#92400e}
@@ -74,141 +64,113 @@ tr:nth-child(even) td{background:#fafafa}
 .empty{padding:20px;color:var(--muted)}
 .hint{font-size:12px;color:var(--muted)}
 .warn{color:#dc2626;font-weight:bold}
-.alert{background:#fff7ed;border:2px solid #fb923c;border-radius:10px;padding:10px;margin-bottom:12px;font-size:14px}
-.alert.red{background:#fef2f2;border-color:#f87171}
+.alert{background:#fef2f2;border:2px solid #f87171;border-radius:10px;padding:10px;margin-bottom:12px;font-size:14px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}
-.kpi{background:linear-gradient(135deg,#ffffff,#eef2ff);border-radius:14px;padding:12px;text-align:center;box-shadow:0 6px 14px rgba(79,70,229,.15);cursor:pointer;transition:transform .15s}
-.kpi:hover{transform:translateY(-3px)}
+.kpi{background:linear-gradient(135deg,#fff,#eef2ff);border-radius:14px;padding:12px;text-align:center;box-shadow:0 6px 14px rgba(79,70,229,.15);cursor:pointer}
 .kpi b{display:block;font-size:24px;color:#3730a3}
 .kpi span{font-size:12px;color:var(--muted)}
 .cam{background:#000;border-radius:12px;overflow:hidden;margin:10px 0}
 .cam video{width:100%;display:block;transform:scaleX(-1)}
 .login{min-height:100vh;display:flex;align-items:center;justify-content:center;margin:-12px;background:linear-gradient(135deg,#6f42c1,#0d6efd,#0dcaf0)}
-.login-card{width:min(360px,92vw);display:grid;gap:12px}
-.login-card h2{color:#4f46e5}
-.msg{color:var(--red);font-size:13px;margin:0}
+.lc{width:min(360px,92vw);display:grid;gap:12px;background:#fff;border-radius:14px;padding:18px}
+.msg{color:#dc2626;font-size:13px;margin:0}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:10px;z-index:50}
-.modal-box{background:#fff;border-radius:14px;padding:18px;width:min(900px,100%);max-height:90vh;overflow:auto;-webkit-overflow-scrolling:touch}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+.mbox{background:#fff;border-radius:14px;padding:18px;width:min(900px,100%);max-height:90vh;overflow:auto}
+.ma{display:flex;justify-content:flex-end;margin-top:12px;gap:8px;flex-wrap:wrap}
 .form{display:grid;gap:10px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:600px){.grid2{grid-template-columns:1fr}}
-select.lang{background:#fff;color:#111;padding:6px;font-size:14px}
+.sec{font-weight:bold;color:#4c1d95;border-bottom:2px solid #c4b5fd;padding-bottom:3px;margin-top:6px}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:11px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:.3s;z-index:60;font-weight:bold;max-width:90vw;text-align:center}
 #toast.show{opacity:1}
 #toast.err{background:var(--red)}
 @media print{
-  .btn,.hint,.toolbar,.actions,header,#toast,.bar,.kpis,.alert{display:none!important}
-  th:nth-child(6),td:nth-child(6),th:nth-child(7),td:nth-child(7),th:nth-child(8),td:nth-child(8){display:none}
+  .noprint,.hint,.toolbar,.actions,header,#toast,.kpis,.alert{display:none!important}
   body{background:#fff}
   body.print-modal #app{display:none!important}
   body.print-modal #modal{position:static;background:none}
-  body.print-modal .modal-box{box-shadow:none;max-height:none;overflow:visible}
+  body.print-modal .mbox{box-shadow:none;max-height:none;overflow:visible}
 }
-/* رنگین بٹن */
 #tbody .btn.call{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
 #tbody .btn.wa{background:linear-gradient(135deg,#25d366,#128c7e)}
-#tbody .btn.sms{background:linear-gradient(135deg,#06b6d4,#0e7490);color:#fff}
+#tbody .btn.sms{background:linear-gradient(135deg,#06b6d4,#0e7490)}
 #tbody .btn.copy{background:linear-gradient(135deg,#f97316,#c2410c)}
 #tbody .btn.file{background:linear-gradient(135deg,#64748b,#334155)}
 #tbody .btn.face{background:linear-gradient(135deg,#a855f7,#6d28d9)}
 #tbody .btn.purple{background:linear-gradient(135deg,#ec4899,#be185d)}
+#tbody .btn.form{background:linear-gradient(135deg,#14b8a6,#0f766e)}
 #tbody .btn.edit{background:linear-gradient(135deg,#facc15,#ca8a04);color:#000}
 #tbody .btn.del{background:linear-gradient(135deg,#ef4444,#991b1b)}
-#tbody .btn.fee{background:linear-gradient(135deg,#10b981,#065f46)}
-#addBtn{background:linear-gradient(135deg,#3b82f6,#1d4ed8)!important}
-#markAllBtn{background:linear-gradient(135deg,#22c55e,#15803d)!important}
-#faceCheckBtn{background:linear-gradient(135deg,#a855f7,#6d28d9)!important}
-#sendAbsentBtn{background:linear-gradient(135deg,#25d366,#128c7e)!important}
-#showAbsentBtn{background:linear-gradient(135deg,#ec4899,#be185d)!important}
-#dailyBtn{background:linear-gradient(135deg,#8b5cf6,#5b21b6)!important}
-#weeklyBtn{background:linear-gradient(135deg,#06b6d4,#0e7490)!important}
-#monthlyBtn{background:linear-gradient(135deg,#14b8a6,#0f766e)!important}
-#csvBtn{background:linear-gradient(135deg,#facc15,#ca8a04)!important;color:#000}
-#printBtn{background:linear-gradient(135deg,#475569,#1e293b)!important}
-#refreshBtn{background:linear-gradient(135deg,#60a5fa,#2563eb)!important}
-#backupBtn{background:linear-gradient(135deg,#2dd4bf,#0f766e)!important}
-#restoreBtn{background:linear-gradient(135deg,#f97316,#c2410c)!important}
-#resetDayBtn{background:linear-gradient(135deg,#ef4444,#991b1b)!important}
-a.btn[href="fees.html"]{background:linear-gradient(135deg,#f59e0b,#b45309)!important}
 </style>
 </head>
 <body>
 
 <div id="loginScreen" class="login">
-  <div class="card login-card">
+  <div class="card lc">
     <div class="school" style="color:#4c1d95;text-shadow:none">AL SUFFAH PUBLIC HIGH SCHOOL</div>
     <input id="loginPhone" type="tel" placeholder="Mobile number (e.g. 03001234567)" autocomplete="username">
     <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
-    <button class="btn primary" id="loginBtn">🔐 Login</button>
+    <button class="btn b-blue" id="loginBtn">🔐 Login</button>
     <p id="loginMsg" class="msg"></p>
   </div>
 </div>
 
 <div id="app" hidden>
   <header>
-    <div class="school" style="width:100%">🏫 AL SUFFAH PUBLIC HIGH SCHOOL</div>
+    <div class="school">🏫 AL SUFFAH PUBLIC HIGH SCHOOL</div>
     <div class="user">
       <span id="userPhone"></span>
-      <select id="langPick" class="lang" aria-label="Language">
+      <select id="langPick">
         <option value="en">English</option>
         <option value="ur">اردو</option>
       </select>
-      <button class="btn ghost" id="logoutBtn">Logout</button>
+      <button class="btn b-red" id="logoutBtn">Logout</button>
     </div>
   </header>
 
   <div id="alertBox"></div>
-
   <section class="kpis" id="kpis"></section>
 
   <section class="card toolbar">
     <label>📅 Date <input type="date" id="datePick"></label>
     <label>🎓 Class <select id="classPick"></select></label>
     <label>🔍 Search <input id="search" placeholder="Name or admission no."></label>
-    <button class="btn primary" id="addBtn">➕ Add student</button>
-    <button class="btn success" id="markAllBtn">✅ Mark all present</button>
-    <button class="btn face" id="faceCheckBtn">📷 Face check-in</button>
+    <button class="btn b-blue" id="addBtn">➕ Add student</button>
+    <button class="btn b-green" id="markAllBtn">✅ Mark all present</button>
+    <button class="btn b-purple" id="faceCheckBtn">📷 Face check-in</button>
   </section>
 
   <section class="card summary" id="summary"></section>
 
   <section class="card actions">
     <label>Parent message language:
-      <select id="msgLangPick" class="lang">
+      <select id="msgLangPick">
         <option value="ur">اردو</option>
         <option value="en">English</option>
       </select>
     </label>
-    <button class="btn wa" id="sendAbsentBtn">📩 Message parents of absent students</button>
-    <button class="btn pink" id="showAbsentBtn">🚫 Absent students</button>
-    <button class="btn purple" id="dailyBtn">📊 Daily report</button>
-    <button class="btn purple" id="weeklyBtn">📈 Weekly report</button>
-    <button class="btn purple" id="monthlyBtn">📉 Monthly report</button>
-    <button class="btn yellow" id="csvBtn">📥 Export CSV</button>
-    <button class="btn dark" id="printBtn">🖨️ Print / PDF</button>
-    <a class="btn purple" href="fees.html">💰 فیس سسٹم / Fees</a>
-    <button class="btn" id="refreshBtn">🔄 Refresh</button>
-    <button class="btn teal" id="backupBtn">💾 Backup</button>
-    <button class="btn teal" id="restoreBtn">📤 Restore backup</button>
+    <button class="btn b-wa" id="sendAbsentBtn">📩 Message parents of absent students</button>
+    <button class="btn b-pink" id="showAbsentBtn">🚫 Absent students</button>
+    <button class="btn b-purple" id="dailyBtn">📊 Daily report</button>
+    <button class="btn b-purple" id="weeklyBtn">📈 Weekly report</button>
+    <button class="btn b-purple" id="monthlyBtn">📉 Monthly report</button>
+    <button class="btn b-yellow" id="csvBtn">📥 Export CSV</button>
+    <button class="btn b-dark" id="printBtn">🖨️ Print / PDF</button>
+    <a class="btn b-fee" href="fees.html">💰 فیس سسٹم / Fees</a>
+    <button class="btn b-blue" id="refreshBtn">🔄 Refresh</button>
+    <button class="btn b-teal" id="backupBtn">💾 Backup</button>
+    <button class="btn b-orange" id="restoreBtn">📤 Restore backup</button>
     <input type="file" id="restoreFile" accept="application/json,.json" hidden>
     <input type="file" id="fileInput" hidden>
-    <button class="btn del" id="resetDayBtn">♻️ Reset this day</button>
+    <button class="btn b-red" id="resetDayBtn">♻️ Reset this day</button>
   </section>
 
-  <div class="card table-wrap">
+  <div class="card tw">
     <table>
       <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Admission No</th>
-          <th>Status</th>
-          <th>Mobile</th>
-          <th>Message</th>
-          <th>Edit</th>
-          <th>Delete</th>
-          <th>💰 Due</th>
+          <th>#</th><th>Name</th><th>Admission No</th><th>Status</th><th>Mobile</th>
+          <th>Actions</th><th>Edit</th><th>Delete</th><th>💰 Due</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -218,10 +180,10 @@ a.btn[href="fees.html"]{background:linear-gradient(135deg,#f59e0b,#b45309)!impor
 </div>
 
 <div id="modal" class="modal" hidden>
-  <div class="modal-box">
+  <div class="mbox">
     <h3 id="modalTitle" style="margin-top:0"></h3>
     <div id="modalBody"></div>
-    <div class="modal-actions"><button class="btn dark" id="modalClose">Close</button></div>
+    <div class="ma"><button class="btn b-dark" id="modalClose">Close</button></div>
   </div>
 </div>
 
@@ -230,194 +192,65 @@ a.btn[href="fees.html"]{background:linear-gradient(135deg,#f59e0b,#b45309)!impor
 <script>
 const SUPABASE_URL = 'https://mjwnyvaofwyhrhkrmifz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_sXLOkuE5Bzpdx2HNQnzQ-Q_PFeiaVW4';
-const SCHOOL_DOMAIN = '@suffah.com';
+const DOMAIN = '@suffah.com';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const SCHOOL_LAT = 31.7361310;
-const SCHOOL_LNG = 70.3336737;
-const SCHOOL_RADIUS_M = 150;
-
+const SCHOOL_LAT = 31.7361310, SCHOOL_LNG = 70.3336737, SCHOOL_RADIUS_M = 150;
 const FACE_LIB = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.js';
 const FACE_MODELS = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model';
 const FACE_THRESHOLD = 0.5;
 const ALERT_DAYS = [3, 5, 7];
+const COOLDOWN_MS = 10000;
 
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 };
-
-const I18N = {
-  en: {
-    loginTitle: 'AL SUFFAH PUBLIC HIGH SCHOOL',
-    phonePh: 'Mobile number (e.g. 03001234567)', passPh: 'Password',
-    login: '🔐 Login', logout: 'Logout',
-    errPhone: 'Invalid mobile number (e.g. 03001234567)', errLogin: 'Wrong mobile number or password',
-    date: '📅 Date', classLbl: '🎓 Class', allClasses: 'All classes (ال)',
-    search: '🔍 Search', searchPh: 'Name or admission no.',
-    addStudent: '➕ Add student', markAll: '✅ Mark all present', faceCheckBtn: '📷 Face check-in',
-    msgLang: 'Parent message language:',
-    sendAbsent: '📩 Message parents of absent students', showAbsent: '🚫 Absent students',
-    daily: '📊 Daily report', weekly: '📈 Weekly report', monthly: '📉 Monthly report',
-    csv: '📥 Export CSV', print: '🖨️ Print / PDF', refresh: '🔄 Refresh',
-    backup: '💾 Backup', restore: '📤 Restore backup', reset: '♻️ Reset this day', close: 'Close',
-    hint: 'Click the status button: P (Present) → A (Absent) → L (Leave) → T (Late). Every change is saved immediately.',
-    colNo: '#', colName: 'Name', colAdm: 'Admission No', colMobile: 'Mobile', colStatus: 'Status',
-    colMsg: 'Message', colEdit: 'Edit', colDel: 'Delete', colClass: 'Class',
-    wa: 'WA', sms: 'SMS', copy: 'Copy', edit: '✏️ Edit', del: '🗑️ Delete', file: '📎 File',
-    call: '📞 Call', profile: '📋 Profile', faceReg: '📸 Face', present: '✅ Present',
-    callTitle: n => `📞 Call: ${n}`, callWa: '📱 WhatsApp call', callSim: '📞 SIM call',
-    callWaHint: 'WhatsApp chat opened. Tap the phone icon in WhatsApp to call.',
-    callNoNum: 'No valid number for this student',
-    emptyClass: 'No students here. Click "Add student".',
-    statusP: 'Present', statusA: 'Absent', statusL: 'Leave', statusT: 'Late',
-    sumTotal: 'Total', sumPresent: 'Present', sumAbsent: 'Absent', sumLeave: 'Leave', sumLate: 'Late', sumPct: 'Attendance',
-    kTotal: 'Total students', kPresent: 'Present today', kAbsent: 'Absent today', kLate: 'Late today', kLeave: 'On leave', kFees: 'Monthly fee total',
-    alertTitle: '⚠️ Consecutive absence alerts',
-    alertLine: (n, d) => `${n}: absent/leave for ${d} days in a row`,
-    sendTitle: n => `📩 Parents of absent students (${n})`,
-    queueHint: 'Each click opens WhatsApp for the next student with the message ready. Just press Send in WhatsApp. A short wait between messages protects your account from restriction.',
-    queueNext: n => `▶ Next: ${n}`, queueWait: s => `Wait ${s} sec...`, queueDone: '✅ All messages sent',
-    fileFallback: 'File downloaded. Attach it in the WhatsApp chat that opened.',
-    absentTitle: n => `🚫 Absent / Leave / Late (${n})`,
-    noAbsent: 'No absent students today.', pickClassFirst: 'Add students to this class first.',
-    reportDaily: '📊 Daily report', reportWeekly: '📈 Weekly report', reportMonthly: '📉 Monthly report',
-    reportPrint: '🖨️ Print / PDF', reportCsv: '📥 Download CSV',
-    colPresent: 'Present', colAbsent: 'Absent', colLeave: 'Leave', colLate: 'Late', colRecords: 'Records', colPct: 'Attendance %',
-    reportFail: m => `Report failed: ${m}`, csvEmpty: 'No data to export.',
-    saved: '💾 Saved', deleted: '🗑️ Student removed from the list',
-    deleteConfirm: name => `Remove ${name} from the list? Past attendance records will be kept.`,
-    resetConfirm: d => `Reset attendance for ${d}? All students will be set to P.`,
-    resetDone: '♻️ Attendance reset', markAllDone: '✅ All students marked present',
-    saveFail: m => `Not saved: ${m}`, dupAdm: 'This admission number already exists',
-    newStudent: '➕ New student', editStudent: '✏️ Edit student',
-    formClass: 'Class', formSection: 'Section', secNone: '— none —', secGreen: 'Green', secYellow: 'Yellow',
-    formName: 'Student name (required)', formAdm: 'Admission No (required)',
-    formFather: "Father's name (optional)", formMobile: 'WhatsApp mobile (required, e.g. 03001234567)',
-    formSim: 'SIM number (optional)', formAddress: 'Address (optional)',
-    formDob: 'Date of birth (optional)', formGender: 'Gender (optional)', formRoll: 'Roll number (optional)',
-    formFee: 'Monthly fee (optional)', formAdmDate: 'Admission date (optional)', formPrevSchool: 'Previous school (optional)',
-    gMale: 'Male', gFemale: 'Female', formSave: '💾 Save',
-    profileTitle: n => `📋 Profile: ${n}`, profInfo: 'Personal information', profAtt: 'Attendance history (last 60 days)',
-    profNoAtt: 'No attendance records yet', profAudit: 'Attendance changes (audit)', profNoAudit: 'No changes recorded yet',
-    copied: '📋 Message copied', copyFail: 'Copy failed', logFail: 'Message log could not be saved',
-    refreshed: '🔄 Refreshed', working: '⏳ Please wait...', backupDone: '💾 Backup downloaded',
-    restoreConfirm: 'Restore data from this backup file? Matching records will be updated.',
-    restored: '✅ Data restored', restoreFail: m => `Restore failed: ${m}`, badBackup: 'Invalid backup file',
-    loadFail: m => `Could not load: ${m}`, pickStudentsFirst: 'Add students to this class first',
-    mobileBad: n => `${n}: invalid mobile number`, noNumber: 'No valid number for this student',
-    faceCheckTitle: '📷 Face check-in', faceCapture: '📸 Capture',
-    faceRegTitle: n => `📸 Register face: ${n}`,
-    faceRegHint: 'Look at the camera, one face only, good light. Then press Capture.',
-    faceSaved: '✅ Face saved', faceNone: 'No single face found. Try again.',
-    noFaces: 'No student in this class has a registered face yet', faceLooking: '👀 Look at the camera...',
-    faceMarked: n => `✅ Marked present: ${n}`, faceErr: m => `Error: ${m}`,
-    locNotSet: 'School location is not set in the code', locDenied: 'Location permission denied',
-    locFar: m => `You are outside the school area (${m} m away)`,
-    working2: 'Please wait...'
-  },
-  ur: {
-    loginTitle: 'الصفہ پبلک ہائی اسکول',
-    phonePh: 'موبائل نمبر (مثلاً 03001234567)', passPh: 'پاس ورڈ',
-    login: '🔐 لاگ اِن', logout: 'لاگ آؤٹ',
-    errPhone: 'موبائل نمبر درست نہیں (مثال: 03001234567)', errLogin: 'موبائل نمبر یا پاس ورڈ غلط ہے',
-    date: '📅 تاریخ', classLbl: '🎓 کلاس', allClasses: 'تمام کلاسیں (ال)',
-    search: '🔍 تلاش', searchPh: 'نام یا ایڈمیشن نمبر',
-    addStudent: '➕ طالب علم شامل کریں', markAll: '✅ سب حاضر کریں', faceCheckBtn: '📷 چہرے سے حاضری',
-    msgLang: 'پیغام کی زبان:',
-    sendAbsent: '📩 غیر حاضر طلباء کے والدین کو پیغام', showAbsent: '🚫 غیر حاضر طلباء',
-    daily: '📊 یومیہ رپورٹ', weekly: '📈 ہفتہ وار رپورٹ', monthly: '📉 ماہانہ رپورٹ',
-    csv: '📥 CSV ایکسپورٹ', print: '🖨️ پرنٹ / PDF', refresh: '🔄 ریفریش',
-    backup: '💾 بیک اپ', restore: '📤 بیک اپ سے بحال کریں', reset: '♻️ اس دن کی حاضری ری سیٹ', close: 'بند کریں',
-    hint: 'حاضری کے بٹن پر کلک کریں: P (حاضر) → A (غیر حاضر) → L (چھٹی) → T (لیٹ)۔ ہر تبدیلی فوراً محفوظ ہوتی ہے۔',
-    colNo: '#', colName: 'نام', colAdm: 'ایڈمیشن نمبر', colMobile: 'موبائل', colStatus: 'حاضری',
-    colMsg: 'پیغام', colEdit: 'ترمیم', colDel: 'حذف', colClass: 'کلاس',
-    wa: 'WA', sms: 'SMS', copy: 'کاپی', edit: '✏️ ترمیم', del: '🗑️ حذف', file: '📎 فائل',
-    call: '📞 کال', profile: '📋 پروفائل', faceReg: '📸 چہرہ', present: '✅ حاضر کریں',
-    callTitle: n => `📞 کال: ${n}`, callWa: '📱 واٹس ایپ کال', callSim: '📞 سم کال',
-    callWaHint: 'واٹس ایپ چیٹ کھل گئی۔ کال کے لیے واٹس ایپ میں فون کے آئیکن پر دبائیں۔',
-    callNoNum: 'اس طالب علم کا درست نمبر موجود نہیں',
-    emptyClass: 'یہاں کوئی طالب علم نہیں۔ "طالب علم شامل کریں" پر کلک کریں۔',
-    statusP: 'حاضر', statusA: 'غیر حاضر', statusL: 'چھٹی', statusT: 'لیٹ',
-    sumTotal: 'کل', sumPresent: 'حاضر', sumAbsent: 'غیر حاضر', sumLeave: 'چھٹی', sumLate: 'لیٹ', sumPct: 'حاضری',
-    kTotal: 'کل طلباء', kPresent: 'آج حاضر', kAbsent: 'آج غیر حاضر', kLate: 'آج لیٹ', kLeave: 'چھٹی پر', kFees: 'ماہانہ فیس کا مجموعہ',
-    alertTitle: '⚠️ مسلسل غیر حاضری کے الرٹ',
-    alertLine: (n, d) => `${n}: مسلسل ${d} دن غیر حاضر/چھٹی`,
-    sendTitle: n => `📩 غیر حاضر طلباء کے والدین کو پیغام (${n})`,
-    queueHint: 'ہر کلک پر اگلے طالب علم کا واٹس ایپ پیغام کے ساتھ کھل جائے گا، وہاں صرف Send دبائیں۔ پیغامات کے درمیان چند سیکنڈ کا وقفہ واٹس ایپ کو بلاک ہونے سے بچاتا ہے۔',
-    queueNext: n => `▶ اگلا: ${n}`, queueWait: s => `${s} سیکنڈ انتظار...`, queueDone: '✅ تمام پیغامات بھیجے جا چکے',
-    fileFallback: 'فائل ڈاؤن لوڈ ہو گئی۔ کھلنے والے واٹس ایپ چیٹ میں اسے منسلک کریں۔',
-    absentTitle: n => `🚫 غیر حاضر / چھٹی / لیٹ (${n})`,
-    noAbsent: 'آج کوئی غیر حاضر طالب علم نہیں۔', pickClassFirst: 'پہلے کلاس میں طلباء شامل کریں۔',
-    reportDaily: '📊 یومیہ رپورٹ', reportWeekly: '📈 ہفتہ وار رپورٹ', reportMonthly: '📉 ماہانہ رپورٹ',
-    reportPrint: '🖨️ پرنٹ / PDF', reportCsv: '📥 CSV ڈاؤن لوڈ',
-    colPresent: 'حاضر', colAbsent: 'غیر حاضر', colLeave: 'چھٹی', colLate: 'لیٹ', colRecords: 'ریکارڈ', colPct: 'حاضری %',
-    reportFail: m => `رپورٹ نہیں بن سکی: ${m}`, csvEmpty: 'ڈاؤن لوڈ کرنے کے لیے کوئی ڈیٹا نہیں',
-    saved: '💾 محفوظ ہو گیا', deleted: '🗑️ طالب علم فہرست سے نکال دیا گیا',
-    deleteConfirm: name => `${name} کو فہرست سے نکالیں؟ پچھلا حاضری ریکارڈ محفوظ رہے گا۔`,
-    resetConfirm: d => `${d} کی حاضری ری سیٹ کریں؟ سب طلباء P پر ہو جائیں گے۔`,
-    resetDone: '♻️ حاضری ری سیٹ ہو گئی', markAllDone: '✅ سب طلباء حاضر کر دیے گئے',
-    saveFail: m => `محفوظ نہیں ہو سکا: ${m}`, dupAdm: 'یہ ایڈمیشن نمبر پہلے سے موجود ہے',
-    newStudent: '➕ نیا طالب علم', editStudent: '✏️ طالب علم کی ترمیم',
-    formClass: 'کلاس', formSection: 'سیکشن', secNone: '— منتخب نہیں —', secGreen: 'Green', secYellow: 'Yellow',
-    formName: 'طالب علم کا نام (ضروری)', formAdm: 'ایڈمیشن نمبر (ضروری)',
-    formFather: 'والد کا نام (اختیاری)', formMobile: 'واٹس ایپ موبائل نمبر (ضروری، مثلاً 03001234567)',
-    formSim: 'سم نمبر (اختیاری)', formAddress: 'ایڈریس (اختیاری)',
-    formDob: 'تاریخ پیدائش (اختیاری)', formGender: 'جنس (اختیاری)', formRoll: 'رول نمبر (اختیاری)',
-    formFee: 'ماہانہ فیس (اختیاری)', formAdmDate: 'داخلہ کی تاریخ (اختیاری)', formPrevSchool: 'پچھلا اسکول (اختیاری)',
-    gMale: 'لڑکا', gFemale: 'لڑکی', formSave: '💾 محفوظ کریں',
-    profileTitle: n => `📋 پروفائل: ${n}`, profInfo: 'ذاتی معلومات', profAtt: 'حاضری کی ہسٹری (آخری 60 دن)',
-    profNoAtt: 'ابھی تک حاضری کا ریکارڈ نہیں', profAudit: 'حاضری میں تبدیلیاں (آڈٹ)', profNoAudit: 'ابھی تک کوئی تبدیلی درج نہیں',
-    copied: '📋 پیغام کاپی ہو گیا', copyFail: 'کاپی نہیں ہو سکا', logFail: 'پیغام کا ریکارڈ محفوظ نہ ہو سکا',
-    refreshed: '🔄 ریفریش ہو گیا', working: '⏳ براہ کرم انتظار کریں...', backupDone: '💾 بیک اپ ڈاؤن لوڈ ہو گیا',
-    restoreConfirm: 'اس بیک اپ فائل سے ڈیٹا بحال کریں؟ ملتے جلتے ریکارڈ اپ ڈیٹ ہوں گے۔',
-    restored: '✅ ڈیٹا بحال ہو گیا', restoreFail: m => `بحالی ناکام: ${m}`, badBackup: 'بیک اپ فائل درست نہیں',
-    loadFail: m => `لوڈ نہیں ہو سکا: ${m}`, pickStudentsFirst: 'پہلے کلاس میں طلباء شامل کریں',
-    mobileBad: n => `${n}: موبائل نمبر درست نہیں`, noNumber: 'اس طالب علم کا درست نمبر موجود نہیں',
-    faceCheckTitle: '📷 چہرے سے حاضری', faceCapture: '📸 کیپچر',
-    faceRegTitle: n => `📸 چہرہ درج کریں: ${n}`,
-    faceRegHint: 'کیمرے کی طرف دیکھیں، صرف ایک چہرہ ہو اور روشنی اچھی ہو۔ پھر کیپچر دبائیں۔',
-    faceSaved: '✅ چہرہ محفوظ ہو گیا', faceNone: 'ایک واضح چہرہ نہیں ملا، دوبارہ کوشش کریں',
-    noFaces: 'اس کلاس میں ابھی کسی طالب علم کا چہرہ درج نہیں', faceLooking: '👀 کیمرے کی طرف دیکھیں...',
-    faceMarked: n => `✅ حاضری لگ گئی: ${n}`, faceErr: m => `خرابی: ${m}`,
-    locNotSet: 'اسکول کی لوکیشن کوڈ میں درج نہیں', locDenied: 'لوکیشن کی اجازت نہیں دی گئی',
-    locFar: m => `آپ اسکول کے علاقے سے باہر ہیں (${m} میٹر دور)`,
-    working2: 'براہ کرم انتظار کریں...'
-  }
-};
-
-let lang = store.get('lang') || 'en';
-const t = (k, ...a) => {
-  const v = (I18N[lang] && I18N[lang][k]) ?? I18N.en[k] ?? k;
-  return typeof v === 'function' ? v(...a) : v;
-};
-
-function applyLang() {
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const txt = t(el.dataset.i18n);
-    if (typeof txt === 'string') el.textContent = txt;
-  });
-  $('langPick').value = lang;
-  $('msgLangPick').value = state.msgLang;
-  fillClassPick();
-  renderSummary();
-  renderKpis();
-  render();
-}
-
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, '0');
-const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fmt = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const todayStr = () => fmt(new Date());
-const addDays = (s, n) => { const [y,m,d] = s.split('-').map(Number); return fmt(new Date(y, m-1, d+n)); };
-const prettyDate = s => { const [y,m,d] = s.split('-'); return `${d}/${m}/${y}`; };
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const NEXT = {P:'A', A:'L', L:'T', T:'P'};
-const statusLabel = st => t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
-const classNameOf = id => (state.classes.find(c => c.id === id) || {}).name || '';
-const sectionName = sec => sec === 'Green' ? 'Green' : sec === 'Yellow' ? 'Yellow' : '';
+const addDays = (s, n) => { const [y, m, d] = s.split('-').map(Number); return fmt(new Date(y, m - 1, d + n)); };
+const prettyDate = s => { const [y, m, d] = s.split('-'); return `${d}/${m}/${y}`; };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const admNum = s => { const n = parseInt(String(s.admission_no).replace(/\D/g, ''), 10); return isNaN(n) ? Infinity : n; };
+const byAdm = (a, b) => (admNum(a) - admNum(b)) || String(a.admission_no).localeCompare(String(b.admission_no));
+const normalizePK = num => {
+  let d = String(num ?? '').replace(/\D/g, '');
+  if (d.startsWith('00')) d = d.slice(2);
+  if (d.startsWith('0')) d = '92' + d.slice(1);
+  else if (d.length === 10 && d.startsWith('3')) d = '92' + d;
+  return d;
+};
+const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
+const smsNum = s => isValidMobile(s.sim_number || '') ? s.sim_number : s.mobile;
+const sectionName = sec => (sec === 'Green' || sec === 'Yellow') ? sec : '';
+
+// ترجمہ: [English, Urdu]
+const TX = {
+  login: ['🔐 Login', '🔐 لاگ اِن'],
+  logout: ['Logout', 'لاگ آؤٹ'],
+  allClasses: ['All classes', 'تمام کلاسیں'],
+  noStudents: ['No students here. Click "Add student".', 'یہاں کوئی طالب علم نہیں۔'],
+  statusP: ['Present', 'حاضر'], statusA: ['Absent', 'غیر حاضر'], statusL: ['Leave', 'چھٹی'], statusT: ['Late', 'لیٹ'],
+  saved: ['💾 Saved', '💾 محفوظ ہو گیا'],
+  deleted: ['🗑️ Removed from the list', '🗑️ فہرست سے نکال دیا گیا'],
+  copied: ['📋 Message copied', '📋 پیغام کاپی ہو گیا'],
+  working: ['⏳ Please wait...', '⏳ براہ کرم انتظار کریں...'],
+  refreshed: ['🔄 Refreshed', '🔄 ریفریش ہو گیا'],
+  backupDone: ['💾 Backup downloaded', '💾 بیک اپ ڈاؤن لوڈ ہو گیا'],
+  restored: ['✅ Data restored', '✅ ڈیٹا بحال ہو گیا'],
+  dupAdm: ['This admission number already exists', 'یہ ایڈمیشن نمبر پہلے سے موجود ہے'],
+  errPhone: ['Invalid mobile number (e.g. 03001234567)', 'موبائل نمبر درست نہیں'],
+  errLogin: ['Wrong mobile number or password', 'موبائل نمبر یا پاس ورڈ غلط ہے'],
+  noNumber: ['No valid number for this student', 'درست نمبر موجود نہیں'],
+  noAbsent: ['No absent students today.', 'آج کوئی غیر حاضر طالب علم نہیں۔'],
+  faceNone: ['No single face found. Try again.', 'ایک واضح چہرہ نہیں ملا'],
+  fileFallback: ['File downloaded. Attach it in the WhatsApp chat.', 'فائل ڈاؤن لوڈ ہو گئی، واٹس ایپ میں منسلک کریں۔']
+};
+let lang = store.get('lang') || 'en';
+const t = k => (TX[k] ? TX[k][lang === 'ur' ? 1 : 0] : k);
 
 function toast(msg, err = false) {
   const el = $('toast');
@@ -427,55 +260,12 @@ function toast(msg, err = false) {
   toast.timer = setTimeout(() => el.className = '', 3000);
 }
 
-function normalizePK(num) {
-  let d = String(num).replace(/\D/g, '');
-  if (d.startsWith('00')) d = d.slice(2);
-  if (d.startsWith('0')) d = '92' + d.slice(1);
-  else if (d.length === 10 && d.startsWith('3')) d = '92' + d;
-  return d;
-}
-const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
-const smsNum = s => isValidMobile(s.sim_number || '') ? s.sim_number : s.mobile;
-
-function messageText(name, status, date) {
-  if (state.msgLang === 'en') {
-    const st = status === 'A' ? 'absent from school today' : status === 'T' ? 'late to school today' : 'on leave today';
-    return `Assalam o Alaikum!\nYour child ${name} was ${st}.\nDate: ${prettyDate(date)}\n\nAl Suffah High School`;
-  }
-  const line = status === 'T' ? 'آج اسکول میں دیر سے پہنچا' : `اسکول سے ${status === 'A' ? 'غیر حاضر تھا' : 'چھٹی پر تھا'}`;
-  return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\n${line}\n\nالصفہ ہائی اسکول`;
-}
-
-function reportText(x, kind, start, end) {
-  const warn = x.A > 7;
-  if (state.msgLang === 'en') {
-    const per = kind === 'weekly' ? 'this week' : 'this month';
-    let m = `Assalam o Alaikum!\nYour child ${x.name}\nPeriod: ${prettyDate(start)} to ${prettyDate(end)}\nPresent: ${x.P} | Absent: ${x.A} | Leave: ${x.L} | Late: ${x.T}`;
-    if (warn) m += `\n\nYour child has ${x.A} absences ${per}. This may affect their academic performance. Kindly take notice.`;
-    return m + `\n\nAl Suffah High School`;
-  }
-  const per = kind === 'weekly' ? 'اس ہفتے' : 'اس مہینے';
-  let m = `السلام علیکم!\nآپ کا بچہ ${x.name}\nمدت: ${prettyDate(start)} تا ${prettyDate(end)}\nحاضر: ${x.P} | غیر حاضر: ${x.A} | چھٹی: ${x.L} | لیٹ: ${x.T}`;
-  if (warn) m += `\n\nآپ کے بچے کی ${per} ${x.A} غیر حاضریاں ہیں، جس سے اس کی تعلیمی پوزیشن متاثر ہو سکتی ہے۔ براہ کرم توجہ دیں۔`;
-  return m + `\n\nالصفہ پبلک ہائی اسکول`;
-}
-
-function copyText(text) {
-  const ok = () => toast(t('copied'));
-  const fail = () => toast(t('copyFail'), true);
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(ok).catch(fail);
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy') ? ok() : fail(); } catch { fail(); }
-    ta.remove();
-  }
-}
-
-let faceStop = null;
+const state = {
+  user: null, inited: false, classes: [], students: [], att: new Map(),
+  classId: 'all', date: '', seq: 0, msgLang: store.get('msgLang') || 'ur',
+  alerts: [], feeMap: {}, setSel: null, queue: [], queueDone: new Set(), lastWa: 0, cooldown: null
+};
+let faceStop = null, pendingFile = null, repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
 
 function openModal(title, html) {
   $('modalTitle').textContent = title;
@@ -486,31 +276,30 @@ function closeModal() {
   if (faceStop) faceStop();
   $('modal').hidden = true;
   $('modalBody').innerHTML = '';
-  clearTimeout(cooldownTimer);
+  clearTimeout(state.cooldown);
 }
 $('modalClose').onclick = closeModal;
 $('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
 
-function downloadBlob(filename, blob) {
+function downloadBlob(name, blob) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = filename;
+  a.download = name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
-function downloadCSV(filename, header, rows) {
+function downloadCSV(name, header, rows) {
   const cell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const csv = [header, ...rows].map(r => r.map(cell).join(',')).join('\r\n');
-  downloadBlob(filename, new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+  downloadBlob(name, new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
 }
-
 async function fetchAll(table, cols) {
   let out = [], from = 0;
   while (true) {
     const { data, error } = await sb.from(table).select(cols).order('id').range(from, from + 999);
     if (error) throw error;
-    out = out.concat(data);
-    if (data.length < 1000) break;
+    out = out.concat(data || []);
+    if (!data || data.length < 1000) break;
     from += 1000;
   }
   return out;
@@ -531,6 +320,372 @@ async function insertChunks(table, rows) {
   }
 }
 
+function classNameOf(id) { return (state.classes.find(c => c.id === id) || {}).name || ''; }
+function classBase(id) { return Number((state.classes.find(c => c.id === id) || {}).base_fee || 0); }
+
+function messageText(name, status, date) {
+  if (state.msgLang === 'en') {
+    const st = status === 'A' ? 'absent from school today' : status === 'T' ? 'late to school today' : 'on leave today';
+    return `Assalam o Alaikum!\nYour child ${name} was ${st}.\nDate: ${prettyDate(date)}\n\nAl Suffah High School`;
+  }
+  const line = status === 'T' ? 'آج اسکول میں دیر سے پہنچا' : `اسکول سے ${status === 'A' ? 'غیر حاضر تھا' : 'چھٹی پر تھا'}`;
+  return `السلام علیکم!\nآپ کا بچہ ${name}\nآج مورخہ ${prettyDate(date)}\n${line}\n\nالصفہ ہائی اسکول`;
+}
+function reportText(x, kind, start, end) {
+  const warn = x.A > 7;
+  if (state.msgLang === 'en') {
+    const per = kind === 'weekly' ? 'this week' : 'this month';
+    let m = `Assalam o Alaikum!\nYour child ${x.name}\nPeriod: ${prettyDate(start)} to ${prettyDate(end)}\nPresent: ${x.P} | Absent: ${x.A} | Leave: ${x.L} | Late: ${x.T}`;
+    if (warn) m += `\n\nYour child has ${x.A} absences ${per}. This may affect academic performance. Kindly take notice.`;
+    return m + `\n\nAl Suffah High School`;
+  }
+  const per = kind === 'weekly' ? 'اس ہفتے' : 'اس مہینے';
+  let m = `السلام علیکم!\nآپ کا بچہ ${x.name}\nمدت: ${prettyDate(start)} تا ${prettyDate(end)}\nحاضر: ${x.P} | غیر حاضر: ${x.A} | چھٹی: ${x.L} | لیٹ: ${x.T}`;
+  if (warn) m += `\n\nآپ کے بچے کی ${per} ${x.A} غیر حاضریاں ہیں، جس سے تعلیمی پوزیشن متاثر ہو سکتی ہے۔ براہ کرم توجہ دیں۔`;
+  return m + `\n\nالصفہ پبلک ہائی اسکول`;
+}
+
+function copyText(text) {
+  const ok = () => toast(t('copied'));
+  const fail = () => toast('Copy failed', true);
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok).catch(fail);
+  else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy') ? ok() : fail(); } catch (e) { fail(); }
+    ta.remove();
+  }
+}
+
+async function logMessage(s, channel) {
+  const { error } = await sb.from('message_logs').insert({
+    student_id: s.id, date: state.date, channel, sent_by: state.user.id
+  });
+  if (error) toast('Message log could not be saved', true);
+}
+async function sendRaw(s, channel, text) {
+  if (channel === 'wa') {
+    if (!isValidMobile(s.mobile)) return toast(`${s.name}: invalid mobile`, true);
+    window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
+    logMessage(s, 'wa');
+  } else {
+    const num = smsNum(s);
+    if (!isValidMobile(num)) return toast(t('noNumber'), true);
+    await logMessage(s, 'sms');
+    location.href = `sms:+${normalizePK(num)}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(text)}`;
+  }
+}
+const sendMessage = (s, ch) => sendRaw(s, ch, messageText(s.name, state.att.get(s.id) || 'P', state.date));
+
+function callStudent(s, mode) {
+  if (mode === 'wa') {
+    if (!isValidMobile(s.mobile)) return toast(t('noNumber'), true);
+    window.open(`https://wa.me/${normalizePK(s.mobile)}`, '_blank');
+  } else {
+    const num = smsNum(s);
+    if (!isValidMobile(num)) return toast(t('noNumber'), true);
+    location.href = 'tel:+' + normalizePK(num);
+  }
+}
+
+/* ---------- لاگ اِن ---------- */
+$('loginBtn').onclick = async () => {
+  $('loginMsg').textContent = '';
+  const phone = normalizePK($('loginPhone').value.trim());
+  if (!isValidMobile(phone)) { $('loginMsg').textContent = t('errPhone'); return; }
+  const { error } = await sb.auth.signInWithPassword({ email: phone + DOMAIN, password: $('loginPass').value });
+  if (error) $('loginMsg').textContent = t('errLogin');
+};
+$('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
+$('loginPhone').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
+$('logoutBtn').onclick = () => sb.auth.signOut();
+
+function handleSession(session) {
+  if (!session) {
+    state.user = null; state.inited = false;
+    $('loginScreen').hidden = false; $('app').hidden = true;
+    return;
+  }
+  state.user = session.user;
+  $('loginScreen').hidden = true; $('app').hidden = false;
+  $('userPhone').textContent = '👤 ' + (session.user.email || '').replace(DOMAIN, '');
+  if (!state.inited) { state.inited = true; init(); }
+}
+
+/* ---------- زبان ---------- */
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';
+  $('langPick').value = lang;
+  $('msgLangPick').value = state.msgLang;
+  $('loginBtn').textContent = t('login');
+  $('logoutBtn').textContent = t('logout');
+  fillClassPick();
+  renderAll();
+}
+$('langPick').onchange = e => { lang = e.target.value; store.set('lang', lang); applyLang(); };
+$('msgLangPick').onchange = e => { state.msgLang = e.target.value; store.set('msgLang', state.msgLang); };
+
+/* ---------- شروع اور لوڈ ---------- */
+async function init() {
+  state.date = todayStr();
+  $('datePick').value = state.date;
+  await loadClasses();
+  const saved = store.get('lastClassId');
+  if (saved && [...$('classPick').options].some(o => o.value === saved)) $('classPick').value = saved;
+  await loadDay();
+}
+$('classPick').onchange = () => loadDay();
+$('datePick').onchange = () => loadDay();
+
+function fillClassPick() {
+  const cur = $('classPick').value || 'all';
+  $('classPick').innerHTML = `<option value="all">${t('allClasses')}</option>` +
+    state.classes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  $('classPick').value = cur;
+}
+async function loadClasses() {
+  const { data, error } = await sb.from('classes').select('id,name,base_fee,sort_order').order('sort_order');
+  if (error) return toast(error.message, true);
+  state.classes = data || [];
+  fillClassPick();
+}
+async function loadFeeMap() {
+  const { data } = await sb.from('fee_voucher_status').select('student_id,outstanding');
+  state.feeMap = {};
+  (data || []).forEach(r => { state.feeMap[r.student_id] = (state.feeMap[r.student_id] || 0) + Number(r.outstanding || 0); });
+}
+async function loadDay() {
+  if (!state.classes.length) return;
+  const seq = ++state.seq;
+  state.classId = $('classPick').value || 'all';
+  state.date = $('datePick').value || todayStr();
+  store.set('lastClassId', state.classId);
+
+  let q = sb.from('students').select('*').eq('is_active', true);
+  q = state.classId === 'all' ? q.in('class_id', state.classes.map(c => c.id)) : q.eq('class_id', Number(state.classId));
+  const { data, error } = await q;
+  if (seq !== state.seq) return;
+  if (error) return toast(error.message, true);
+  state.students = (data || []).sort(byAdm);
+  state.att = new Map();
+  const ids = state.students.map(s => s.id);
+
+  if (ids.length) {
+    const { data: rows, error: e2 } = await sb.from('attendance').select('student_id,status').eq('date', state.date).in('student_id', ids);
+    if (seq !== state.seq) return;
+    if (e2) return toast(e2.message, true);
+    (rows || []).forEach(r => state.att.set(r.student_id, r.status));
+    const missing = ids.filter(id => !state.att.has(id))
+      .map(id => ({ student_id: id, date: state.date, status: 'P', updated_by: state.user.id }));
+    if (missing.length) {
+      const { error: e3 } = await sb.from('attendance').upsert(missing, { onConflict: 'student_id,date', ignoreDuplicates: true });
+      if (e3) return toast(e3.message, true);
+      missing.forEach(m => state.att.set(m.student_id, 'P'));
+    }
+  }
+  await loadFeeMap();
+  await loadAlerts();
+  render();
+}
+async function loadAlerts() {
+  state.alerts = [];
+  const ids = state.students.map(s => s.id);
+  if (!ids.length) return;
+  const { data, error } = await sb.from('attendance').select('student_id,date,status')
+    .in('student_id', ids).gte('date', addDays(state.date, -14)).lte('date', state.date)
+    .order('date', { ascending: false });
+  if (error) return;
+  const by = new Map();
+  (data || []).forEach(r => { if (!by.has(r.student_id)) by.set(r.student_id, []); by.get(r.student_id).push(r); });
+  by.forEach((rows, sid) => {
+    let run = 0;
+    for (const r of rows) { if (r.status === 'A' || r.status === 'L') run++; else break; }
+    const hit = ALERT_DAYS.filter(d => run >= d).pop();
+    if (hit) {
+      const s = state.students.find(x => x.id === sid);
+      if (s) state.alerts.push({ s, days: run });
+    }
+  });
+  state.alerts.sort((a, b) => b.days - a.days);
+}
+
+/* ---------- نمائش ---------- */
+function renderAlerts() {
+  if (!state.alerts.length) { $('alertBox').innerHTML = ''; return; }
+  $('alertBox').innerHTML = `<div class="alert"><b>⚠️ Consecutive absence alerts</b><br>` +
+    state.alerts.map(a => esc(`${a.s.name}: absent/leave for ${a.days} days in a row`)).join('<br>') + `</div>`;
+}
+function renderKpis() {
+  const c = { P: 0, A: 0, L: 0, T: 0 };
+  state.students.forEach(s => c[state.att.get(s.id) || 'P']++);
+  const fees = state.students.reduce((sum, s) => sum + Number(s.monthly_fee || 0), 0);
+  const kpi = (label, val, go) => `<div class="kpi" data-go="${go}"><b>${val}</b><span>${label}</span></div>`;
+  $('kpis').innerHTML =
+    kpi('Total students', state.students.length, 'all') +
+    kpi('Present today', c.P, 'present') +
+    kpi('Absent today', c.A, 'absent') +
+    kpi('Late today', c.T, 'late') +
+    kpi('On leave', c.L, 'leave') +
+    kpi('Monthly fee total', money(fees), 'fees');
+}
+$('kpis').addEventListener('click', e => {
+  const k = e.target.closest('.kpi');
+  if (k && ['absent', 'late', 'leave'].includes(k.dataset.go)) renderAbsentModal();
+});
+function renderSummary() {
+  const c = { P: 0, A: 0, L: 0, T: 0 };
+  state.students.forEach(s => c[state.att.get(s.id) || 'P']++);
+  const total = state.students.length;
+  const pct = total ? Math.round(c.P / total * 100) : 0;
+  $('summary').innerHTML = `
+    <span class="chip total">👥 Total: ${total}</span>
+    <span class="chip P">✅ Present: ${c.P}</span>
+    <span class="chip A">❌ Absent: ${c.A}</span>
+    <span class="chip L">🌴 Leave: ${c.L}</span>
+    <span class="chip T">⏰ Late: ${c.T}</span>
+    <span class="chip pct">📊 ${pct}%</span>
+    <div class="bar"><span style="width:${pct}%"></span></div>
+    <span class="hint">📅 ${prettyDate(state.date)}</span>`;
+}
+function render() {
+  const q = $('search').value.trim().toLowerCase();
+  const list = state.students.filter(s => !q || s.name.toLowerCase().includes(q) || String(s.admission_no).toLowerCase().includes(q));
+  $('tbody').innerHTML = list.length ? list.map((s, i) => {
+    const st = state.att.get(s.id) || 'P';
+    const sec = sectionName(s.section);
+    const owed = state.feeMap[s.id] || 0;
+    return `<tr>
+      <td>${i + 1}</td>
+      <td><b>${esc(s.name)}</b><div class="hint">${esc(classNameOf(s.class_id))}${sec ? ' · ' + sec : ''}</div></td>
+      <td>${esc(s.admission_no)}</td>
+      <td><button class="status ${st}" data-act="status" data-id="${s.id}">${st} · ${statusLabelOf(st)}</button></td>
+      <td>${esc(s.mobile)}</td>
+      <td class="nowrap">
+        <button class="btn sm call" data-act="call" data-id="${s.id}">📞 Call</button>
+        <button class="btn sm wa" data-act="wa" data-id="${s.id}">WA</button>
+        <button class="btn sm sms" data-act="sms" data-id="${s.id}">SMS</button>
+        <button class="btn sm copy" data-act="copy" data-id="${s.id}">Copy</button>
+        <button class="btn sm file" data-act="file" data-id="${s.id}">📎 File</button>
+        <button class="btn sm face" data-act="face" data-id="${s.id}">📸 Face</button>
+        <button class="btn sm purple" data-act="profile" data-id="${s.id}">📋 Profile</button>
+        <button class="btn sm form" data-act="form" data-id="${s.id}">📝 Form</button>
+      </td>
+      <td><button class="btn sm edit" data-act="edit" data-id="${s.id}">✏️ Edit</button></td>
+      <td><button class="btn sm del" data-act="del" data-id="${s.id}">🗑️ Delete</button></td>
+      <td><b style="color:${owed > 0 ? '#dc2626' : '#16a34a'}">${money(owed)}</b>
+        <br><a class="btn sm b-fee" href="fees.html?adm=${encodeURIComponent(s.admission_no)}">💵 Fee</a></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="9" class="empty">${t('noStudents')}</td></tr>`;
+  renderSummary();
+  renderKpis();
+  renderAlerts();
+}
+function statusLabelOf(st) {
+  return t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
+}
+function renderAll() { render(); }
+$('search').addEventListener('input', render);
+
+/* ---------- حاضری ---------- */
+const NEXT = { P: 'A', A: 'L', L: 'T', T: 'P' };
+async function saveAtt(items) {
+  return sb.from('attendance').upsert(
+    items.map(i => ({ student_id: i.student_id, date: state.date, status: i.status, updated_by: state.user.id })),
+    { onConflict: 'student_id,date' });
+}
+async function setStatus(id, status, silent = false) {
+  const prev = state.att.get(id) || 'P';
+  state.att.set(id, status);
+  render();
+  const { error } = await saveAtt([{ student_id: id, status }]);
+  if (error) { state.att.set(id, prev); render(); return toast(error.message, true); }
+  if (prev !== status) {
+    const { data: rec } = await sb.from('attendance').select('id').eq('student_id', id).eq('date', state.date).maybeSingle();
+    await sb.from('attendance_audit_logs').insert({
+      attendance_id: rec ? rec.id : null, student_id: id, old_status: prev, new_status: status, changed_by: state.user.id
+    });
+  }
+  if (!silent) loadAlerts().then(render);
+}
+$('markAllBtn').onclick = async () => {
+  if (!state.students.length) return toast('Add students to this class first', true);
+  state.students.forEach(s => state.att.set(s.id, 'P'));
+  render();
+  const { error } = await saveAtt(state.students.map(s => ({ student_id: s.id, status: 'P' })));
+  toast(error ? error.message : '✅ All students marked present', !!error);
+};
+$('resetDayBtn').onclick = async () => {
+  if (!state.students.length) return;
+  if (!confirm(`Reset attendance for ${prettyDate(state.date)}?`)) return;
+  const ids = state.students.map(s => s.id);
+  const { error } = await sb.from('attendance').delete().eq('date', state.date).in('student_id', ids);
+  if (error) return toast(error.message, true);
+  toast('♻️ Attendance reset');
+  loadDay();
+};
+
+$('tbody').addEventListener('click', e => {
+  const b = e.target.closest('button[data-act]');
+  if (!b) return;
+  const id = Number(b.dataset.id);
+  const s = state.students.find(x => x.id === id);
+  if (!s) return;
+  switch (b.dataset.act) {
+    case 'status': setStatus(id, NEXT[state.att.get(id) || 'P']); break;
+    case 'call': openCallChoice(s); break;
+    case 'wa': sendMessage(s, 'wa'); break;
+    case 'sms': sendMessage(s, 'sms'); break;
+    case 'copy': copyText(messageText(s.name, state.att.get(s.id) || 'A', state.date)); break;
+    case 'file': pendingFile = s; $('fileInput').click(); break;
+    case 'face': openFaceRegister(s); break;
+    case 'profile': openProfile(s); break;
+    case 'form': openStudentForm(s, true); break;
+    case 'edit': openStudentForm(s); break;
+    case 'del': deleteStudent(s); break;
+  }
+});
+
+/* ---------- پروفائل ---------- */
+async function openProfile(s) {
+  const from = addDays(state.date, -59);
+  const [{ data: att }, { data: audit }] = await Promise.all([
+    sb.from('attendance').select('date,status').eq('student_id', s.id).gte('date', from).lte('date', state.date).order('date', { ascending: false }),
+    sb.from('attendance_audit_logs').select('old_status,new_status,changed_at').eq('student_id', s.id).order('changed_at', { ascending: false }).limit(50)
+  ]);
+  const rows = att || [];
+  const cnt = { P: 0, A: 0, L: 0, T: 0 };
+  rows.forEach(r => cnt[r.status]++);
+  const total = rows.length;
+  const pct = total ? Math.round(cnt.P / total * 100) : 0;
+  const info = [
+    ['Father', s.father_name], ['Father CNIC', s.father_cnic], ['WhatsApp', s.mobile], ['SIM', s.sim_number],
+    ['Admission No', s.admission_no], ['Roll', s.roll_number], ['Date of birth', s.date_of_birth], ['Gender', s.gender],
+    ['Monthly fee', s.monthly_fee], ['Exam fee', s.exam_fee], ['Sports fee', s.sports_fee], ['Admission fee', s.admission_fee],
+    ['Admission date', s.admission_date], ['Previous school', s.previous_school], ['Address', s.address],
+    ['Class', classNameOf(s.class_id) + (sectionName(s.section) ? ' · ' + sectionName(s.section) : '')],
+    ['Expected next class', s.expected_class_id ? classNameOf(s.expected_class_id) : '']
+  ].map(([k, v]) => `<tr><td><b>${esc(k)}</b></td><td>${esc(v || '—')}</td></tr>`).join('');
+  openModal(`📋 ${s.name}`, `
+    <h4>Personal information</h4><table>${info}</table>
+    <h4>Attendance (last 60 days)</h4>
+    <p class="hint">P: ${cnt.P} | A: ${cnt.A} | L: ${cnt.L} | T: ${cnt.T} | ${pct}%</p>
+    ${total ? `<table><tr><th>Date</th><th>Status</th></tr>${rows.map(r => `<tr><td>${prettyDate(r.date)}</td><td>${statusLabelOf(r.status)}</td></tr>`).join('')}</table>` : '<p class="hint">No attendance records yet</p>'}
+    <h4>Attendance changes (audit)</h4>
+    ${(audit && audit.length) ? `<table><tr><th>Change</th><th>When</th></tr>${audit.map(a => `<tr><td>${esc(a.old_status)} → ${esc(a.new_status)}</td><td>${new Date(a.changed_at).toLocaleString()}</td></tr>`).join('')}</table>` : '<p class="hint">No changes recorded yet</p>'}`);
+}
+
+/* ---------- کال ---------- */
+function openCallChoice(s) {
+  openModal(`📞 ${s.name}`, `
+    <div class="actions" style="justify-content:center;margin:10px 0">
+      <button class="btn b-wa" data-cwa="${s.id}">📱 WhatsApp call</button>
+      <button class="btn b-sms" data-csim="${s.id}">📞 SIM call</button>
+    </div>
+    <p class="hint">WhatsApp chat opens. Tap the phone icon in WhatsApp to call.</p>`);
+}
+
+/* ---------- چہرہ ---------- */
 function distanceM(lat1, lon1, lat2, lon2) {
   const R = 6371000, toR = d => d * Math.PI / 180;
   const dLat = toR(lat2 - lat1), dLon = toR(lon2 - lon1);
@@ -539,15 +694,13 @@ function distanceM(lat1, lon1, lat2, lon2) {
 }
 function checkLocation() {
   return new Promise((res, rej) => {
-    if (SCHOOL_LAT == null || SCHOOL_LNG == null) return rej(new Error(t('locNotSet')));
-    if (!navigator.geolocation) return rej(new Error(t('locDenied')));
+    if (!navigator.geolocation) return rej(new Error('Location not supported'));
     navigator.geolocation.getCurrentPosition(p => {
       const d = distanceM(p.coords.latitude, p.coords.longitude, SCHOOL_LAT, SCHOOL_LNG);
-      d <= SCHOOL_RADIUS_M ? res(d) : rej(new Error(t('locFar', Math.round(d))));
-    }, () => rej(new Error(t('locDenied'))), { enableHighAccuracy: true, timeout: 15000 });
+      d <= SCHOOL_RADIUS_M ? res(d) : rej(new Error(`You are outside the school area (${Math.round(d)} m)`));
+    }, () => rej(new Error('Location permission denied')), { enableHighAccuracy: true, timeout: 15000 });
   });
 }
-
 let faceReady = null;
 function loadScript(src) {
   return new Promise((res, rej) => {
@@ -576,420 +729,55 @@ async function startCam(video) {
   await video.play();
   return stream;
 }
-const detectOpts = () => new faceapi.TinyFaceDetectorOptions();
-
-const state = {
-  user: null, classes: [], students: [], att: new Map(),
-  classId: 'all', date: '', seq: 0, inited: false,
-  msgLang: store.get('msgLang') || 'ur',
-  alerts: [], feeMap: {}
-};
-let pendingFileStudent = null;
-let repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
-
-async function boot() {
-  const { data } = await sb.auth.getSession();
-  handleSession(data.session);
-  sb.auth.onAuthStateChange((_event, session) => handleSession(session));
-}
-
-function handleSession(session) {
-  if (!session) {
-    state.user = null; state.inited = false;
-    $('loginScreen').hidden = false; $('app').hidden = true;
-    return;
-  }
-  state.user = session.user;
-  $('loginScreen').hidden = true; $('app').hidden = false;
-  $('userPhone').textContent = '👤 ' + (session.user.email || '').replace(SCHOOL_DOMAIN, '');
-  if (!state.inited) { state.inited = true; init(); }
-}
-
-$('loginBtn').onclick = async () => {
-  $('loginMsg').textContent = '';
-  const phone = normalizePK($('loginPhone').value.trim());
-  if (!isValidMobile(phone)) { $('loginMsg').textContent = t('errPhone'); return; }
-  const { error } = await sb.auth.signInWithPassword({ email: phone + SCHOOL_DOMAIN, password: $('loginPass').value });
-  if (error) $('loginMsg').textContent = t('errLogin');
-};
-$('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
-$('loginPhone').addEventListener('keydown', e => { if (e.key === 'Enter') $('loginBtn').click(); });
-$('logoutBtn').onclick = () => sb.auth.signOut();
-
-$('langPick').onchange = e => { lang = e.target.value; store.set('lang', lang); applyLang(); };
-$('msgLangPick').onchange = e => { state.msgLang = e.target.value; store.set('msgLang', state.msgLang); };
-
-async function init() {
-  state.date = todayStr();
-  $('datePick').value = state.date;
-  await loadClasses();
-  const saved = store.get('lastClassId');
-  if (saved && [...$('classPick').options].some(o => o.value === saved)) $('classPick').value = saved;
-  await loadDay();
-}
-
-$('classPick').onchange = () => loadDay();
-$('datePick').onchange = () => loadDay();
-
-function fillClassPick() {
-  const cur = $('classPick').value || 'all';
-  $('classPick').innerHTML = `<option value="all">${t('allClasses')}</option>` +
-    state.classes.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  $('classPick').value = cur;
-}
-async function loadClasses() {
-  const { data, error } = await sb.from('classes').select('id,name').order('sort_order');
-  if (error) return toast(t('loadFail', error.message), true);
-  state.classes = data;
-  fillClassPick();
-}
-
-async function loadFeeMap() {
-  const { data } = await sb.from('fee_voucher_status').select('student_id,outstanding');
-  state.feeMap = {};
-  (data || []).forEach(r => {
-    state.feeMap[r.student_id] = (state.feeMap[r.student_id] || 0) + Number(r.outstanding || 0);
-  });
-}
-
-async function loadDay() {
-  if (!state.classes.length) return;
-  const seq = ++state.seq;
-  state.classId = $('classPick').value || 'all';
-  state.date = $('datePick').value || todayStr();
-  store.set('lastClassId', state.classId);
-
-  let q = sb.from('students').select('*').eq('is_active', true).order('name');
-  q = state.classId === 'all'
-    ? q.in('class_id', state.classes.map(c => c.id))
-    : q.eq('class_id', Number(state.classId));
-  const { data: students, error } = await q;
-  if (seq !== state.seq) return;
-  if (error) return toast(t('loadFail', error.message), true);
-
-  state.students = students;
-  state.att = new Map();
-  const ids = students.map(s => s.id);
-
-  if (ids.length) {
-    const { data: rows, error: e2 } = await sb.from('attendance')
-      .select('student_id,status').eq('date', state.date).in('student_id', ids);
-    if (seq !== state.seq) return;
-    if (e2) return toast(t('loadFail', e2.message), true);
-    rows.forEach(r => state.att.set(r.student_id, r.status));
-
-    const missing = ids.filter(id => !state.att.has(id))
-      .map(id => ({ student_id: id, date: state.date, status: 'P', updated_by: state.user.id }));
-    if (missing.length) {
-      const { error: e3 } = await sb.from('attendance')
-        .upsert(missing, { onConflict: 'student_id,date', ignoreDuplicates: true });
-      if (e3) return toast(t('loadFail', e3.message), true);
-      missing.forEach(m => state.att.set(m.student_id, 'P'));
-    }
-  }
-  await loadFeeMap();
-  await loadAlerts();
-  render();
-}
-
-async function loadAlerts() {
-  state.alerts = [];
-  const ids = state.students.map(s => s.id);
-  if (!ids.length) return;
-  const { data, error } = await sb.from('attendance')
-    .select('student_id,date,status')
-    .in('student_id', ids).gte('date', addDays(state.date, -14)).lte('date', state.date)
-    .order('date', { ascending: false });
-  if (error) return;
-  const byStudent = new Map();
-  (data || []).forEach(r => {
-    if (!byStudent.has(r.student_id)) byStudent.set(r.student_id, []);
-    byStudent.get(r.student_id).push(r);
-  });
-  byStudent.forEach((rows, sid) => {
-    let run = 0;
-    for (const r of rows) {
-      if (r.status === 'A' || r.status === 'L') run++;
-      else break;
-    }
-    const hit = ALERT_DAYS.filter(d => run >= d).pop();
-    if (hit) {
-      const s = state.students.find(x => x.id === sid);
-      if (s) state.alerts.push({ s, days: run });
-    }
-  });
-  state.alerts.sort((a, b) => b.days - a.days);
-}
-
-function renderAlerts() {
-  const box = $('alertBox');
-  if (!state.alerts.length) { box.innerHTML = ''; return; }
-  box.innerHTML = `<div class="alert red"><b>${t('alertTitle')}</b><br>` +
-    state.alerts.map(a => esc(t('alertLine', a.s.name, a.days))).join('<br>') + `</div>`;
-}
-
-function renderKpis() {
-  const c = { P: 0, A: 0, L: 0, T: 0 };
-  state.students.forEach(s => c[state.att.get(s.id) || 'P']++);
-  const fees = state.students.reduce((sum, s) => sum + Number(s.monthly_fee || 0), 0);
-  const kpi = (key, val, go) => `<div class="kpi" data-go="${go}"><b>${val}</b><span>${t(key)}</span></div>`;
-  $('kpis').innerHTML =
-    kpi('kTotal', state.students.length, 'all') +
-    kpi('kPresent', c.P, 'present') +
-    kpi('kAbsent', c.A, 'absent') +
-    kpi('kLate', c.T, 'late') +
-    kpi('kLeave', c.L, 'leave') +
-    kpi('kFees', fees.toLocaleString(), 'fees');
-}
-$('kpis').addEventListener('click', e => {
-  const k = e.target.closest('.kpi');
-  if (!k) return;
-  const go = k.dataset.go;
-  if (go === 'absent' || go === 'late' || go === 'leave') renderAbsentModal();
-});
-
-async function saveAtt(items) {
-  return sb.from('attendance').upsert(
-    items.map(i => ({ student_id: i.student_id, date: state.date, status: i.status, updated_by: state.user.id })),
-    { onConflict: 'student_id,date' }
-  );
-}
-
-function render() {
-  const q = $('search').value.trim().toLowerCase();
-  const list = state.students.filter(s =>
-    !q || s.name.toLowerCase().includes(q) || String(s.admission_no).toLowerCase().includes(q));
-
-  $('tbody').innerHTML = list.length ? list.map((s, i) => {
-    const st = state.att.get(s.id) || 'P';
-    const sec = sectionName(s.section);
-    const owed = state.feeMap[s.id] || 0;
-    return `<tr>
-      <td>${i + 1}</td>
-      <td><b>${esc(s.name)}</b><div class="hint">${esc(classNameOf(s.class_id))}${sec ? ' · ' + sec : ''}</div></td>
-      <td>${esc(s.admission_no)}</td>
-      <td><button class="status ${st}" data-act="status" data-id="${s.id}">${st} · ${statusLabel(st)}</button></td>
-      <td>${esc(s.mobile)}</td>
-      <td class="nowrap">
-        <button class="btn sm call" data-act="call" data-id="${s.id}">${t('call')}</button>
-        <button class="btn sm wa" data-act="wa" data-id="${s.id}">${t('wa')}</button>
-        <button class="btn sm sms" data-act="sms" data-id="${s.id}">${t('sms')}</button>
-        <button class="btn sm copy" data-act="copy" data-id="${s.id}">${t('copy')}</button>
-        <button class="btn sm file" data-act="file" data-id="${s.id}">${t('file')}</button>
-        <button class="btn sm face" data-act="face" data-id="${s.id}">${t('faceReg')}</button>
-        <button class="btn sm purple" data-act="profile" data-id="${s.id}">${t('profile')}</button>
-      </td>
-      <td><button class="btn sm edit" data-act="edit" data-id="${s.id}">${t('edit')}</button></td>
-      <td><button class="btn sm del" data-act="del" data-id="${s.id}">${t('del')}</button></td>
-      <td><b style="color:${owed > 0 ? '#dc2626' : '#16a34a'}">${owed.toLocaleString()}</b>
-        <br><a class="btn sm fee" href="fees.html?adm=${encodeURIComponent(s.admission_no)}">💵 فیس / Fee</a></td>
-    </tr>`;
-  }).join('') : `<tr><td colspan="9" class="empty">${t('emptyClass')}</td></tr>`;
-
-  renderSummary();
-  renderKpis();
-  renderAlerts();
-}
-
-function renderSummary() {
-  const c = { P: 0, A: 0, L: 0, T: 0 };
-  state.students.forEach(s => c[state.att.get(s.id) || 'P']++);
-  const total = state.students.length;
-  const pct = total ? Math.round(c.P / total * 100) : 0;
-  $('summary').innerHTML = `
-    <span class="chip total">👥 ${t('sumTotal')}: ${total}</span>
-    <span class="chip P">✅ ${t('sumPresent')}: ${c.P}</span>
-    <span class="chip A">❌ ${t('sumAbsent')}: ${c.A}</span>
-    <span class="chip L">🌴 ${t('sumLeave')}: ${c.L}</span>
-    <span class="chip T">⏰ ${t('sumLate')}: ${c.T}</span>
-    <span class="chip pct">📊 ${t('sumPct')}: ${pct}%</span>
-    <div class="bar"><span style="width:${pct}%"></span></div>
-    <span class="hint">📅 ${prettyDate(state.date)}</span>`;
-}
-
-$('search').addEventListener('input', render);
-
-$('tbody').addEventListener('click', e => {
-  const b = e.target.closest('button[data-act]');
-  if (!b) return;
-  const id = Number(b.dataset.id);
-  const s = state.students.find(x => x.id === id);
-  if (!s) return;
-  const act = b.dataset.act;
-  if (act === 'status') setStatus(id, NEXT[state.att.get(id) || 'P']);
-  if (act === 'call') openCallChoice(s);
-  if (act === 'wa') sendMessage(s, 'wa');
-  if (act === 'sms') sendMessage(s, 'sms');
-  if (act === 'copy') copyText(messageText(s.name, state.att.get(s.id) || 'A', state.date));
-  if (act === 'file') { pendingFileStudent = s; $('fileInput').click(); }
-  if (act === 'face') openFaceRegister(s);
-  if (act === 'profile') openProfile(s);
-  if (act === 'edit') openStudentForm(s);
-  if (act === 'del') deleteStudent(s);
-});
-
-async function setStatus(id, status, silent = false) {
-  const prev = state.att.get(id) || 'P';
-  state.att.set(id, status);
-  render();
-  const { error } = await saveAtt([{ student_id: id, status }]);
-  if (error) {
-    state.att.set(id, prev);
-    render();
-    return toast(t('saveFail', error.message), true);
-  }
-  if (prev !== status) {
-    const { data: rec } = await sb.from('attendance').select('id')
-      .eq('student_id', id).eq('date', state.date).maybeSingle();
-    await sb.from('attendance_audit_logs').insert({
-      attendance_id: rec ? rec.id : null, student_id: id,
-      old_status: prev, new_status: status, changed_by: state.user.id
-    });
-  }
-  if (!silent) loadAlerts().then(render);
-}
-
-$('markAllBtn').onclick = async () => {
-  if (!state.students.length) return toast(t('pickStudentsFirst'), true);
-  state.students.forEach(s => state.att.set(s.id, 'P'));
-  render();
-  const { error } = await saveAtt(state.students.map(s => ({ student_id: s.id, status: 'P' })));
-  toast(error ? t('saveFail', error.message) : t('markAllDone'), !!error);
-};
-
-$('resetDayBtn').onclick = async () => {
-  if (!state.students.length) return;
-  if (!confirm(t('resetConfirm', prettyDate(state.date)))) return;
-  const ids = state.students.map(s => s.id);
-  const { error } = await sb.from('attendance').delete().eq('date', state.date).in('student_id', ids);
-  if (error) return toast(t('saveFail', error.message), true);
-  toast(t('resetDone'));
-  loadDay();
-};
-
-async function openProfile(s) {
-  const from = addDays(state.date, -59);
-  const [{ data: att }, { data: audit }] = await Promise.all([
-    sb.from('attendance').select('date,status').eq('student_id', s.id)
-      .gte('date', from).lte('date', state.date).order('date', { ascending: false }),
-    sb.from('attendance_audit_logs').select('old_status,new_status,changed_at')
-      .eq('student_id', s.id).order('changed_at', { ascending: false }).limit(50)
-  ]);
-  const rows = (att || []);
-  const cnt = { P: 0, A: 0, L: 0, T: 0 };
-  rows.forEach(r => cnt[r.status]++);
-  const total = rows.length;
-  const pct = total ? Math.round(cnt.P / total * 100) : 0;
-  const info = [
-    [t('formFather'), s.father_name], [t('formMobile'), s.mobile], [t('formSim'), s.sim_number],
-    [t('formAdm'), s.admission_no], [t('formRoll'), s.roll_number],
-    [t('formDob'), s.date_of_birth], [t('formGender'), s.gender],
-    [t('formFee'), s.monthly_fee], [t('formAdmDate'), s.admission_date],
-    [t('formPrevSchool'), s.previous_school], [t('formAddress'), s.address],
-    [t('formClass'), classNameOf(s.class_id) + (sectionName(s.section) ? ' · ' + sectionName(s.section) : '')]
-  ].map(([k, v]) => `<tr><td><b>${esc(k)}</b></td><td>${esc(v || '—')}</td></tr>`).join('');
-
-  openModal(t('profileTitle', s.name), `
-    <h4>${t('profInfo')}</h4>
-    <table>${info}</table>
-    <h4>${t('profAtt')}</h4>
-    <p class="hint">P: ${cnt.P} | A: ${cnt.A} | L: ${cnt.L} | T: ${cnt.T} | ${pct}%</p>
-    ${total ? `<table><tr><th>${t('date')}</th><th>${t('colStatus')}</th></tr>
-      ${rows.map(r => `<tr><td>${prettyDate(r.date)}</td><td>${statusLabel(r.status)}</td></tr>`).join('')}</table>`
-      : `<p class="hint">${t('profNoAtt')}</p>`}
-    <h4>${t('profAudit')}</h4>
-    ${(audit && audit.length) ? `<table><tr><th>${t('colStatus')}</th><th>${t('date')}</th></tr>
-      ${audit.map(a => `<tr><td>${esc(a.old_status)} → ${esc(a.new_status)}</td><td>${new Date(a.changed_at).toLocaleString()}</td></tr>`).join('')}</table>`
-      : `<p class="hint">${t('profNoAudit')}</p>`}
-  `);
-}
-
-function openCallChoice(s) {
-  openModal(t('callTitle', s.name), `
-    <div class="actions" style="justify-content:center;margin:10px 0">
-      <button class="btn wa" data-cwa="${s.id}">${t('callWa')}</button>
-      <button class="btn sms" data-csim="${s.id}">${t('callSim')}</button>
-    </div>
-    <p class="hint">${t('callWaHint')}</p>`);
-}
-function callStudent(s, mode) {
-  if (mode === 'wa') {
-    if (!isValidMobile(s.mobile)) return toast(t('callNoNum'), true);
-    window.open(`https://wa.me/${normalizePK(s.mobile)}`, '_blank');
-    toast(t('callWaHint'));
-  } else {
-    const num = smsNum(s);
-    if (!isValidMobile(num)) return toast(t('callNoNum'), true);
-    location.href = `tel:+${normalizePK(num)}`;
-  }
-}
-
 async function openFaceRegister(s) {
-  openModal(t('faceRegTitle', s.name), `
-    <p class="hint" id="faceMsg">${t('working')}</p>
+  openModal(`📸 ${s.name}`, `
+    <p class="hint" id="faceMsg">⏳ Please wait...</p>
     <div class="cam"><video id="camV" playsinline muted></video></div>
-    <div class="modal-actions"><button class="btn success" id="capBtn">${t('faceCapture')}</button></div>`);
+    <div class="ma"><button class="btn b-green" id="capBtn">📸 Capture</button></div>`);
   let stream = null;
-  const stop = () => {
-    if (stream) stream.getTracks().forEach(tr => tr.stop());
-    stream = null; faceStop = null;
-  };
+  const stop = () => { if (stream) stream.getTracks().forEach(tr => tr.stop()); stream = null; faceStop = null; };
   faceStop = stop;
   try {
     await ensureFace();
     stream = await startCam($('camV'));
-    $('faceMsg').textContent = t('faceRegHint');
-  } catch (e) {
-    $('faceMsg').textContent = t('faceErr', e.message);
-    return;
-  }
+    $('faceMsg').textContent = 'Look at the camera, one face only, good light. Then press Capture.';
+  } catch (e) { $('faceMsg').textContent = 'Error: ' + e.message; return; }
   $('capBtn').onclick = async () => {
     try {
-      const det = await faceapi.detectSingleFace($('camV'), detectOpts()).withFaceLandmarks().withFaceDescriptor();
+      const det = await faceapi.detectSingleFace($('camV'), new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
       if (!det) return toast(t('faceNone'), true);
       const desc = Array.from(det.descriptor);
       const { error } = await sb.from('students').update({ face_descriptor: desc }).eq('id', s.id);
-      if (error) return toast(t('saveFail', error.message), true);
+      if (error) return toast(error.message, true);
       s.face_descriptor = desc;
-      stop();
-      closeModal();
-      toast(t('faceSaved'));
-    } catch (e) {
-      toast(t('faceErr', e.message), true);
-    }
+      stop(); closeModal(); toast('✅ Face saved');
+    } catch (e) { toast('Error: ' + e.message, true); }
   };
 }
-
 async function openFaceCheckin() {
-  if (!state.students.length) return toast(t('pickClassFirst'), true);
+  if (!state.students.length) return toast('Add students to this class first', true);
   const enrolled = state.students.filter(s => Array.isArray(s.face_descriptor) && s.face_descriptor.length);
-  if (!enrolled.length) return toast(t('noFaces'), true);
-  openModal(t('faceCheckTitle'), `
-    <p class="hint" id="faceMsg">${t('working')}</p>
+  if (!enrolled.length) return toast('No student in this class has a registered face yet', true);
+  openModal('📷 Face check-in', `
+    <p class="hint" id="faceMsg">⏳ Please wait...</p>
     <div class="cam"><video id="camV" playsinline muted></video></div>
     <div id="checked" class="actions"></div>`);
   let stream = null, timer = null, busy = false;
   const done = new Set();
-  const stop = () => {
-    clearInterval(timer);
-    if (stream) stream.getTracks().forEach(tr => tr.stop());
-    stream = null; faceStop = null;
-  };
+  const stop = () => { clearInterval(timer); if (stream) stream.getTracks().forEach(tr => tr.stop()); stream = null; faceStop = null; };
   faceStop = stop;
   try {
     await checkLocation();
     await ensureFace();
     const matcher = new faceapi.FaceMatcher(
-      enrolled.map(s => new faceapi.LabeledFaceDescriptors(String(s.id), [new Float32Array(s.face_descriptor)])),
-      FACE_THRESHOLD
-    );
+      enrolled.map(s => new faceapi.LabeledFaceDescriptors(String(s.id), [new Float32Array(s.face_descriptor)])), FACE_THRESHOLD);
     stream = await startCam($('camV'));
-    $('faceMsg').textContent = t('faceLooking');
+    $('faceMsg').textContent = '👀 Look at the camera...';
     timer = setInterval(async () => {
       if (busy) return;
       busy = true;
       try {
-        const det = await faceapi.detectSingleFace($('camV'), detectOpts()).withFaceLandmarks().withFaceDescriptor();
+        const det = await faceapi.detectSingleFace($('camV'), new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
         if (det) {
           const m = matcher.findBestMatch(det.descriptor);
           if (m.label !== 'unknown') {
@@ -999,272 +787,268 @@ async function openFaceCheckin() {
               done.add(id);
               await setStatus(id, 'P', true);
               $('checked').insertAdjacentHTML('beforeend', `<span class="chip P">✅ ${esc(s.name)}</span>`);
-              $('faceMsg').textContent = t('faceMarked', s.name);
+              $('faceMsg').textContent = `✅ ${s.name}`;
             }
           }
         }
       } catch (e) { /* skip frame */ }
       busy = false;
     }, 1000);
-  } catch (e) {
-    $('faceMsg').textContent = t('faceErr', e.message);
-    stop();
-  }
+  } catch (e) { $('faceMsg').textContent = 'Error: ' + e.message; stop(); }
 }
 $('faceCheckBtn').onclick = openFaceCheckin;
 
-$('addBtn').onclick = () => openStudentForm();
-
-function openStudentForm(s = null) {
+/* ---------- طالب علم کا فارم ---------- */
+function optList(list, sel, noneLabel) {
+  return (noneLabel !== undefined ? `<option value="">${noneLabel}</option>` : '') +
+    list.map(c => `<option value="${c.id}" ${String(c.id) === String(sel ?? '') ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+}
+function openStudentForm(s = null, printOnly = false) {
   const defClass = s ? s.class_id : (state.classId !== 'all' ? Number(state.classId) : (state.classes[0] || {}).id);
-  const classOpts = state.classes.map(c =>
-    `<option value="${c.id}" ${c.id === defClass ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
-  const secOpts = `
-    <option value="" ${!s?.section ? 'selected' : ''}>${t('secNone')}</option>
-    <option value="Green" ${s?.section === 'Green' ? 'selected' : ''}>${t('secGreen')}</option>
-    <option value="Yellow" ${s?.section === 'Yellow' ? 'selected' : ''}>${t('secYellow')}</option>`;
-  const genOpts = `
-    <option value="" ${!s?.gender ? 'selected' : ''}>${t('secNone')}</option>
-    <option value="Male" ${s?.gender === 'Male' ? 'selected' : ''}>${t('gMale')}</option>
-    <option value="Female" ${s?.gender === 'Female' ? 'selected' : ''}>${t('gFemale')}</option>`;
-
-  openModal(s ? t('editStudent') : t('newStudent'), `
+  const v = k => esc(s?.[k] ?? '');
+  openModal(s ? '✏️ Edit student' : '➕ New student', `
     <form id="sForm" class="form">
+      <div class="sec">Class</div>
       <div class="grid2">
-        <label>${t('formClass')}<select name="class_id" required>${classOpts}</select></label>
-        <label>${t('formSection')}<select name="section">${secOpts}</select></label>
+        <label>Class<select name="class_id" required>${optList(state.classes, defClass)}</select></label>
+        <label>Section<select name="section">
+          <option value="">— none —</option>
+          <option value="Green" ${s?.section === 'Green' ? 'selected' : ''}>Green</option>
+          <option value="Yellow" ${s?.section === 'Yellow' ? 'selected' : ''}>Yellow</option>
+        </select></label>
       </div>
+      <div class="sec">Student</div>
       <div class="grid2">
-        <label>${t('formName')}<input name="name" required value="${esc(s?.name || '')}"></label>
-        <label>${t('formAdm')}<input name="admission_no" required value="${esc(s?.admission_no || '')}"></label>
+        <label>Student name (required)<input name="name" required value="${v('name')}"></label>
+        <label>Admission No (required)<input name="admission_no" required value="${v('admission_no')}"></label>
+        <label>Roll number<input name="roll_number" value="${v('roll_number')}"></label>
+        <label>Gender<select name="gender">
+          <option value="">— none —</option>
+          <option value="Male" ${s?.gender === 'Male' ? 'selected' : ''}>Male</option>
+          <option value="Female" ${s?.gender === 'Female' ? 'selected' : ''}>Female</option>
+        </select></label>
+        <label>Date of birth<input name="date_of_birth" type="date" value="${v('date_of_birth')}"></label>
+        <label>Admission date<input name="admission_date" type="date" value="${v('admission_date')}"></label>
       </div>
+      <div class="sec">Father / Guardian</div>
       <div class="grid2">
-        <label>${t('formFather')}<input name="father_name" value="${esc(s?.father_name || '')}"></label>
-        <label>${t('formRoll')}<input name="roll_number" value="${esc(s?.roll_number || '')}"></label>
+        <label>Father's name<input name="father_name" value="${v('father_name')}"></label>
+        <label>Father's CNIC<input name="father_cnic" value="${v('father_cnic')}"></label>
+        <label>Father WhatsApp mobile (required)<input name="mobile" type="tel" required value="${v('mobile')}"></label>
+        <label>Father SIM number (optional)<input name="sim_number" type="tel" value="${v('sim_number')}"></label>
       </div>
+      <div class="sec">Fees (optional)</div>
       <div class="grid2">
-        <label>${t('formMobile')}<input name="mobile" type="tel" required value="${esc(s?.mobile || '')}"></label>
-        <label>${t('formSim')}<input name="sim_number" type="tel" value="${esc(s?.sim_number || '')}"></label>
+        <label>Monthly fee (empty = class fee)<input name="monthly_fee" type="number" min="0" value="${s?.monthly_fee ?? ''}"></label>
+        <label>Expected next class<select name="expected_class_id">${optList(state.classes, s?.expected_class_id, '— none —')}</select></label>
+        <label>Exam fee<input name="exam_fee" type="number" min="0" value="${s?.exam_fee ?? 0}"></label>
+        <label>Sports fee<input name="sports_fee" type="number" min="0" value="${s?.sports_fee ?? 0}"></label>
+        <label>Admission fee<input name="admission_fee" type="number" min="0" value="${s?.admission_fee ?? 0}"></label>
       </div>
+      <div class="sec">Other</div>
       <div class="grid2">
-        <label>${t('formDob')}<input name="date_of_birth" type="date" value="${esc(s?.date_of_birth || '')}"></label>
-        <label>${t('formGender')}<select name="gender">${genOpts}</select></label>
+        <label>Address<input name="address" value="${v('address')}"></label>
+        <label>Previous school<input name="previous_school" value="${v('previous_school')}"></label>
       </div>
-      <div class="grid2">
-        <label>${t('formFee')}<input name="monthly_fee" type="number" min="0" value="${esc(s?.monthly_fee ?? '')}"></label>
-        <label>${t('formAdmDate')}<input name="admission_date" type="date" value="${esc(s?.admission_date || '')}"></label>
+      <div class="ma">
+        <button class="btn b-indigo" type="button" id="prtA4">🖨 Print A4</button>
+        <button class="btn b-indigo" type="button" id="prtLegal">🖨 Print Legal</button>
+        <button class="btn b-green" type="submit" ${printOnly ? 'hidden' : ''}>💾 Save</button>
       </div>
-      <label>${t('formPrevSchool')}<input name="previous_school" value="${esc(s?.previous_school || '')}"></label>
-      <label>${t('formAddress')}<input name="address" value="${esc(s?.address || '')}"></label>
-      <div class="modal-actions"><button class="btn success" type="submit">${t('formSave')}</button></div>
     </form>`);
 
+  $('prtA4').onclick = () => printAdmission(readStudentForm(), 'A4');
+  $('prtLegal').onclick = () => printAdmission(readStudentForm(), 'Legal');
+  if (printOnly && s) {
+    // فارم کی قطار سے کھلنے پر تفصیل صرف پرنٹ کے لیے ہے
+    $('sForm').querySelectorAll('input,select').forEach(el => el.disabled = false);
+  }
   $('sForm').onsubmit = async e => {
     e.preventDefault();
-    const fd = new FormData(e.target);
-    const name = fd.get('name').trim();
-    const admission_no = fd.get('admission_no').trim();
-    const mobile = fd.get('mobile').trim();
-    const sim_number = fd.get('sim_number').trim();
-    if (!name || !admission_no) return toast(t('saveFail', 'name/admission'), true);
-    if (!isValidMobile(mobile)) return toast(t('errPhone'), true);
-    if (sim_number && !isValidMobile(sim_number)) return toast(t('errPhone'), true);
-    const class_id = Number(fd.get('class_id'));
-    const feeRaw = fd.get('monthly_fee');
-    const row = {
-      name, admission_no, mobile,
-      section: fd.get('section') || null,
-      sim_number: sim_number || null,
-      father_name: fd.get('father_name').trim() || null,
-      roll_number: fd.get('roll_number').trim() || null,
-      date_of_birth: fd.get('date_of_birth') || null,
-      gender: fd.get('gender') || null,
-      monthly_fee: feeRaw === '' ? null : Number(feeRaw),
-      admission_date: fd.get('admission_date') || null,
-      previous_school: fd.get('previous_school').trim() || null,
-      address: fd.get('address').trim() || null,
-      class_id
-    };
-    const res = s
-      ? await sb.from('students').update(row).eq('id', s.id)
-      : await sb.from('students').insert(row);
-    if (res.error) {
-      return toast(res.error.code === '23505' ? t('dupAdm') : t('saveFail', res.error.message), true);
-    }
+    const row = readStudentForm();
+    if (!row.name || !row.admission_no) return toast('Name and admission no are required', true);
+    if (!isValidMobile(row.mobile)) return toast(t('errPhone'), true);
+    if (row.sim_number && !isValidMobile(row.sim_number)) return toast(t('errPhone'), true);
+    const res = s ? await sb.from('students').update(row).eq('id', s.id) : await sb.from('students').insert(row);
+    if (res.error) return toast(res.error.code === '23505' ? t('dupAdm') : res.error.message, true);
     closeModal();
     toast(t('saved'));
-    if ($('classPick').value !== 'all') $('classPick').value = String(class_id);
     loadDay();
   };
 }
+function readStudentForm() {
+  const f = $('sForm');
+  const g = n => (f.elements[n]?.value ?? '').trim();
+  const num = n => g(n) === '' ? null : Number(g(n));
+  return {
+    class_id: Number(g('class_id')),
+    section: g('section') || null,
+    name: g('name'),
+    admission_no: g('admission_no'),
+    roll_number: g('roll_number') || null,
+    gender: g('gender') || null,
+    date_of_birth: g('date_of_birth') || null,
+    admission_date: g('admission_date') || null,
+    father_name: g('father_name') || null,
+    father_cnic: g('father_cnic') || null,
+    mobile: g('mobile'),
+    sim_number: g('sim_number') || null,
+    monthly_fee: num('monthly_fee'),
+    expected_class_id: g('expected_class_id') ? Number(g('expected_class_id')) : null,
+    exam_fee: Number(g('exam_fee') || 0),
+    sports_fee: Number(g('sports_fee') || 0),
+    admission_fee: Number(g('admission_fee') || 0),
+    address: g('address') || null,
+    previous_school: g('previous_school') || null
+  };
+}
+function admissionBody(d) {
+  const row = (a, b) => `<tr><td class="k">${a}</td><td>${esc(b || '—')}</td></tr>`;
+  const monthly = Number(d.monthly_fee) > 0 ? Number(d.monthly_fee) : classBase(d.class_id);
+  const sex = d.gender || '—';
+  const sec = sectionName(d.section);
+  const ins = [
+    "Photocopy of the B-Form and two passport-size photographs of the student.",
+    "Photocopy of the father's CNIC.",
+    "If the student studied elsewhere before, the original SLC or previous school certificate.",
+    "Fee is collected in advance every month. If not paid in advance, it can be paid by the last date of the month.",
+    "Fee for all types of holidays will also be charged.",
+    "The student may be expelled from school for any misconduct.",
+    "The student may be expelled from school for continuous absence.",
+    "Any financial loss caused by the student must be paid by the parents.",
+    "Parents are responsible for bringing the student to school and taking them back home.",
+    "Avoid bringing non-curricular books to school.",
+    "Bringing a mobile phone to school is strictly prohibited. If brought for any reason, it must be deposited at the office.",
+    "If a mobile phone is confiscated, it will be kept at the office for three days and returned only on the father's recommendation."
+  ];
+  return `<div class="head">AL SUFFAH PUBLIC HIGH SCHOOL</div>
+    <div class="sub">Daraban Kalan, District D.I. Khan</div>
+    <div class="title">ADMISSION FORM</div>
+    <div class="top">
+      <table class="info">
+        ${row('Student name', d.name)}
+        ${row('Admission No', d.admission_no)}
+        ${row('Roll No', d.roll_number)}
+        ${row('Current class', classNameOf(d.class_id) + (sec ? ' · ' + sec : ''))}
+        ${row('Expected next class', d.expected_class_id ? classNameOf(d.expected_class_id) : '—')}
+        ${row('Gender', sex)}
+        ${row('Date of birth', d.date_of_birth)}
+        ${row('Admission date', d.admission_date)}
+        ${row('Previous school', d.previous_school)}
+      </table>
+      <div class="photo">Student photo</div>
+    </div>
+    <table class="info">
+      ${row("Father's name", d.father_name)}
+      ${row("Father's CNIC", d.father_cnic)}
+      ${row('Father WhatsApp', d.mobile)}
+      ${row('Father SIM', d.sim_number)}
+      ${row('Address', d.address)}
+      ${row('Monthly fee', money(monthly))}
+      ${row('Exam fee', money(d.exam_fee))}
+      ${row('Sports fee', money(d.sports_fee))}
+      ${row('Admission fee', money(d.admission_fee))}
+    </table>
+    <h4>Instructions</h4>
+    <ol class="ins">${ins.map(x => `<li>${x}</li>`).join('')}</ol>
+    <div class="sigs">
+      <div>Parent's signature<br><br>______________</div>
+      <div>Guardian's signature<br><br>______________</div>
+      <div>Principal's signature<br><br>______________</div>
+    </div>`;
+}
+function printAdmission(d, size) {
+  const w = window.open('', '_blank');
+  if (!w) return toast('Please allow pop-ups for this site', true);
+  w.document.open();
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Admission Form</title>
+  <style>
+    @page{size:${size === 'Legal' ? 'legal' : 'A4'} portrait;margin:10mm}
+    body{font-family:Tahoma,Arial,sans-serif;color:#111;margin:0}
+    .head{text-align:center;font-size:24px;font-weight:900;color:#1d4ed8;letter-spacing:1px}
+    .sub{text-align:center;font-size:12px;margin-bottom:4px}
+    .title{text-align:center;font-size:18px;font-weight:bold;background:#d1d5db;margin:8px 0;padding:4px}
+    .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .top table.info{flex:1}
+    table.info{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px}
+    table.info td{border:1px solid #666;padding:5px}
+    td.k{width:32%;font-weight:bold;background:#f3f4f6}
+    .photo{width:35mm;height:45mm;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-size:12px;color:#666;flex:none}
+    h4{margin:10px 0 4px}
+    ol.ins{font-size:12px;line-height:1.6;padding-left:20px;margin:0}
+    .sigs{display:flex;justify-content:space-between;margin-top:18mm;font-size:13px;text-align:center}
+    .sigs>div{width:30%}
+  </style></head><body>${admissionBody(d)}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.focus(); w.print(); }, 500);
+}
 
+/* ---------- حذف ---------- */
 async function deleteStudent(s) {
-  if (!confirm(t('deleteConfirm', s.name))) return;
+  if (!confirm(`Remove ${s.name} from the list? Past records will be kept.`)) return;
   const { error } = await sb.from('students').update({ is_active: false }).eq('id', s.id);
-  if (error) return toast(t('saveFail', error.message), true);
+  if (error) return toast(error.message, true);
   toast(t('deleted'));
   loadDay();
 }
+$('addBtn').onclick = () => openStudentForm();
 
-async function logMessage(s, channel) {
-  const { error } = await sb.from('message_logs').insert({
-    student_id: s.id, date: state.date, channel, sent_by: state.user.id
-  });
-  if (error) toast(t('logFail'), true);
-}
-async function sendRaw(s, channel, text) {
-  if (channel === 'wa') {
-    if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
-    window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
-    logMessage(s, 'wa');
-  } else {
-    const num = smsNum(s);
-    if (!isValidMobile(num)) return toast(t('noNumber'), true);
-    await logMessage(s, 'sms');
-    location.href = `sms:+${normalizePK(num)}${/iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'}body=${encodeURIComponent(text)}`;
-  }
-}
-function sendMessage(s, channel) {
-  return sendRaw(s, channel, messageText(s.name, state.att.get(s.id) || 'P', state.date));
-}
-
-let queueIds = [], queueDone = new Set(), lastWaOpen = 0, cooldownTimer = null;
-const COOLDOWN_MS = 10000;
-function absentList() {
-  return state.students.filter(s => ['A', 'L', 'T'].includes(state.att.get(s.id)));
-}
-$('sendAbsentBtn').onclick = () => {
-  const list = absentList();
-  if (!list.length) return toast(t('noAbsent'));
-  queueIds = list.map(s => s.id);
-  queueDone = new Set();
-  lastWaOpen = 0;
-  openModal(t('sendTitle', list.length), '');
-  renderQueue();
-};
-function renderQueue() {
-  const list = queueIds.map(id => state.students.find(x => x.id === id)).filter(Boolean);
-  const next = list.find(s => !queueDone.has(s.id));
-  const remaining = lastWaOpen + COOLDOWN_MS - Date.now();
-  clearTimeout(cooldownTimer);
-  if (next && remaining > 0) cooldownTimer = setTimeout(renderQueue, remaining + 50);
-  const label = !next ? t('queueDone') : remaining > 0 ? t('queueWait', Math.ceil(remaining / 1000)) : t('queueNext', next.name);
-  $('modalBody').innerHTML = `
-    <p class="hint">${t('queueHint')}</p>
-    <div class="actions" style="margin:10px 0">
-      <button class="btn wa" id="queueNext" ${(!next || remaining > 0) ? 'disabled' : ''}>${label}</button>
-    </div>
-    <table>
-      <tr><th>#</th><th>${t('colName')}</th><th>${t('colMobile')}</th><th>${t('colStatus')}</th><th>✔</th></tr>
-      ${list.map((s, i) => `<tr>
-        <td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.mobile)}</td>
-        <td>${statusLabel(state.att.get(s.id))}</td><td>${queueDone.has(s.id) ? '✅' : ''}</td>
-      </tr>`).join('')}
-    </table>`;
-  const btn = $('queueNext');
-  if (btn && next) btn.onclick = () => queueSendNext(next);
-}
-function queueSendNext(s) {
-  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
-  lastWaOpen = Date.now();
-  queueDone.add(s.id);
-  sendMessage(s, 'wa');
-  renderQueue();
-}
-
+/* ---------- غیر حاضر اور پیغامات ---------- */
+function absentList() { return state.students.filter(s => ['A', 'L', 'T'].includes(state.att.get(s.id))); }
+$('showAbsentBtn').onclick = renderAbsentModal;
 function renderAbsentModal() {
   const list = absentList();
-  openModal(t('absentTitle', list.length), list.length ? `
+  openModal(`🚫 Absent / Leave / Late (${list.length})`, list.length ? `
     <table>
-      <tr><th>#</th><th>${t('colName')}</th><th>${t('colClass')}</th><th>${t('colStatus')}</th><th>${t('colMobile')}</th><th>${t('colMsg')}</th><th>✔</th></tr>
+      <tr><th>#</th><th>Name</th><th>Class</th><th>Status</th><th>Mobile</th><th>Message</th><th>✔</th></tr>
       ${list.map((s, i) => `<tr>
-        <td>${i + 1}</td>
-        <td>${esc(s.name)}</td>
+        <td>${i + 1}</td><td>${esc(s.name)}</td>
         <td>${esc(classNameOf(s.class_id))}${sectionName(s.section) ? ' · ' + sectionName(s.section) : ''}</td>
-        <td>${statusLabel(state.att.get(s.id))}</td>
+        <td>${statusLabelOf(state.att.get(s.id))}</td>
         <td>${esc(s.mobile)}${s.sim_number ? '<br><small>SIM: ' + esc(s.sim_number) + '</small>' : ''}</td>
         <td class="nowrap">
           <button class="btn sm wa" data-mwa="${s.id}">WA</button>
           <button class="btn sm sms" data-msms="${s.id}">SMS</button>
         </td>
-        <td><button class="btn sm success" data-present="${s.id}">${t('present')}</button></td>
+        <td><button class="btn sm success" data-present="${s.id}">✅ Present</button></td>
       </tr>`).join('')}
     </table>` : `<p>${t('noAbsent')}</p>`);
 }
-$('showAbsentBtn').onclick = renderAbsentModal;
-
-async function fetchRange(start, end) {
-  const ids = state.students.map(s => s.id);
-  let out = [], from = 0;
-  if (!ids.length) return out;
-  while (true) {
-    const { data, error } = await sb.from('attendance')
-      .select('student_id,date,status')
-      .in('student_id', ids).gte('date', start).lte('date', end)
-      .order('id').range(from, from + 999);
-    if (error) throw error;
-    out = out.concat(data);
-    if (data.length < 1000) break;
-    from += 1000;
-  }
-  return out;
+$('sendAbsentBtn').onclick = () => {
+  const list = absentList();
+  if (!list.length) return toast(t('noAbsent'));
+  state.queue = list.map(s => s.id);
+  state.queueDone = new Set();
+  state.lastWa = 0;
+  openModal(`📩 Parents of absent students (${list.length})`, '');
+  renderQueue();
+};
+function renderQueue() {
+  const list = state.queue.map(id => state.students.find(x => x.id === id)).filter(Boolean);
+  const next = list.find(s => !state.queueDone.has(s.id));
+  const remaining = state.lastWa + COOLDOWN_MS - Date.now();
+  clearTimeout(state.cooldown);
+  if (next && remaining > 0) state.cooldown = setTimeout(renderQueue, remaining + 50);
+  const label = !next ? '✅ All messages sent' : remaining > 0 ? `Wait ${Math.ceil(remaining / 1000)} sec...` : `▶ Next: ${next.name}`;
+  $('modalBody').innerHTML = `
+    <p class="hint">Each click opens WhatsApp with the message ready. Press Send there. A short wait between messages protects your account.</p>
+    <div class="actions" style="margin:10px 0">
+      <button class="btn b-wa" id="queueNext" ${(!next || remaining > 0) ? 'disabled' : ''}>${label}</button>
+    </div>
+    <table>
+      <tr><th>#</th><th>Name</th><th>Mobile</th><th>Status</th><th>✔</th></tr>
+      ${list.map((s, i) => `<tr><td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.mobile)}</td>
+        <td>${statusLabelOf(state.att.get(s.id))}</td><td>${state.queueDone.has(s.id) ? '✅' : ''}</td></tr>`).join('')}
+    </table>`;
+  const btn = $('queueNext');
+  if (btn && next) btn.onclick = () => {
+    if (!isValidMobile(next.mobile)) return toast(`${next.name}: invalid mobile`, true);
+    state.lastWa = Date.now();
+    state.queueDone.add(next.id);
+    sendMessage(next, 'wa');
+    renderQueue();
+  };
 }
-
-async function openReport(kind) {
-  if (!state.students.length) return toast(t('pickClassFirst'), true);
-  const end = state.date;
-  let start = end, title = t('reportDaily');
-  if (kind === 'weekly') { start = addDays(end, -6); title = t('reportWeekly'); }
-  if (kind === 'monthly') { start = addDays(end, -29); title = t('reportMonthly'); }
-  try {
-    const rows = await fetchRange(start, end);
-    const stats = new Map(state.students.map(s =>
-      [s.id, { s, name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0, T: 0 }]));
-    rows.forEach(r => { const st = stats.get(r.student_id); if (st) st[r.status]++; });
-    repRows = [...stats.values()].map(x => {
-      const total = x.P + x.A + x.L + x.T;
-      return { ...x, total, pct: total ? Math.round(x.P / total * 100) : 0 };
-    });
-    repKind = kind; repStart = start; repEnd = end;
-    const heading = `${title} (${prettyDate(start)} – ${prettyDate(end)})`;
-    openModal(heading, `
-      <div class="actions" style="margin-bottom:10px">
-        <button class="btn primary" id="repPrint">${t('reportPrint')}</button>
-        <button class="btn yellow" id="repCsv">${t('reportCsv')}</button>
-      </div>
-      <table>
-        <tr><th>#</th><th>${t('colName')}</th><th>${t('colAdm')}</th><th>${t('colPresent')}</th><th>${t('colAbsent')}</th><th>${t('colLeave')}</th><th>${t('colLate')}</th><th>${t('colRecords')}</th><th>${t('colPct')}</th><th>${t('colMsg')}</th></tr>
-        ${repRows.map((x, i) => `<tr>
-          <td>${i+1}</td>
-          <td>${esc(x.name)}${x.A > 7 ? ' <span class="warn">⚠️</span>' : ''}</td>
-          <td>${esc(x.adm)}</td>
-          <td>${x.P}</td>
-          <td class="${x.A > 7 ? 'warn' : ''}">${x.A}</td>
-          <td>${x.L}</td><td>${x.T}</td><td>${x.total}</td><td>${x.pct}%</td>
-          <td class="nowrap">
-            <button class="btn sm wa" data-rwa="${i}">WA</button>
-            <button class="btn sm sms" data-rsms="${i}">SMS</button>
-          </td>
-        </tr>`).join('')}
-      </table>`);
-    $('repPrint').onclick = printModal;
-    $('repCsv').onclick = () => downloadCSV(
-      `report_${start}_${end}.csv`,
-      [t('colName'), t('colAdm'), t('colPresent'), t('colAbsent'), t('colLeave'), t('colLate'), t('colRecords'), t('colPct')],
-      repRows.map(x => [x.name, x.adm, x.P, x.A, x.L, x.T, x.total, x.pct + '%'])
-    );
-  } catch (err) {
-    toast(t('reportFail', err.message), true);
-  }
-}
-function printModal() {
-  document.body.classList.add('print-modal');
-  window.print();
-}
-window.addEventListener('afterprint', () => document.body.classList.remove('print-modal'));
-$('dailyBtn').onclick = () => openReport('daily');
-$('weeklyBtn').onclick = () => openReport('weekly');
-$('monthlyBtn').onclick = () => openReport('monthly');
 
 $('modalBody').addEventListener('click', e => {
   const b = e.target.closest('button');
@@ -1280,24 +1064,82 @@ $('modalBody').addEventListener('click', e => {
     if (s) sendMessage(s, d.mwa ? 'wa' : 'sms');
     return;
   }
-  if (d.present) {
-    setStatus(Number(d.present), 'P').then(renderAbsentModal);
-    return;
-  }
+  if (d.present) { setStatus(Number(d.present), 'P').then(renderAbsentModal); return; }
   if (d.rwa !== undefined || d.rsms !== undefined) {
     const x = repRows[Number(d.rwa !== undefined ? d.rwa : d.rsms)];
-    if (!x) return;
-    sendRaw(x.s, d.rwa !== undefined ? 'wa' : 'sms', reportText(x, repKind, repStart, repEnd));
+    if (x) sendRaw(x.s, d.rwa !== undefined ? 'wa' : 'sms', reportText(x, repKind, repStart, repEnd));
   }
 });
+document.addEventListener('click', e => {
+  const k = e.target.closest('[data-cwa],[data-csim]');
+  if (!k) return;
+  const id = Number(k.dataset.cwa || k.dataset.csim);
+  const s = state.students.find(x => x.id === id);
+  if (s) callStudent(s, k.dataset.cwa ? 'wa' : 'sim');
+});
+
+/* ---------- رپورٹس ---------- */
+async function fetchRange(start, end) {
+  const ids = state.students.map(s => s.id);
+  let out = [], from = 0;
+  if (!ids.length) return out;
+  while (true) {
+    const { data, error } = await sb.from('attendance').select('student_id,date,status')
+      .in('student_id', ids).gte('date', start).lte('date', end).order('id').range(from, from + 999);
+    if (error) throw error;
+    out = out.concat(data || []);
+    if (!data || data.length < 1000) break;
+    from += 1000;
+  }
+  return out;
+}
+async function openReport(kind) {
+  if (!state.students.length) return toast('Add students to this class first', true);
+  const end = state.date;
+  let start = end, title = '📊 Daily report';
+  if (kind === 'weekly') { start = addDays(end, -6); title = '📈 Weekly report'; }
+  if (kind === 'monthly') { start = addDays(end, -29); title = '📉 Monthly report'; }
+  try {
+    const rows = await fetchRange(start, end);
+    const stats = new Map(state.students.map(s => [s.id, { s, name: s.name, adm: s.admission_no, P: 0, A: 0, L: 0, T: 0 }]));
+    rows.forEach(r => { const st = stats.get(r.student_id); if (st) st[r.status]++; });
+    repRows = [...stats.values()].sort((a, b) => byAdm(a.s, b.s)).map(x => {
+      const total = x.P + x.A + x.L + x.T;
+      return { ...x, total, pct: total ? Math.round(x.P / total * 100) : 0 };
+    });
+    repKind = kind; repStart = start; repEnd = end;
+    openModal(`${title} (${prettyDate(start)} – ${prettyDate(end)})`, `
+      <div class="actions" style="margin-bottom:10px">
+        <button class="btn b-blue" id="repPrint">🖨 Print / PDF</button>
+        <button class="btn b-yellow" id="repCsv">📥 Download CSV</button>
+      </div>
+      <table>
+        <tr><th>#</th><th>Admission No</th><th>Name</th><th>Present</th><th>Absent</th><th>Leave</th><th>Late</th><th>Records</th><th>%</th><th>Message</th></tr>
+        ${repRows.map((x, i) => `<tr>
+          <td>${i + 1}</td><td>${esc(x.adm)}</td>
+          <td>${esc(x.name)}${x.A > 7 ? ' <span class="warn">⚠️</span>' : ''}</td>
+          <td>${x.P}</td><td class="${x.A > 7 ? 'warn' : ''}">${x.A}</td>
+          <td>${x.L}</td><td>${x.T}</td><td>${x.total}</td><td>${x.pct}%</td>
+          <td class="nowrap">
+            <button class="btn sm wa" data-rwa="${i}">WA</button>
+            <button class="btn sm sms" data-rsms="${i}">SMS</button>
+          </td></tr>`).join('')}
+      </table>`);
+    $('repPrint').onclick = () => { document.body.classList.add('print-modal'); window.print(); };
+    $('repCsv').onclick = () => downloadCSV(`report_${start}_${end}.csv`,
+      ['Admission No', 'Name', 'Present', 'Absent', 'Leave', 'Late', 'Records', 'Attendance %'],
+      repRows.map(x => [x.adm, x.name, x.P, x.A, x.L, x.T, x.total, x.pct + '%']));
+  } catch (err) { toast('Report failed: ' + err.message, true); }
+}
+window.addEventListener('afterprint', () => document.body.classList.remove('print-modal'));
+$('dailyBtn').onclick = () => openReport('daily');
+$('weeklyBtn').onclick = () => openReport('weekly');
+$('monthlyBtn').onclick = () => openReport('monthly');
 
 $('csvBtn').onclick = () => {
-  if (!state.students.length) return toast(t('csvEmpty'), true);
-  downloadCSV(
-    `attendance_${state.date}.csv`,
-    [t('colName'), t('colAdm'), t('colMobile'), t('colStatus')],
-    state.students.map(s => [s.name, s.admission_no, s.mobile, statusLabel(state.att.get(s.id) || 'P')])
-  );
+  if (!state.students.length) return toast('No data to export.', true);
+  downloadCSV(`attendance_${state.date}.csv`, ['Admission No', 'Name', 'Mobile', 'Status'],
+    state.students.map(s => [s.admission_no, s.name, s.mobile, statusLabelOf(state.att.get(s.id) || 'P')]));
 };
 $('printBtn').onclick = () => window.print();
 $('refreshBtn').onclick = async () => {
@@ -1310,19 +1152,14 @@ $('refreshBtn').onclick = async () => {
 $('fileInput').onchange = async e => {
   const file = e.target.files[0];
   e.target.value = '';
-  const s = pendingFileStudent;
-  pendingFileStudent = null;
+  const s = pendingFile;
+  pendingFile = null;
   if (!file || !s) return;
-  if (!isValidMobile(s.mobile)) return toast(t('mobileBad', s.name), true);
+  if (!isValidMobile(s.mobile)) return toast(`${s.name}: invalid mobile`, true);
   const text = messageText(s.name, state.att.get(s.id) || 'A', state.date);
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], text });
-      logMessage(s, 'wa');
-      return;
-    } catch (err) {
-      if (err.name === 'AbortError') return;
-    }
+    try { await navigator.share({ files: [file], text }); logMessage(s, 'wa'); return; }
+    catch (err) { if (err.name === 'AbortError') return; }
   }
   downloadBlob(file.name, file);
   window.open(`https://wa.me/${normalizePK(s.mobile)}?text=${encodeURIComponent(text)}`, '_blank');
@@ -1330,81 +1167,150 @@ $('fileInput').onchange = async e => {
   toast(t('fileFallback'));
 };
 
+/* ---------- بیک اپ اور بحالی (حاضری + فیس) ---------- */
 $('backupBtn').onclick = async () => {
   try {
     toast(t('working'));
-    const [classes, students, attendance, message_logs, audit] = await Promise.all([
-      fetchAll('classes', 'id,name,sort_order'),
+    const [classes, students, attendance, message_logs, audit, fv, fp, fa, fs, ex] = await Promise.all([
+      fetchAll('classes', 'id,name,sort_order,base_fee'),
       fetchAll('students', '*'),
       fetchAll('attendance', 'id,student_id,date,status'),
       fetchAll('message_logs', 'id,student_id,date,channel'),
-      fetchAll('attendance_audit_logs', '*')
+      fetchAll('attendance_audit_logs', '*'),
+      fetchAll('fee_vouchers', '*'),
+      fetchAll('fee_payments', '*'),
+      fetchAll('fee_payment_allocations', '*'),
+      fetchAll('fee_settings', '*'),
+      fetchAll('expenses', '*')
     ]);
-    const payload = { version: 2, created_at: new Date().toISOString(), classes, students, attendance, message_logs, attendance_audit_logs: audit };
+    const payload = {
+      version: 3, created_at: new Date().toISOString(),
+      classes, students, attendance, message_logs, attendance_audit_logs: audit,
+      fee_vouchers: fv, fee_payments: fp, fee_payment_allocations: fa, fee_settings: fs, expenses: ex
+    };
     downloadBlob(`backup_${todayStr()}.json`, new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
     toast(t('backupDone'));
-  } catch (err) {
-    toast(t('loadFail', err.message), true);
-  }
+  } catch (err) { toast(err.message, true); }
 };
 $('restoreBtn').onclick = () => $('restoreFile').click();
 $('restoreFile').onchange = async e => {
   const file = e.target.files[0];
   e.target.value = '';
   if (!file) return;
-  if (!confirm(t('restoreConfirm'))) return;
+  if (!confirm('Restore data from this backup? Matching records will be updated.')) return;
   try {
     toast(t('working'));
-    const payload = JSON.parse(await file.text());
-    await restoreData(payload);
+    await restoreData(JSON.parse(await file.text()));
     toast(t('restored'));
     await loadClasses();
     await loadDay();
-  } catch (err) {
-    toast(t('restoreFail', err.message), true);
-  }
+  } catch (err) { toast('Restore failed: ' + err.message, true); }
 };
-
 async function restoreData(p) {
-  if (!p || !Array.isArray(p.classes) || !Array.isArray(p.students)) throw new Error(t('badBackup'));
+  if (!p || !Array.isArray(p.classes) || !Array.isArray(p.students)) throw new Error('Invalid backup file');
+
   const savedClasses = await upsertChunks('classes',
-    p.classes.map(c => ({ name: c.name, sort_order: c.sort_order ?? 0 })), { onConflict: 'name' });
+    p.classes.map(c => ({ name: c.name, sort_order: c.sort_order ?? 0, base_fee: c.base_fee ?? 0 })), { onConflict: 'name' });
   const classByName = new Map(savedClasses.map(c => [c.name, c.id]));
   const oldClassToNew = new Map(p.classes.map(c => [c.id, classByName.get(c.name)]));
+
   const savedStudents = await upsertChunks('students',
     p.students.map(s => ({
-      name: s.name,
-      admission_no: String(s.admission_no),
-      mobile: String(s.mobile),
-      section: s.section ?? null,
-      sim_number: s.sim_number ?? null,
-      father_name: s.father_name ?? null,
-      address: s.address ?? null,
-      face_descriptor: s.face_descriptor ?? null,
-      roll_number: s.roll_number ?? null,
-      date_of_birth: s.date_of_birth ?? null,
-      gender: s.gender ?? null,
-      monthly_fee: s.monthly_fee ?? null,
-      admission_date: s.admission_date ?? null,
-      previous_school: s.previous_school ?? null,
+      name: s.name, admission_no: String(s.admission_no), mobile: String(s.mobile),
+      section: s.section ?? null, sim_number: s.sim_number ?? null, father_name: s.father_name ?? null,
+      father_cnic: s.father_cnic ?? null, address: s.address ?? null, face_descriptor: s.face_descriptor ?? null,
+      roll_number: s.roll_number ?? null, date_of_birth: s.date_of_birth ?? null, gender: s.gender ?? null,
+      monthly_fee: s.monthly_fee ?? null, admission_date: s.admission_date ?? null,
+      previous_school: s.previous_school ?? null, exam_fee: s.exam_fee ?? 0, sports_fee: s.sports_fee ?? 0,
+      admission_fee: s.admission_fee ?? 0, fee_concession_pct: s.fee_concession_pct ?? 0, credit: s.credit ?? 0,
       class_id: oldClassToNew.get(s.class_id) ?? null,
+      expected_class_id: s.expected_class_id ? (oldClassToNew.get(s.expected_class_id) ?? null) : null,
       is_active: s.is_active !== false
     })),
     { onConflict: 'admission_no' });
   const studentByAdm = new Map(savedStudents.map(s => [String(s.admission_no), s.id]));
   const oldStudentToNew = new Map(p.students.map(s => [s.id, studentByAdm.get(String(s.admission_no))]));
+
   const attRows = (p.attendance || [])
     .map(a => ({ student_id: oldStudentToNew.get(a.student_id), date: a.date, status: a.status, updated_by: null }))
     .filter(r => r.student_id);
   await upsertChunks('attendance', attRows, { onConflict: 'student_id,date' });
+
   const logRows = (p.message_logs || [])
     .map(m => ({ student_id: oldStudentToNew.get(m.student_id), date: m.date, channel: m.channel, sent_by: null }))
     .filter(r => r.student_id);
   if (logRows.length) await insertChunks('message_logs', logRows);
+
+  const oldVoucherToNew = new Map();
+  if (Array.isArray(p.fee_vouchers) && p.fee_vouchers.length) {
+    const vRows = p.fee_vouchers.map(v => ({
+      old: v.id,
+      row: {
+        student_id: oldStudentToNew.get(v.student_id), fee_year: v.fee_year, fee_month: v.fee_month,
+        base_fee: v.base_fee ?? 0, one_time_fee: v.one_time_fee ?? 0, sibling_discount: v.sibling_discount ?? 0,
+        concession: v.concession ?? 0, fine: v.fine ?? 0, credit_applied: v.credit_applied ?? 0
+      }
+    })).filter(x => x.row.student_id);
+    const saved = await upsertChunks('fee_vouchers', vRows.map(x => x.row), { onConflict: 'student_id,fee_year,fee_month' });
+    const byKey = new Map(saved.map(v => [`${v.student_id}-${v.fee_year}-${v.fee_month}`, v.id]));
+    vRows.forEach(x => {
+      const nid = byKey.get(`${x.row.student_id}-${x.row.fee_year}-${x.row.fee_month}`);
+      if (nid) oldVoucherToNew.set(x.old, nid);
+    });
+  }
+
+  const oldPaymentToNew = new Map();
+  if (Array.isArray(p.fee_payments) && p.fee_payments.length) {
+    const pRows = p.fee_payments.map(x => ({
+      old: x.id,
+      row: {
+        student_id: oldStudentToNew.get(x.student_id), amount: x.amount, method: x.method, note: x.note ?? null,
+        receipt_no: x.receipt_no, paid_at: x.paid_at, unallocated: x.unallocated ?? 0
+      }
+    })).filter(x => x.row.student_id && x.row.receipt_no);
+    const saved = await upsertChunks('fee_payments', pRows.map(x => x.row), { onConflict: 'receipt_no' });
+    const byRc = new Map(saved.map(x => [x.receipt_no, x.id]));
+    pRows.forEach(x => {
+      const nid = byRc.get(x.row.receipt_no);
+      if (nid) oldPaymentToNew.set(x.old, nid);
+    });
+  }
+  if (Array.isArray(p.fee_payment_allocations) && p.fee_payment_allocations.length) {
+    const newPayIds = [...new Set([...oldPaymentToNew.values()])];
+    if (newPayIds.length) await sb.from('fee_payment_allocations').delete().in('payment_id', newPayIds);
+    const aRows = p.fee_payment_allocations.map(a => ({
+      payment_id: oldPaymentToNew.get(a.payment_id), voucher_id: oldVoucherToNew.get(a.voucher_id), amount: a.amount
+    })).filter(r => r.payment_id && r.voucher_id);
+    if (aRows.length) await insertChunks('fee_payment_allocations', aRows);
+  }
+
+  if (Array.isArray(p.fee_settings) && p.fee_settings[0]) {
+    const s = p.fee_settings[0];
+    await sb.from('fee_settings').upsert({
+      id: 1, bill_note_ur: s.bill_note_ur ?? '', bill_note_en: s.bill_note_en ?? '',
+      accountant_name: s.accountant_name ?? '', bill_show_breakdown: s.bill_show_breakdown ?? true,
+      reminder_tpl_ur: s.reminder_tpl_ur ?? '', reminder_tpl_en: s.reminder_tpl_en ?? ''
+    });
+  }
+
+  if (Array.isArray(p.expenses) && p.expenses.length) {
+    const { data: existing } = await sb.from('expenses').select('expense_date,category,amount,note');
+    const keys = new Set((existing || []).map(x => `${x.expense_date}|${x.category}|${x.amount}|${x.note ?? ''}`));
+    const missing = p.expenses
+      .filter(x => !keys.has(`${x.expense_date}|${x.category}|${x.amount}|${x.note ?? ''}`))
+      .map(x => ({ kind: x.kind || 'expense', expense_date: x.expense_date, category: x.category, amount: x.amount, note: x.note ?? null }));
+    if (missing.length) await insertChunks('expenses', missing);
+  }
 }
 
-applyLang();
-boot();
+/* ---------- شروع ---------- */
+function start() {
+  applyLang();
+  $('datePick').value = todayStr();
+  sb.auth.getSession().then(({ data }) => handleSession(data.session));
+  sb.auth.onAuthStateChange((_e, session) => handleSession(session));
+}
+start();
 </script>
 </body>
 </html>

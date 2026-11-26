@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin – AL SUFFAH PUBLIC HIGH SCHOOL</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{font-family:Tahoma,Arial,sans-serif;background:#f0f4ff;margin:0;padding:12px;color:#111}
+.school{font-size:20px;font-weight:900;text-align:center;color:#fff;background:linear-gradient(90deg,#4c1d95,#1d4ed8,#0891b2);border-radius:12px;padding:12px;margin-bottom:12px}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+input{padding:9px;border:2px solid #9ca3af;border-radius:8px;font-size:15px}
+.btn{border:none;color:#fff;background:#6c757d;padding:9px 13px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:13px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.b-blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.b-green{background:linear-gradient(135deg,#22c55e,#15803d)}
+.b-red{background:linear-gradient(135deg,#ef4444,#991b1b)}
+.b-gold{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.b-dark{background:linear-gradient(135deg,#475569,#1e293b)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+th,td{border:1px solid #d1d5db;padding:6px;text-align:center}
+th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
+.hint{font-size:12px;color:#374151}
+.msg{color:#dc2626;font-weight:bold}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;margin:-12px;background:linear-gradient(135deg,#6f42c1,#0d6efd,#0dcaf0)}
+.lc{width:min(360px,92vw);display:grid;gap:10px;background:#fff;border-radius:14px;padding:18px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:10px;z-index:50}
+.mbox{background:#fff;border-radius:14px;padding:16px;width:min(620px,100%);max-height:90vh;overflow:auto}
+.ma{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;flex-wrap:wrap}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#198754;color:#fff;padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:.3s;font-weight:bold;z-index:60}
+#toast.show{opacity:1}#toast.err{background:#dc2626}
+</style>
+</head>
+<body>
+
+<div id="login" class="login" hidden>
+  <div class="lc">
+    <div class="school" style="margin:0;color:#4c1d95;background:none;text-shadow:none">ایڈمن لاگ اِن</div>
+    <input id="lPhone" type="tel" placeholder="ایڈمن کا موبائل نمبر">
+    <input id="lPass" type="password" placeholder="پاس ورڈ">
+    <button class="btn b-blue" id="lBtn">🔐 لاگ اِن</button>
+    <p id="lMsg" class="msg"></p>
+  </div>
+</div>
+
+<div id="denied" class="card" hidden>
+  <p class="msg">یہ صفحہ صرف ایڈمن کے لیے ہے۔ آپ کے اکاؤنٹ کو ایڈمن کی اجازت نہیں۔</p>
+  <button class="btn b-dark" id="dLogout">لاگ آؤٹ</button>
+</div>
+
+<div id="app" hidden>
+  <div class="school">🏫 AL SUFFAH PUBLIC HIGH SCHOOL — ایڈمن پینل</div>
+  <div class="row">
+    <span id="who"></span>
+    <a class="btn b-dark" href="index.html" style="text-decoration:none">← حاضری</a>
+    <button class="btn b-red" id="logout">لاگ آؤٹ</button>
+  </div>
+
+  <div class="card">
+    <h3>➕ ٹیچر کو جوڑیں</h3>
+    <p class="hint">پہلے Supabase > Authentication > Users میں ٹیچر کا اکاؤنٹ بنائیں (Email: موبائل نمبر@suffah.com)۔ پھر یہاں موبائل اور نام لکھ کر جوڑیں۔</p>
+    <div class="row">
+      <input id="tPhone" type="tel" placeholder="ٹیچر کا موبائل نمبر" style="flex:1">
+      <input id="tName" placeholder="ٹیچر کا نام" style="flex:1">
+      <button class="btn b-green" id="linkBtn">🔗 جوڑیں</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👩‍🏫 ٹیچرز اور اجازتیں</h3>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>نام</th><th>موبائل</th><th>حیثیت</th><th>اجازتیں</th><th>فعال / بند</th></tr></thead>
+        <tbody id="tTb"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📜 ریکارڈ (آخری 100 تبدیلیاں)</h3>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>وقت</th><th>صارف</th><th>ماڈیول</th><th>عمل</th><th>تفصیل</th></tr></thead>
+        <tbody id="lTb"></tbody>
+      </table>
+    </div>
+    <div class="row"><button class="btn b-dark" id="reloadLogs">🔄 تازہ کریں</button></div>
+  </div>
+</div>
+
+<div id="modal" class="modal" hidden>
+  <div class="mbox">
+    <h3 id="mT"></h3>
+    <div id="mB"></div>
+    <div class="ma"><button class="btn b-dark" id="mC">بند کریں</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://mjwnyvaofwyhrhkrmifz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_sXLOkuE5Bzpdx2HNQnzQ-Q_PFeiaVW4';
+const DOMAIN = '@suffah.com';
+const ADMIN_PHONE = '03467873220';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const MODULES = [
+  ['attendance', 'حاضری'], ['fees', 'فیس وصولی'], ['bills', 'بل'], ['defaulters', 'ڈیفالٹرز'],
+  ['expenses', 'اخراجات'], ['settings', 'ترتیب'], ['admission', 'ایڈمیشن / طلباء'],
+  ['records', 'ریکارڈ / خارج'], ['reports', 'رپورٹس']
+];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function toast(msg, err = false) {
+  const el = $('toast'); el.textContent = msg; el.className = 'show' + (err ? ' err' : '');
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.className = '', 3000);
+}
+function normalizePK(num) {
+  let d = String(num || '').replace(/\D/g, '');
+  if (d.startsWith('00')) d = d.slice(2);
+  if (d.startsWith('0')) d = '92' + d.slice(1);
+  else if (d.length === 10 && d.startsWith('3')) d = '92' + d;
+  return d;
+}
+const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
+
+/* ---------- لاگ اِن اور ایڈمن کی جانچ ---------- */
+$('lBtn').onclick = async () => {
+  $('lMsg').textContent = '';
+  const phone = normalizePK($('lPhone').value.trim());
+  if (!isValidMobile(phone)) return $('lMsg').textContent = 'موبائل نمبر درست نہیں';
+  const { error } = await sb.auth.signInWithPassword({ email: phone + DOMAIN, password: $('lPass').value });
+  if (error) $('lMsg').textContent = 'موبائل نمبر یا پاس ورڈ غلط ہے';
+};
+$('lPass').addEventListener('keydown', e => { if (e.key === 'Enter') $('lBtn').click(); });
+$('logout').onclick = () => sb.auth.signOut();
+$('dLogout').onclick = () => sb.auth.signOut();
+
+async function handleSession(session) {
+  if (!session) {
+    $('login').hidden = false; $('app').hidden = true; $('denied').hidden = true;
+    return;
+  }
+  const { data: prof } = await sb.from('user_profiles').select('*').eq('user_id', session.user.id).maybeSingle();
+  if (!prof || prof.role !== 'admin' || !prof.is_active) {
+    $('login').hidden = true; $('app').hidden = true; $('denied').hidden = false;
+    return;
+  }
+  $('login').hidden = true; $('denied').hidden = true; $('app').hidden = false;
+  $('who').textContent = '👤 ' + ADMIN_PHONE;
+  loadTeachers();
+  loadLogs();
+}
+
+/* ---------- ٹیچر کو جوڑنا ---------- */
+$('linkBtn').onclick = async () => {
+  const phone = normalizePK($('tPhone').value.trim());
+  const name = $('tName').value.trim();
+  if (!isValidMobile(phone)) return toast('موبائل نمبر درست نہیں', true);
+  if (!name) return toast('نام لکھیں', true);
+  const { error } = await sb.rpc('admin_link_teacher', { p_phone: phone.replace(/^92/, '0'), p_name: name });
+  if (error) return toast('ناکام: ' + error.message, true);
+  toast('✅ ٹیچر جوڑ دیا گیا');
+  $('tPhone').value = ''; $('tName').value = '';
+  loadTeachers();
+};
+
+/* ---------- ٹیچرز کی فہرست ---------- */
+async function loadTeachers() {
+  const { data, error } = await sb.from('user_profiles').select('*').eq('role', 'teacher').order('phone');
+  if (error) return toast(error.message, true);
+  $('tTb').innerHTML = (data || []).map(t => `<tr>
+    <td>${esc(t.full_name || '—')}</td>
+    <td>${esc(t.phone)}</td>
+    <td>${t.is_active ? '✅ فعال' : '⛔ بند'}</td>
+    <td><button class="btn b-blue" data-act="perm" data-id="${t.user_id}" data-name="${esc(t.full_name || t.phone)}">🔐 اجازتیں</button></td>
+    <td><button class="btn ${t.is_active ? 'b-red' : 'b-green'}" data-act="toggle" data-id="${t.user_id}" data-on="${t.is_active}">${t.is_active ? '⛔ بند کریں' : '✅ کھولیں'}</button></td>
+  </tr>`).join('') || '<tr><td colspan="5">کوئی ٹیچر نہیں جوڑا گیا</td></tr>';
+}
+
+async function openPerms(userId, name) {
+  const { data: rows } = await sb.from('user_module_permissions').select('*').eq('user_id', userId);
+  const map = new Map((rows || []).map(r => [r.module, r]));
+  $('mT').textContent = '🔐 اجازتیں: ' + name;
+  $('mB').innerHTML = `<p class="hint">"دیکھنا" سے صفحہ کھلے گا۔ "تبدیلی" سے ٹیچر ریکارڈ بدل سکے گا۔</p>
+    <table><thead><tr><th>ماڈیول</th><th>دیکھنا</th><th>تبدیلی</th></tr></thead><tbody>
+    ${MODULES.map(([k, label]) => {
+      const r = map.get(k) || {};
+      return `<tr><td>${label}</td>
+        <td><input type="checkbox" data-mod="${k}" data-f="view" ${r.can_view ? 'checked' : ''}></td>
+        <td><input type="checkbox" data-mod="${k}" data-f="edit" ${r.can_edit ? 'checked' : ''}></td></tr>`;
+    }).join('')}
+    </tbody></table>
+    <div class="ma"><button class="btn b-green" data-act="savePerm" data-id="${userId}">💾 محفوظ کریں</button></div>`;
+  $('modal').hidden = false;
+}
+
+async function savePerms(userId) {
+  const rows = MODULES.map(([k]) => {
+    const v = document.querySelector(`input[data-mod="${k}"][data-f="view"]`).checked;
+    const e = document.querySelector(`input[data-mod="${k}"][data-f="edit"]`).checked;
+    return { user_id: userId, module: k, can_view: v || e, can_edit: e };
+  });
+  const { error } = await sb.from('user_module_permissions').upsert(rows, { onConflict: 'user_id,module' });
+  if (error) return toast('ناکام: ' + error.message, true);
+  await sb.from('activity_logs').insert({ module: 'admin', action: 'permissions', detail: 'اجازتیں تبدیل: ' + userId });
+  toast('✅ اجازتیں محفوظ ہو گئیں');
+  $('modal').hidden = true;
+  loadLogs();
+}
+
+async function toggleTeacher(userId, currentlyOn) {
+  if (!confirm(currentlyOn ? 'اس ٹیچر کو بند کریں؟' : 'اس ٹیچر کو دوبارہ کھولیں؟')) return;
+  const { error } = await sb.from('user_profiles').update({ is_active: !currentlyOn }).eq('user_id', userId);
+  if (error) return toast('ناکام: ' + error.message, true);
+  await sb.from('activity_logs').insert({ module: 'admin', action: currentlyOn ? 'disable' : 'enable', detail: userId });
+  toast('✅ تبدیلی محفوظ');
+  loadTeachers();
+  loadLogs();
+}
+
+/* ---------- ریکارڈ ---------- */
+async function loadLogs() {
+  const { data, error } = await sb.from('activity_logs').select('*').order('created_at', { ascending: false }).limit(100);
+  if (error) return toast(error.message, true);
+  $('lTb').innerHTML = (data || []).map(l => `<tr>
+    <td>${new Date(l.created_at).toLocaleString('en-GB')}</td>
+    <td>${esc((l.user_id || '').slice(0, 8))}</td>
+    <td>${esc(l.module || '—')}</td>
+    <td>${esc(l.action || '—')}</td>
+    <td>${esc(l.detail || '—')}</td></tr>`).join('') || '<tr><td colspan="5">کوئی ریکارڈ نہیں</td></tr>';
+}
+$('reloadLogs').onclick = loadLogs;
+
+/* ---------- ایونٹس ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const a = b.dataset.act;
+  if (a === 'perm') openPerms(b.dataset.id, b.dataset.name);
+  if (a === 'savePerm') savePerms(b.dataset.id);
+  if (a === 'toggle') toggleTeacher(b.dataset.id, b.dataset.on === 'true');
+});
+$('mC').onclick = () => $('modal').hidden = true;
+
+sb.auth.getSession().then(({ data }) => handleSession(data.session));
+sb.auth.onAuthStateChange((_e, session) => handleSession(session));
+</script>
+</body>
+</html>

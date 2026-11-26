@@ -41,6 +41,7 @@ input,select,textarea{padding:9px;border:2px solid #9ca3af;border-radius:8px;fon
 .b-yellow{background:linear-gradient(135deg,#facc15,#ca8a04);color:#000}
 .b-fee{background:linear-gradient(135deg,#f59e0b,#b45309)}
 .b-form{background:linear-gradient(135deg,#14b8a6,#0f766e)}
+.b-exit{background:linear-gradient(135deg,#be123c,#7f1d1d)}
 .summary{display:flex;flex-wrap:wrap;gap:10px;font-size:14px;align-items:center}
 .chip{padding:6px 12px;border-radius:20px;font-weight:bold;background:#e5e7eb;color:#111}
 .chip.total{background:#e0e7ff;color:#3730a3}
@@ -85,7 +86,7 @@ th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
 #toast.show{opacity:1}
 #toast.err{background:var(--red)}
 @media print{
-  .noprint,.hint,.toolbar,.actions,header,#toast,.kpis,.alert{display:none!important}
+  .hint,.toolbar,.actions,header,#toast,.kpis,.alert{display:none!important}
   body{background:#fff}
   body.print-modal #app{display:none!important}
   body.print-modal #modal{position:static;background:none}
@@ -101,6 +102,7 @@ th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
 #tbody .btn.form{background:linear-gradient(135deg,#14b8a6,#0f766e)}
 #tbody .btn.edit{background:linear-gradient(135deg,#facc15,#ca8a04);color:#000}
 #tbody .btn.del{background:linear-gradient(135deg,#ef4444,#991b1b)}
+#tbody .btn.exit{background:linear-gradient(135deg,#be123c,#7f1d1d)}
 </style>
 </head>
 <body>
@@ -136,6 +138,7 @@ th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
     <label>🎓 Class <select id="classPick"></select></label>
     <label>🔍 Search <input id="search" placeholder="Name or admission no."></label>
     <button class="btn b-blue" id="addBtn">➕ Add student</button>
+    <button class="btn b-indigo" id="recordsBtn">📚 Records / Exited students</button>
     <button class="btn b-green" id="markAllBtn">✅ Mark all present</button>
     <button class="btn b-purple" id="faceCheckBtn">📷 Face check-in</button>
   </section>
@@ -170,7 +173,7 @@ th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
       <thead>
         <tr>
           <th>#</th><th>Name</th><th>Admission No</th><th>Status</th><th>Mobile</th>
-          <th>Actions</th><th>Edit</th><th>Delete</th><th>💰 Due</th>
+          <th>Actions</th><th>Edit</th><th>Delete</th><th>Exit</th><th>💰 Due</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -201,6 +204,7 @@ const FACE_MODELS = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/mo
 const FACE_THRESHOLD = 0.5;
 const ALERT_DAYS = [3, 5, 7];
 const COOLDOWN_MS = 10000;
+const EXIT_REASONS = ['Transfer to another school', 'Parents request', 'Continuous absence', 'Misconduct', 'Fee default', 'Other'];
 
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -227,15 +231,12 @@ const isValidMobile = n => /^92\d{10}$/.test(normalizePK(n));
 const smsNum = s => isValidMobile(s.sim_number || '') ? s.sim_number : s.mobile;
 const sectionName = sec => (sec === 'Green' || sec === 'Yellow') ? sec : '';
 
-// ترجمہ: [English, Urdu]
 const TX = {
-  login: ['🔐 Login', '🔐 لاگ اِن'],
   logout: ['Logout', 'لاگ آؤٹ'],
   allClasses: ['All classes', 'تمام کلاسیں'],
   noStudents: ['No students here. Click "Add student".', 'یہاں کوئی طالب علم نہیں۔'],
   statusP: ['Present', 'حاضر'], statusA: ['Absent', 'غیر حاضر'], statusL: ['Leave', 'چھٹی'], statusT: ['Late', 'لیٹ'],
   saved: ['💾 Saved', '💾 محفوظ ہو گیا'],
-  deleted: ['🗑️ Removed from the list', '🗑️ فہرست سے نکال دیا گیا'],
   copied: ['📋 Message copied', '📋 پیغام کاپی ہو گیا'],
   working: ['⏳ Please wait...', '⏳ براہ کرم انتظار کریں...'],
   refreshed: ['🔄 Refreshed', '🔄 ریفریش ہو گیا'],
@@ -246,7 +247,6 @@ const TX = {
   errLogin: ['Wrong mobile number or password', 'موبائل نمبر یا پاس ورڈ غلط ہے'],
   noNumber: ['No valid number for this student', 'درست نمبر موجود نہیں'],
   noAbsent: ['No absent students today.', 'آج کوئی غیر حاضر طالب علم نہیں۔'],
-  faceNone: ['No single face found. Try again.', 'ایک واضح چہرہ نہیں ملا'],
   fileFallback: ['File downloaded. Attach it in the WhatsApp chat.', 'فائل ڈاؤن لوڈ ہو گئی، واٹس ایپ میں منسلک کریں۔']
 };
 let lang = store.get('lang') || 'en';
@@ -263,7 +263,7 @@ function toast(msg, err = false) {
 const state = {
   user: null, inited: false, classes: [], students: [], att: new Map(),
   classId: 'all', date: '', seq: 0, msgLang: store.get('msgLang') || 'ur',
-  alerts: [], feeMap: {}, setSel: null, queue: [], queueDone: new Set(), lastWa: 0, cooldown: null
+  alerts: [], feeMap: {}, queue: [], queueDone: new Set(), lastWa: 0, cooldown: null
 };
 let faceStop = null, pendingFile = null, repRows = [], repKind = 'weekly', repStart = '', repEnd = '';
 
@@ -418,7 +418,6 @@ function applyLang() {
   document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';
   $('langPick').value = lang;
   $('msgLangPick').value = state.msgLang;
-  $('loginBtn').textContent = t('login');
   $('logoutBtn').textContent = t('logout');
   fillClassPick();
   renderAll();
@@ -462,7 +461,8 @@ async function loadDay() {
   state.date = $('datePick').value || todayStr();
   store.set('lastClassId', state.classId);
 
-  let q = sb.from('students').select('*').eq('is_active', true);
+  // صرف فعال طلباء (خارج شدہ طلباء یہاں نہیں آتے)
+  let q = sb.from('students').select('*').eq('is_active', true).eq('status', 'active');
   q = state.classId === 'all' ? q.in('class_id', state.classes.map(c => c.id)) : q.eq('class_id', Number(state.classId));
   const { data, error } = await q;
   if (seq !== state.seq) return;
@@ -548,6 +548,9 @@ function renderSummary() {
     <div class="bar"><span style="width:${pct}%"></span></div>
     <span class="hint">📅 ${prettyDate(state.date)}</span>`;
 }
+function statusLabelOf(st) {
+  return t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
+}
 function render() {
   const q = $('search').value.trim().toLowerCase();
   const list = state.students.filter(s => !q || s.name.toLowerCase().includes(q) || String(s.admission_no).toLowerCase().includes(q));
@@ -573,16 +576,14 @@ function render() {
       </td>
       <td><button class="btn sm edit" data-act="edit" data-id="${s.id}">✏️ Edit</button></td>
       <td><button class="btn sm del" data-act="del" data-id="${s.id}">🗑️ Delete</button></td>
+      <td><button class="btn sm exit" data-act="exit" data-id="${s.id}">🚪 Exit</button></td>
       <td><b style="color:${owed > 0 ? '#dc2626' : '#16a34a'}">${money(owed)}</b>
         <br><a class="btn sm b-fee" href="fees.html?adm=${encodeURIComponent(s.admission_no)}">💵 Fee</a></td>
     </tr>`;
-  }).join('') : `<tr><td colspan="9" class="empty">${t('noStudents')}</td></tr>`;
+  }).join('') : `<tr><td colspan="10" class="empty">${t('noStudents')}</td></tr>`;
   renderSummary();
   renderKpis();
   renderAlerts();
-}
-function statusLabelOf(st) {
-  return t(st === 'P' ? 'statusP' : st === 'A' ? 'statusA' : st === 'L' ? 'statusL' : 'statusT');
 }
 function renderAll() { render(); }
 $('search').addEventListener('input', render);
@@ -643,15 +644,110 @@ $('tbody').addEventListener('click', e => {
     case 'form': openStudentForm(s, true); break;
     case 'edit': openStudentForm(s); break;
     case 'del': deleteStudent(s); break;
+    case 'exit': openExitForm(s); break;
+  }
+});
+
+/* ---------- اخراج اور دوبارہ داخلہ ---------- */
+function openExitForm(s) {
+  openModal(`🚪 Exit: ${s.name} (${s.admission_no})`, `
+    <div class="form">
+      <label>Reason
+        <select id="exReason">${EXIT_REASONS.map(r => `<option>${esc(r)}</option>`).join('')}</select>
+      </label>
+      <label>Exit date<input type="date" id="exDate" value="${todayStr()}"></label>
+      <label>Note (optional)<textarea id="exNote" rows="3" style="width:100%"></textarea></label>
+      <p class="hint">The record is kept permanently and can be found later from Records. Attendance, reports and fee lists will no longer show this student.</p>
+    </div>
+    <div class="ma"><button class="btn b-exit" id="exConfirm">🚪 Confirm exit</button></div>`);
+  $('exConfirm').onclick = async () => {
+    if (!confirm(`Exit ${s.name}?`)) return;
+    const reason = $('exReason').value, date = $('exDate').value || todayStr(), note = $('exNote').value.trim() || null;
+    const { error: e1 } = await sb.from('students').update({
+      status: 'exited', exit_date: date, exit_reason: reason, exit_note: note
+    }).eq('id', s.id);
+    if (e1) return toast(e1.message, true);
+    const { error: e2 } = await sb.from('student_exits').insert({
+      student_id: s.id, action: 'exit', reason, note, action_date: date, created_by: state.user.id
+    });
+    if (e2) return toast(e2.message, true);
+    closeModal();
+    toast('🚪 Student exited. Record kept.');
+    loadDay();
+  };
+}
+
+async function openRecords() {
+  openModal('📚 Records / Exited students', `
+    <div class="row2" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+      <input id="recQ" placeholder="Admission no, name, father, mobile or CNIC" style="flex:1;min-width:220px">
+      <select id="recStatus">
+        <option value="all">All</option>
+        <option value="exited">Exited only</option>
+        <option value="active">Active only</option>
+      </select>
+      <button class="btn b-indigo" id="recGo">🔎 Search</button>
+    </div>
+    <div id="recRes" class="tw"></div>`);
+  const run = async () => {
+    const q = $('recQ').value.trim().toLowerCase();
+    const st = $('recStatus').value;
+    let query = sb.from('students').select('*').order('admission_no');
+    if (st === 'exited') query = query.eq('status', 'exited');
+    else if (st === 'active') query = query.eq('status', 'active');
+    const { data, error } = await query;
+    if (error) return toast(error.message, true);
+    const list = (data || []).filter(s => !q ||
+      String(s.admission_no).toLowerCase().includes(q) ||
+      s.name.toLowerCase().includes(q) ||
+      (s.father_name || '').toLowerCase().includes(q) ||
+      String(s.mobile || '').includes(q.replace(/\D/g, '') || '@@') ||
+      (s.father_cnic || '').toLowerCase().includes(q)).sort(byAdm);
+    $('recRes').innerHTML = list.length ? `<table>
+      <tr><th>Admission No</th><th>Name</th><th>Father</th><th>Mobile</th><th>Class</th><th>Status</th><th>Exit date</th><th>Reason</th><th>Action</th></tr>
+      ${list.map(s => `<tr>
+        <td>${esc(s.admission_no)}</td><td>${esc(s.name)}</td><td>${esc(s.father_name || '—')}</td>
+        <td>${esc(s.mobile)}</td><td>${esc(classNameOf(s.class_id))}</td>
+        <td>${s.status === 'exited' ? '🚪 Exited' : '✅ Active'}</td>
+        <td>${esc(s.exit_date || '—')}</td><td>${esc(s.exit_reason || '—')}</td>
+        <td class="nowrap">${s.status === 'exited'
+          ? `<button class="btn sm b-green" data-react="${s.id}">♻️ Reactivate</button>`
+          : `<button class="btn sm b-dark" data-profile="${s.id}">📋 Profile</button>`}</td>
+      </tr>`).join('')}
+    </table>` : '<p class="hint">No record found.</p>';
+  };
+  $('recGo').onclick = run;
+  $('recQ').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+  $('recStatus').onchange = run;
+  run();
+}
+document.addEventListener('click', async e => {
+  const r = e.target.closest('[data-react]');
+  if (r) {
+    if (!confirm('Reactivate this student?')) return;
+    const id = Number(r.dataset.react);
+    const { error } = await sb.from('students').update({ status: 'active', exit_date: null, exit_reason: null, exit_note: null }).eq('id', id);
+    if (error) return toast(error.message, true);
+    await sb.from('student_exits').insert({ student_id: id, action: 'reactivate', reason: 'Re-admission', action_date: todayStr(), created_by: state.user.id });
+    toast('♻️ Student reactivated');
+    openRecords();
+    loadDay();
+    return;
+  }
+  const p = e.target.closest('[data-profile]');
+  if (p) {
+    const s = state.students.find(x => x.id === Number(p.dataset.profile));
+    if (s) openProfile(s);
   }
 });
 
 /* ---------- پروفائل ---------- */
 async function openProfile(s) {
   const from = addDays(state.date, -59);
-  const [{ data: att }, { data: audit }] = await Promise.all([
+  const [{ data: att }, { data: audit }, { data: exits }] = await Promise.all([
     sb.from('attendance').select('date,status').eq('student_id', s.id).gte('date', from).lte('date', state.date).order('date', { ascending: false }),
-    sb.from('attendance_audit_logs').select('old_status,new_status,changed_at').eq('student_id', s.id).order('changed_at', { ascending: false }).limit(50)
+    sb.from('attendance_audit_logs').select('old_status,new_status,changed_at').eq('student_id', s.id).order('changed_at', { ascending: false }).limit(50),
+    sb.from('student_exits').select('*').eq('student_id', s.id).order('created_at', { ascending: false })
   ]);
   const rows = att || [];
   const cnt = { P: 0, A: 0, L: 0, T: 0 };
@@ -664,16 +760,20 @@ async function openProfile(s) {
     ['Monthly fee', s.monthly_fee], ['Exam fee', s.exam_fee], ['Sports fee', s.sports_fee], ['Admission fee', s.admission_fee],
     ['Admission date', s.admission_date], ['Previous school', s.previous_school], ['Address', s.address],
     ['Class', classNameOf(s.class_id) + (sectionName(s.section) ? ' · ' + sectionName(s.section) : '')],
-    ['Expected next class', s.expected_class_id ? classNameOf(s.expected_class_id) : '']
+    ['Expected next class', s.expected_class_id ? classNameOf(s.expected_class_id) : ''],
+    ['Status', s.status === 'exited' ? `Exited (${s.exit_date || ''}) — ${s.exit_reason || ''}` : 'Active']
   ].map(([k, v]) => `<tr><td><b>${esc(k)}</b></td><td>${esc(v || '—')}</td></tr>`).join('');
   openModal(`📋 ${s.name}`, `
     <h4>Personal information</h4><table>${info}</table>
     <h4>Attendance (last 60 days)</h4>
     <p class="hint">P: ${cnt.P} | A: ${cnt.A} | L: ${cnt.L} | T: ${cnt.T} | ${pct}%</p>
     ${total ? `<table><tr><th>Date</th><th>Status</th></tr>${rows.map(r => `<tr><td>${prettyDate(r.date)}</td><td>${statusLabelOf(r.status)}</td></tr>`).join('')}</table>` : '<p class="hint">No attendance records yet</p>'}
+    <h4>Exit / re-admission history</h4>
+    ${(exits && exits.length) ? `<table><tr><th>Action</th><th>Date</th><th>Reason</th><th>Note</th></tr>${exits.map(x => `<tr><td>${x.action === 'exit' ? '🚪 Exit' : '♻️ Reactivated'}</td><td>${esc(x.action_date)}</td><td>${esc(x.reason || '—')}</td><td>${esc(x.note || '—')}</td></tr>`).join('')}</table>` : '<p class="hint">No exit records</p>'}
     <h4>Attendance changes (audit)</h4>
     ${(audit && audit.length) ? `<table><tr><th>Change</th><th>When</th></tr>${audit.map(a => `<tr><td>${esc(a.old_status)} → ${esc(a.new_status)}</td><td>${new Date(a.changed_at).toLocaleString()}</td></tr>`).join('')}</table>` : '<p class="hint">No changes recorded yet</p>'}`);
 }
+$('recordsBtn').onclick = openRecords;
 
 /* ---------- کال ---------- */
 function openCallChoice(s) {
@@ -745,7 +845,7 @@ async function openFaceRegister(s) {
   $('capBtn').onclick = async () => {
     try {
       const det = await faceapi.detectSingleFace($('camV'), new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
-      if (!det) return toast(t('faceNone'), true);
+      if (!det) return toast('No single face found. Try again.', true);
       const desc = Array.from(det.descriptor);
       const { error } = await sb.from('students').update({ face_descriptor: desc }).eq('id', s.id);
       if (error) return toast(error.message, true);
@@ -853,14 +953,14 @@ function openStudentForm(s = null, printOnly = false) {
       <div class="ma">
         <button class="btn b-indigo" type="button" id="prtA4">🖨 Print A4</button>
         <button class="btn b-indigo" type="button" id="prtLegal">🖨 Print Legal</button>
-        <button class="btn b-green" type="submit" ${printOnly ? 'hidden' : ''}>💾 Save</button>
+        ${printOnly ? '' : '<button class="btn b-green" type="submit">💾 Save</button>'}
       </div>
     </form>`);
 
   $('prtA4').onclick = () => printAdmission(readStudentForm(), 'A4');
   $('prtLegal').onclick = () => printAdmission(readStudentForm(), 'Legal');
-  if (printOnly && s) {
-    // فارم کی قطار سے کھلنے پر تفصیل صرف پرنٹ کے لیے ہے
+  if (printOnly) {
+    $('sForm').querySelectorAll('input,select').forEach(el => el.disabled = true);
     $('sForm').querySelectorAll('input,select').forEach(el => el.disabled = false);
   }
   $('sForm').onsubmit = async e => {
@@ -905,7 +1005,6 @@ function readStudentForm() {
 function admissionBody(d) {
   const row = (a, b) => `<tr><td class="k">${a}</td><td>${esc(b || '—')}</td></tr>`;
   const monthly = Number(d.monthly_fee) > 0 ? Number(d.monthly_fee) : classBase(d.class_id);
-  const sex = d.gender || '—';
   const sec = sectionName(d.section);
   const ins = [
     "Photocopy of the B-Form and two passport-size photographs of the student.",
@@ -931,7 +1030,7 @@ function admissionBody(d) {
         ${row('Roll No', d.roll_number)}
         ${row('Current class', classNameOf(d.class_id) + (sec ? ' · ' + sec : ''))}
         ${row('Expected next class', d.expected_class_id ? classNameOf(d.expected_class_id) : '—')}
-        ${row('Gender', sex)}
+        ${row('Gender', d.gender || '—')}
         ${row('Date of birth', d.date_of_birth)}
         ${row('Admission date', d.admission_date)}
         ${row('Previous school', d.previous_school)}
@@ -988,7 +1087,7 @@ async function deleteStudent(s) {
   if (!confirm(`Remove ${s.name} from the list? Past records will be kept.`)) return;
   const { error } = await sb.from('students').update({ is_active: false }).eq('id', s.id);
   if (error) return toast(error.message, true);
-  toast(t('deleted'));
+  toast('🗑️ Removed from the list');
   loadDay();
 }
 $('addBtn').onclick = () => openStudentForm();
@@ -1054,11 +1153,6 @@ $('modalBody').addEventListener('click', e => {
   const b = e.target.closest('button');
   if (!b) return;
   const d = b.dataset;
-  if (d.cwa || d.csim) {
-    const s = state.students.find(x => x.id === Number(d.cwa || d.csim));
-    if (s) callStudent(s, d.cwa ? 'wa' : 'sim');
-    return;
-  }
   if (d.mwa || d.msms) {
     const s = state.students.find(x => x.id === Number(d.mwa || d.msms));
     if (s) sendMessage(s, d.mwa ? 'wa' : 'sms');
@@ -1167,11 +1261,11 @@ $('fileInput').onchange = async e => {
   toast(t('fileFallback'));
 };
 
-/* ---------- بیک اپ اور بحالی (حاضری + فیس) ---------- */
+/* ---------- بیک اپ اور بحالی ---------- */
 $('backupBtn').onclick = async () => {
   try {
     toast(t('working'));
-    const [classes, students, attendance, message_logs, audit, fv, fp, fa, fs, ex] = await Promise.all([
+    const [classes, students, attendance, message_logs, audit, fv, fp, fa, fs, ex, exits] = await Promise.all([
       fetchAll('classes', 'id,name,sort_order,base_fee'),
       fetchAll('students', '*'),
       fetchAll('attendance', 'id,student_id,date,status'),
@@ -1181,12 +1275,14 @@ $('backupBtn').onclick = async () => {
       fetchAll('fee_payments', '*'),
       fetchAll('fee_payment_allocations', '*'),
       fetchAll('fee_settings', '*'),
-      fetchAll('expenses', '*')
+      fetchAll('expenses', '*'),
+      fetchAll('student_exits', '*')
     ]);
     const payload = {
-      version: 3, created_at: new Date().toISOString(),
+      version: 4, created_at: new Date().toISOString(),
       classes, students, attendance, message_logs, attendance_audit_logs: audit,
-      fee_vouchers: fv, fee_payments: fp, fee_payment_allocations: fa, fee_settings: fs, expenses: ex
+      fee_vouchers: fv, fee_payments: fp, fee_payment_allocations: fa, fee_settings: fs, expenses: ex,
+      student_exits: exits
     };
     downloadBlob(`backup_${todayStr()}.json`, new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
     toast(t('backupDone'));
@@ -1223,6 +1319,7 @@ async function restoreData(p) {
       monthly_fee: s.monthly_fee ?? null, admission_date: s.admission_date ?? null,
       previous_school: s.previous_school ?? null, exam_fee: s.exam_fee ?? 0, sports_fee: s.sports_fee ?? 0,
       admission_fee: s.admission_fee ?? 0, fee_concession_pct: s.fee_concession_pct ?? 0, credit: s.credit ?? 0,
+      status: s.status ?? 'active', exit_date: s.exit_date ?? null, exit_reason: s.exit_reason ?? null, exit_note: s.exit_note ?? null,
       class_id: oldClassToNew.get(s.class_id) ?? null,
       expected_class_id: s.expected_class_id ? (oldClassToNew.get(s.expected_class_id) ?? null) : null,
       is_active: s.is_active !== false
@@ -1300,6 +1397,14 @@ async function restoreData(p) {
       .filter(x => !keys.has(`${x.expense_date}|${x.category}|${x.amount}|${x.note ?? ''}`))
       .map(x => ({ kind: x.kind || 'expense', expense_date: x.expense_date, category: x.category, amount: x.amount, note: x.note ?? null }));
     if (missing.length) await insertChunks('expenses', missing);
+  }
+
+  if (Array.isArray(p.student_exits) && p.student_exits.length) {
+    const exitRows = p.student_exits.map(x => ({
+      student_id: oldStudentToNew.get(x.student_id), action: x.action, reason: x.reason ?? null,
+      note: x.note ?? null, action_date: x.action_date ?? null
+    })).filter(r => r.student_id);
+    if (exitRows.length) await insertChunks('student_exits', exitRows);
   }
 }
 

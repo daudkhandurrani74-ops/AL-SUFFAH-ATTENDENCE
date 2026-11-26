@@ -58,6 +58,7 @@ textarea{width:100%}
 .kpi{background:linear-gradient(135deg,#fff,#eef2ff);border-radius:14px;padding:12px;text-align:center;box-shadow:0 6px 14px rgba(79,70,229,.15)}
 .kpi b{display:block;font-size:20px;color:#3730a3}.kpi span{font-size:12px;color:#374151}
 .bigCount{font-size:26px;font-weight:900;color:#991b1b;background:#fee2e2;border-radius:12px;padding:10px;text-align:center;margin:8px 0}
+.warnBox{background:#fef2f2;border:2px solid #f87171;border-radius:10px;padding:10px;margin:8px 0;font-weight:bold;color:#991b1b}
 table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
 th,td{border:1px solid #d1d5db;padding:6px;text-align:center;color:#111}
 th{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
@@ -159,6 +160,7 @@ tr.rowR td{background:#fecaca!important}
       <div class="row2">
         <input id="qAdm" style="flex:1" autocomplete="off">
         <button class="btn b-indigo" data-act="qFind" id="findBtn"></button>
+        <button class="btn b-rose" data-act="recOpen" id="recBtn"></button>
       </div>
       <div id="payPanel"></div>
     </div>
@@ -315,7 +317,7 @@ const hasUr = s => /[\u0600-\u06FF]/.test(String(s));
 const U = s => hasUr(s) ? `<span class="ur">${s}</span>` : s;
 const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 const admNum = s => { const n = parseInt(String(s.admission_no).replace(/\D/g, ''), 10); return isNaN(n) ? Infinity : n; };
-const byAdm = (a, b) => admNum(a) - admNum(b) || String(a.admission_no).localeCompare(String(b.admission_no));
+const byAdm = (a, b) => (admNum(a) - admNum(b)) || String(a.admission_no).localeCompare(String(b.admission_no));
 
 const D = {
   schoolName: ['AL SUFFAH PUBLIC HIGH SCHOOL', 'الصفہ پبلک ہائی اسکول'],
@@ -330,7 +332,7 @@ const D = {
   orient: ['Orientation', 'رخ'], msgLang: ['Message language', 'پیغام کی زبان'], billLang: ['Bill language', 'بل کی زبان'],
   uiLang: ['Screen language', 'اسکرین کی زبان'], portrait: ['Portrait', 'عمودی'], landscape: ['Landscape', 'افقی'],
   allC: ['All classes', 'تمام کلاسیں'], genBtn: ['Generate month vouchers', 'منتخب مہینے کے وائوچر بنائیں'],
-  genHint: ['Each active student gets one voucher per month. Old dues stay separate.', 'ہر فعال طالب علم کا ہر مہینے ایک وائوچر بنتا ہے۔ پرانا بقایا علیحدہ رہتا ہے۔'],
+  genHint: ['Each active student gets one voucher per month. Exited students are excluded.', 'ہر فعال طالب علم کا ہر مہینے ایک وائوچر بنتا ہے۔ خارج طلباء شامل نہیں۔'],
   report: ['Reports', 'رپورٹس'], type: ['Report type', 'رپورٹ کی قسم'],
   weekly: ['Weekly', 'ہفتہ وار'], monthly: ['Monthly', 'ماہانہ'], annual: ['Annual', 'سالانہ'],
   admH: ['Enter admission number, then press Enter', 'ایڈمیشن نمبر لکھیں، پھر Enter دبائیں'],
@@ -392,7 +394,10 @@ const D = {
   imgHint: ['Opens WhatsApp share with the receipt picture (phone). On laptop the picture downloads and WhatsApp opens; attach it there.', 'موبائل پر واٹس ایپ میں رسید کی تصویر جائے گی۔ لیپ ٹاپ پر تصویر ڈاؤن لوڈ ہوگی اور واٹس ایپ کھلے گا، وہاں منسلک کریں۔'],
   payOk: ['Payment saved', 'ادائیگی محفوظ ہو گئی'],
   noOwed: ['No dues to pay', 'کوئی بقایا نہیں'],
-  ddPage: ['Print A4 — two students per page', 'A4 پرنٹ — ایک صفحے پر دو طلباء']
+  exitedPay: ['This student has exited. Payment is blocked. Records can be viewed.', 'یہ طالب علم خارج ہو چکا ہے۔ ادائیگی روک دی گئی ہے۔ ریکارڈ دیکھا جا سکتا ہے۔'],
+  recTitle: ['Records / Exited students', 'ریکارڈ / خارج شدہ طلباء'],
+  reactivate: ['♻️ Reactivate', '♻️ دوبارہ داخلہ'],
+  recFind: ['Admission no, name, father, mobile or CNIC', 'ایڈمیشن نمبر، نام، والد، موبائل یا شناختی کارڈ']
 };
 function tx(k, mode) {
   const v = D[k]; if (!v) return k;
@@ -421,12 +426,13 @@ const EXP_CATS = ['بجلی کا بل','پانی کا بل','امتحان کا �
 
 const state = {
   user: null, inited: false, classes: [], students: [], vouchers: [], settings: {},
-  sel: null, qSel: null, rcpt: null, checked: new Set(), bChk: new Set(), dChk: new Set(),
+  setSel: null, qSel: null, rcpt: null, checked: new Set(), bChk: new Set(), dChk: new Set(),
   ml: store.get('mlang') || 'ur', bl: store.get('blang') || 'ur', uiLang: store.get('uilang') || 'en',
   defFilter: store.get('deffilter') || 'unpaid', defMin: '', defMax: '', payMode: 'today',
   payList: [], curTab: 'gen', nav: [], lastReport: '', expRows: [], feeIncome: 0,
   colorOn: store.get('colorOn') !== '0',
-  pendingAdm: new URLSearchParams(location.search).get('adm')
+  pendingAdm: new URLSearchParams(location.search).get('adm'),
+  exitedAll: []
 };
 let qList = [], qIdx = 0, qLast = 0, qTimer = null;
 const COOL = 10000;
@@ -452,6 +458,7 @@ const vsOf = id => state.vouchers.filter(v => v.student_id === id);
 const owedOf = id => vsOf(id).reduce((a, v) => a + Number(v.outstanding || 0), 0);
 const period = () => ({ y: Number($('pY').value), m: Number($('pM').value) });
 const filt = () => { const c = $('pC').value; return state.students.filter(s => c === 'all' || String(s.class_id) === c).sort(byAdm); };
+const isExited = s => s.status === 'exited';
 const statusOf = id => {
   const o = owedOf(id);
   const p = vsOf(id).reduce((a, v) => a + Number(v.paid || 0), 0);
@@ -469,10 +476,10 @@ const paper = () => {
   const H = { 'A4|portrait': 281, 'A4|landscape': 194, 'Legal|portrait': 340, 'Legal|landscape': 200 };
   return { size: size === 'Legal' ? 'legal' : 'A4', orient, h: H[size + '|' + orient] };
 };
-function findStudents(q) {
+function findStudents(q, pool) {
   q = q.trim().toLowerCase();
   if (!q) return [];
-  return state.students.filter(s =>
+  return (pool || state.students).filter(s =>
     String(s.admission_no).toLowerCase() === q ||
     (isDigits(q) && normalizePK(s.mobile) === normalizePK(q)) ||
     (s.father_name || '').toLowerCase().includes(q) ||
@@ -739,15 +746,19 @@ async function shareReceiptImage(r, s) {
   box.innerHTML = '';
 }
 
+/* ---------- ڈیٹا لوڈ: صرف فعال طلباء ---------- */
 async function loadAll() {
-  const [c1, c2, c3] = await Promise.all([
+  const [c1, c2, c3, c4] = await Promise.all([
     sb.from('classes').select('id,name,base_fee,sort_order').order('sort_order'),
     sb.from('students').select('*').eq('is_active', true),
-    sb.from('fee_settings').select('*').eq('id', 1).maybeSingle()
+    sb.from('fee_settings').select('*').eq('id', 1).maybeSingle(),
+    sb.from('students').select('*').eq('status', 'exited').order('admission_no')
   ]);
   if (c1.error || c2.error) return toast('لوڈ نہیں ہوا: ' + ((c1.error || c2.error).message), true);
   state.classes = c1.data || [];
-  state.students = (c2.data || []).sort(byAdm);
+  const all = c2.data || [];
+  state.students = all.filter(s => s.status !== 'exited').sort(byAdm);
+  state.exitedAll = (c4.data || []);
   state.settings = (c3 && c3.data) || {};
   const ids = state.students.map(s => s.id);
   state.vouchers = ids.length
@@ -757,9 +768,10 @@ async function loadAll() {
   state.qSel = state.students.find(x => x.id === state.qSel?.id) || null;
   fillCls();
   if (state.pendingAdm) {
-    const s = findByAdm(state.pendingAdm);
+    const adm = state.pendingAdm;
     state.pendingAdm = null;
-    if (s) { showTab('pay', false); state.qSel = s; }
+    const s = findByAdm(adm) || state.exitedAll.find(x => String(x.admission_no) === String(adm));
+    if (s) { showTab('pay', false); if (isExited(s)) toast(plain('exitedPay'), true); else state.qSel = s; }
   }
   renderAll();
 }
@@ -810,6 +822,7 @@ function applyUi() {
   setT('admH', '⚡ ' + ui('admH'));
   setP('qAdm', plain('admEnter'));
   setT('findBtn', '🔎 ' + ui('find'));
+  setT('recBtn', '📚 ' + plain('recTitle'));
   setT('plT', ui('today')); setT('plY', ui('yesterday')); setT('plW', ui('week')); setT('plR', ui('range'));
   setT('plP', '🖨 ' + ui('printList')); setT('plS', '📨 ' + ui('sendAll'));
   setP('bQ', plain('name'));
@@ -898,10 +911,12 @@ $('genBtn').onclick = async () => {
   loadAll();
 };
 
+/* ---------- ادائیگی ---------- */
 function renderPayPanel() {
   const s = state.qSel;
-  if (!s) {
-    setT('payPanel', `<p class="hint">${ui('admH')}</p>`);
+  if (!s) { setT('payPanel', `<p class="hint">${ui('admH')}</p>`); return; }
+  if (isExited(s)) {
+    setT('payPanel', `<div class="warnBox">🚪 ${s.name} (${esc(s.admission_no)}) — ${plain('exitedPay')}</div>`);
     return;
   }
   const owed = owedOf(s.id);
@@ -940,6 +955,7 @@ async function payOwed(s, amt, method, note) {
 async function payFromEnter() {
   const s = state.qSel;
   if (!s) return toast(plain('noMatch'), true);
+  if (isExited(s)) return toast(plain('exitedPay'), true);
   const raw = ($('pAmt')?.value || '').trim();
   const owed = owedOf(s.id);
   const amt = raw === '' ? owed : Number(raw);
@@ -947,8 +963,10 @@ async function payFromEnter() {
   await payOwed(s, amt, $('pMeth')?.value || 'cash', ($('pNote')?.value || '').trim() || null);
 }
 function lookupAdm() {
-  const f = findByAdm($('qAdm').value);
+  const q = $('qAdm').value;
+  const f = findByAdm(q) || state.exitedAll.find(x => String(x.admission_no) === q.trim());
   if (!f) return toast(plain('noMatch'), true);
+  if (isExited(f)) { state.qSel = null; renderPayPanel(); return toast(plain('exitedPay'), true); }
   state.qSel = f;
   renderPayPanel();
 }
@@ -992,7 +1010,7 @@ async function refreshPayList() {
   renderPayList();
 }
 function payTable(withAct) {
-  const sBy = new Map(state.students.map(s => [s.id, s]));
+  const sBy = new Map([...state.students, ...state.exitedAll].map(s => [s.id, s]));
   const rows = state.payList.map((p, i) => {
     const s = sBy.get(p.student_id) || { name: '—', admission_no: '—', class_id: null };
     return `<tr><td>${i + 1}</td><td>${new Date(p.paid_at).toLocaleString('en-GB')}</td><td>${esc(s.name)}</td>
@@ -1054,7 +1072,7 @@ function qNext() {
 async function paymentById(id) {
   const p = state.payList.find(x => x.id === id) || (await sb.from('fee_payments').select('*').eq('id', id).maybeSingle()).data;
   if (!p) return null;
-  const s = state.students.find(x => x.id === p.student_id);
+  const s = [...state.students, ...state.exitedAll].find(x => x.id === p.student_id);
   return p && s ? { p, s, r: { receipt: p.receipt_no, amount: p.amount, method: p.method, sid: s.id } } : null;
 }
 async function rePrintPayment(id) {
@@ -1084,7 +1102,7 @@ async function paymentDetail(s) {
   const rowsP = (pays || []).map(p => `<tr><td>${esc(p.receipt_no)}</td><td>${new Date(p.paid_at).toLocaleString('en-GB')}</td>
     <td>${money(p.amount)}</td><td>${esc(methodText(p.method))}</td><td>${money(p.unallocated)}</td>
     <td><button class="btn sm b-orange" data-act="editPay" data-id="${p.id}" data-amt="${p.amount}">✏️ ${ui('edit')}</button></td></tr>`).join('');
-  openM(`📑 ${s.name} — ${plain('payDetail')}`, `
+  openM(`📑 ${s.name} — ${plain('payDetail')}${isExited(s) ? ' (🚪)' : ''}`, `
     <div class="tw"><table>
       <tr><th>${ui('month')}</th><th>${ui('fee')}</th><th>${ui('conc')}</th><th>${ui('fine')}</th><th>${ui('advance')}</th><th>${ui('billed')}</th><th>${ui('date')} / ${ui('paidAmt')}</th><th>${ui('paidAmt')}</th><th>${ui('dueT')}</th></tr>
       ${rowsM || '<tr><td colspan="9">—</td></tr>'}
@@ -1142,12 +1160,13 @@ async function saveBill(vid) {
   loadAll();
 }
 
+/* ---------- بل ---------- */
 function renderBills() {
   const q = $('bQ').value.trim().toLowerCase();
   const list = filt().filter(s => !q ||
     s.name.toLowerCase().includes(q) || String(s.admission_no).toLowerCase().includes(q) ||
     (s.father_name || '').toLowerCase().includes(q) || String(s.mobile || '').includes(q))
-    .filter(s => { const b = billFor(s); return b && b.rem > 0 || (b && b.paid === 0); });
+    .filter(s => { const b = billFor(s); return b && (b.rem > 0 || b.paid === 0); });
   setT('bTb', list.map((s, i) => {
     const b = billFor(s);
     return `<tr>
@@ -1167,6 +1186,7 @@ function renderBills() {
   }).join('') || `<tr><td colspan="10">${ui('noMatch')}</td></tr>`);
 }
 
+/* ---------- ڈیفالٹرز ---------- */
 function rowColor(owed) {
   if (!state.colorOn) return '';
   if (owed >= 8000) return 'rowR';
@@ -1179,8 +1199,7 @@ function renderDef() {
   setT('defCount', `<div class="bigCount">${ui('defCount')}: ${list.length}</div>`);
   setT('dTb', list.map((s, i) => {
     const o = owedOf(s.id);
-    const rc = rowColor(o);
-    return `<tr class="${rc}">
+    return `<tr class="${rowColor(o)}">
     <td><input type="checkbox" data-dchk="${s.id}" ${state.dChk.has(s.id) ? 'checked' : ''}></td>
     <td>${i + 1}</td><td>${esc(s.name)}</td><td>${esc(s.admission_no)}</td><td>${esc(cls(s.class_id))}</td>
     <td>${esc(s.mobile)}</td><td><b>${money(o)}</b></td>
@@ -1193,8 +1212,7 @@ function renderDef() {
   }).join('') || `<tr><td colspan="9">${ui('noMatch')}</td></tr>`);
   document.querySelectorAll('[data-dst]').forEach(b => b.classList.toggle('sel', b.dataset.dst === state.defFilter));
 }
-async function sendToTicked() {
-  const ids = [...state.dChk];
+function sendToTicked() {
   const list = defList().filter(s => state.dChk.has(s.id));
   if (!list.length) return toast(plain('pickFirst'), true);
   qList = list.map(s => ({ s, text: manualRemText(s) }));
@@ -1212,6 +1230,7 @@ function printDefaulters() {
     ${rows}<tr><th colspan="5">${lab('totalDue')}</th><th>${money(tot)}</th></tr></table>`, pp.size, pp.orient);
 }
 
+/* ---------- رپورٹس (فعال طلباء) ---------- */
 async function runReport() {
   const type = $('rType').value, cid = $('rCls').value, p = period(), now = new Date();
   let from, to, title;
@@ -1262,6 +1281,54 @@ function openReport() {
   </div><div id="rOut"></div>`);
 }
 
+/* ---------- ریکارڈ (خارج / دوبارہ داخلہ) ---------- */
+function openRecords() {
+  openM(plain('recTitle'), `
+    <div class="row2">
+      <input id="recQ" placeholder="${plain('recFind')}" style="flex:1">
+      <select id="recSt"><option value="all">All</option><option value="exited">Exited</option><option value="active">Active</option></select>
+      <button class="btn b-indigo" data-act="recRun">🔎 ${plain('find')}</button>
+    </div>
+    <div id="recRes" class="tw"></div>`);
+  $('recQ').addEventListener('keydown', e => { if (e.key === 'Enter') runRecords(); });
+  $('recSt').onchange = runRecords;
+  runRecords();
+}
+async function runRecords() {
+  const q = ($('recQ')?.value || '').trim().toLowerCase();
+  const st = $('recSt').value;
+  const { data, error } = await sb.from('students').select('*').order('admission_no');
+  if (error) return toast(error.message, true);
+  const list = (data || []).filter(s => (st === 'all' || s.status === st) && (!q ||
+    String(s.admission_no).toLowerCase().includes(q) ||
+    s.name.toLowerCase().includes(q) ||
+    (s.father_name || '').toLowerCase().includes(q) ||
+    (q.replace(/\D/g, '') && normalizePK(s.mobile).includes(normalizePK(q))) ||
+    (s.father_cnic || '').toLowerCase().includes(q))).sort(byAdm).slice(0, 100);
+  $('recRes').innerHTML = list.length ? `<table>
+    <tr><th>${ui('adm')}</th><th>${ui('name')}</th><th>${ui('father')}</th><th>${ui('mobile')}</th><th>${ui('cls')}</th><th>${ui('status')}</th><th>${ui('date')}</th><th>${ui('action')}</th></tr>
+    ${list.map(s => `<tr>
+      <td>${esc(s.admission_no)}</td><td>${esc(s.name)}</td><td>${esc(s.father_name || '—')}</td>
+      <td>${esc(s.mobile)}</td><td>${esc(cls(s.class_id))}</td>
+      <td>${s.status === 'exited' ? '🚪 ' + esc(s.exit_reason || 'Exited') : '✅ Active'}</td>
+      <td>${esc(s.exit_date || '—')}</td>
+      <td class="nw">${s.status === 'exited'
+        ? `<button class="btn sm b-green" data-act="reactivate" data-id="${s.id}">${plain('reactivate')}</button>`
+        : `<button class="btn sm b-indigo" data-act="pd" data-id="${s.id}">📑</button>`}</td>
+    </tr>`).join('')}
+  </table>` : `<p class="hint">${ui('noMatch')}</p>`;
+}
+async function reactivate(id) {
+  if (!confirm('Reactivate this student?')) return;
+  const { error } = await sb.from('students').update({ status: 'active', exit_date: null, exit_reason: null, exit_note: null }).eq('id', id);
+  if (error) return toast(error.message, true);
+  await sb.from('student_exits').insert({ student_id: id, action: 'reactivate', reason: 'Re-admission', action_date: todayStr(), created_by: state.user.id });
+  toast('♻️ ' + plain('reactivate'));
+  await loadAll();
+  runRecords();
+}
+
+/* ---------- نوٹ اور یاددہانی ---------- */
 function openNote() {
   openM(`📝 ${plain('billNote')}`, `
     <label>اردو نوٹ<textarea id="nUr" rows="3">${esc(state.settings.bill_note_ur || '')}</textarea></label>
@@ -1289,6 +1356,7 @@ function openReminder() {
     <div class="ma"><button class="btn b-green" data-act="saveRem">💾 ${ui('save')}</button></div>`);
 }
 
+/* ---------- ترتیب ---------- */
 function renderSet() {
   const cur = $('bCls') ? $('bCls').value : '';
   setT('clsFees', `<table><tr><th>${ui('cls')}</th><th>${ui('fee')}</th><th></th></tr>
@@ -1346,7 +1414,6 @@ async function applyPct(pct) {
   toast(`✅ ${n} طلباء: ${pct}% (${money(newFee)})`);
   loadAll();
 }
-
 function renderSetSearch() {
   setT('sRes', findStudents($('sQ').value).map(s =>
     `<button class="btn sm b-blue" data-act="sPick" data-id="${s.id}" style="margin:2px">${esc(s.name)} · ${esc(s.admission_no)}</button>`).join(''));
@@ -1361,6 +1428,7 @@ function renderSetEd() {
     </div>`);
 }
 
+/* ---------- آمدن اور اخراجات ---------- */
 async function loadExp() {
   const p = period();
   const start = `${p.y}-${pad(p.m)}-01`;
@@ -1418,6 +1486,7 @@ function closeApp() {
   try { window.close(); } catch (e) {}
 }
 
+/* ---------- ایونٹس ---------- */
 document.addEventListener('click', async e => {
   const t = e.target.closest('[data-tab],[data-act],[data-dst],[data-k]');
   if (!t) return;
@@ -1433,10 +1502,13 @@ document.addEventListener('click', async e => {
   }
   const a = t.dataset.act;
   const id = Number(t.dataset.id);
-  const s = state.students.find(x => x.id === id);
+  const s = state.students.find(x => x.id === id) || state.exitedAll.find(x => x.id === id);
   switch (a) {
     case 'back': goBack(); break;
     case 'qFind': lookupAdm(); break;
+    case 'recOpen': openRecords(); break;
+    case 'recRun': runRecords(); break;
+    case 'reactivate': reactivate(id); break;
     case 'pay': await payFromEnter(); break;
     case 'pd': if (s) await paymentDetail(s); break;
     case 'pdPrint': if (s) printPaymentDetail(s); break;
@@ -1515,7 +1587,7 @@ document.addEventListener('click', async e => {
     case 'pctCustom': applyPct(Number($('bCustom').value)); break;
     case 'bSelAll': state.bChk = new Set(state.students.filter(x => String(x.class_id) === $('bCls').value).map(x => x.id)); renderBulk(); break;
     case 'bSelNone': state.bChk.clear(); renderBulk(); break;
-    case 'sPick': state.setSel = s; renderSetEd(); break;
+    case 'sPick': state.setSel = state.students.find(x => x.id === id) || null; renderSetEd(); break;
     case 'sSave': {
       const ov = Number($('sOv').value || 0);
       const { error } = await sb.from('students').update({ monthly_fee: ov > 0 ? ov : 0, fee_concession_pct: 0 }).eq('id', id);
